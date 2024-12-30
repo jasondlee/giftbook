@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -55,6 +57,11 @@ kotlin {
             implementation(libs.decompose)
             implementation(libs.decompose.extensions)
             // Decompose
+
+            // Room
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+            // Room
         }
         iosMain.dependencies {
             // Decompose
@@ -96,5 +103,14 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
