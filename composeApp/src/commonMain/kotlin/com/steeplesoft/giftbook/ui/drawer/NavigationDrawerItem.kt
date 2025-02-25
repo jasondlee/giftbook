@@ -1,4 +1,4 @@
-package com.steeplesoft.mobile.model
+package com.steeplesoft.giftbook.ui.drawer
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

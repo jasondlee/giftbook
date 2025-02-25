@@ -1,4 +1,4 @@
-package com.steeplesoft.mobile.drawer
+package com.steeplesoft.giftbook.ui.drawer
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

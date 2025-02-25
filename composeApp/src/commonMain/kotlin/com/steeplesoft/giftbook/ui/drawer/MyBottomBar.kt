@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import com.steeplesoft.giftbook.mainColor
-import com.steeplesoft.mobile.drawer.NavigationItem
 
 @Composable
 fun BottomNavBar(

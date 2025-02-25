@@ -1,4 +1,4 @@
-package com.steeplesoft.mobile.drawer
+package com.steeplesoft.giftbook.ui.drawer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack

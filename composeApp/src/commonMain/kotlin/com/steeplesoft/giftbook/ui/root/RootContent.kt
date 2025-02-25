@@ -14,7 +14,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.steeplesoft.giftbook.ui.clickme.clickMe
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
-import com.steeplesoft.mobile.drawer.MyTopAppBar
+import com.steeplesoft.giftbook.ui.drawer.MyTopAppBar
 import kotlinx.coroutines.launch
 
 @Composable
