@@ -15,6 +15,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.steeplesoft.giftbook.ui.clickme.clickMe
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.MyTopAppBar
+import com.steeplesoft.giftbook.ui.home.homeContent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,6 +49,7 @@ fun RootContent(
                 val childModifier = Modifier.fillMaxSize()
                 when (val child = it.instance) {
                     is RootComponent.Child.ClickMe -> clickMe(child.component, childModifier)
+                    is RootComponent.Child.Home -> homeContent(child.component, childModifier)
                 }
             }
         }

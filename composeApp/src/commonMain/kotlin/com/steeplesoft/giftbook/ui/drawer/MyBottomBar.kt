@@ -14,6 +14,9 @@ fun BottomNavBar(
 ) {
     val items = listOf(
         NavigationItem.Home,
+        NavigationItem.Occasions,
+        NavigationItem.Recipients,
+        NavigationItem.GiftIdeas
     )
     NavigationBar(containerColor = mainColor) {
         val labelSize = 10.sp

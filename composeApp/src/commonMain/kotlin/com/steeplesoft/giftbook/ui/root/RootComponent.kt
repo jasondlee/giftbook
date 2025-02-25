@@ -8,6 +8,8 @@ import com.arkivanov.decompose.value.Value
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.ui.clickme.ClickMeComponent
 import com.steeplesoft.giftbook.ui.clickme.DefaultClickMeComponent
+import com.steeplesoft.giftbook.ui.home.DefaultHomeComponent
+import com.steeplesoft.giftbook.ui.home.HomeComponent
 import kotlinx.serialization.Serializable
 
 interface RootComponent {
@@ -15,6 +17,7 @@ interface RootComponent {
 
     sealed interface Child {
         class ClickMe(val component: ClickMeComponent) : Child
+        class Home(val component: HomeComponent): Child
     }
 }
 
@@ -29,7 +32,7 @@ class DefaultRootComponent(componentContext: ComponentContext) :
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = nav,
         serializer = NavigationConfig.serializer(),
-        initialConfiguration = NavigationConfig.ClickMe,
+        initialConfiguration = NavigationConfig.Home,
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -41,6 +44,8 @@ class DefaultRootComponent(componentContext: ComponentContext) :
         return when (config) {
             is NavigationConfig.ClickMe ->
                 RootComponent.Child.ClickMe(DefaultClickMeComponent(componentContext))
+            is NavigationConfig.Home ->
+                RootComponent.Child.Home(DefaultHomeComponent(componentContext))
         }
     }
 }
@@ -49,4 +54,6 @@ class DefaultRootComponent(componentContext: ComponentContext) :
 sealed interface NavigationConfig {
     @Serializable
     data object ClickMe : NavigationConfig
+    @Serializable
+    data object Home: NavigationConfig
 }

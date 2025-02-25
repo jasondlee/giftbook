@@ -16,7 +16,6 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MyTopAppBar(
-//    currentScreen: SteeplesoftDestination,
     onNavIconClick: () -> Unit
 ) {
     TopAppBar(
