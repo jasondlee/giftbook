@@ -1,8 +1,8 @@
 package com.steeplesoft.giftbook
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Shapes
-import androidx.compose.material.Typography
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -11,6 +11,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val TAG = "GIFTBOOK"
+
+val mainColor = Color(0xFFfbeace) // peach
+val secondaryColor = Color(0xFFf5d4b2) // tan
 
 val Teal200 = Color(0xFF03DAC5)
 val Navy700 = Color(0xFF000080)
@@ -24,7 +27,7 @@ val shapes = Shapes(
 
 // Set of Material typography styles to start with
 val typography = Typography(
-    body1 = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
