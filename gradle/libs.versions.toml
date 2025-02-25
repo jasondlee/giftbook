@@ -1,24 +1,25 @@
 [versions]
-agp = "8.5.2"
-android-compileSdk = "34"
+agp = "8.6.1"
+android-compileSdk = "35"
 android-minSdk = "24"
-android-targetSdk = "34"
-androidx-activityCompose = "1.9.3"
+android-targetSdk = "35"
+androidx-activityCompose = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.0"
 androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
-androidx-room = "2.7.0-alpha11"
+androidx-room = "2.7.0-beta01"
 androidx-test-junit = "1.2.1"
-compose-multiplatform = "1.7.0"
+compose-multiplatform = "1.7.3"
 junit = "4.13.2"
 kotlin = "2.1.0"
 decompose = "3.2.2"
 essenty = "2.2.1"
 ksp = "2.1.0-1.0.29"
-sqlite = "2.5.0-alpha11"
+sqlite = "2.5.0-beta01"
+ktor = "3.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -41,6 +42,8 @@ decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", 
 essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 essenty-statekeeper = { module = "com.arkivanov.essenty:state-keeper", version.ref = "essenty" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+ktor-serialization-json = { module = " io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

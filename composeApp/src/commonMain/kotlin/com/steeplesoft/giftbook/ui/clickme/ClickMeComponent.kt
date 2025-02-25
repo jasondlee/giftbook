@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.clickme
+package com.steeplesoft.giftbook.ui.clickme
 
 import com.arkivanov.decompose.ComponentContext
 

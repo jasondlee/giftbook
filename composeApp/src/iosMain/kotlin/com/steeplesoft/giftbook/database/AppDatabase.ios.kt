@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook
+package com.steeplesoft.giftbook.database
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
