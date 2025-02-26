@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.secondaryColor
-import com.steeplesoft.giftbook.ui.LoadingScreen
-import com.steeplesoft.giftbook.ui.Status
+import com.steeplesoft.giftbook.ui.asyncLoad
 import com.steeplesoft.giftbook.ui.root.NavigationConfig
 import com.steeplesoft.giftbook.ui.root.nav
 
@@ -39,50 +38,55 @@ fun occasionList(
     Column(
         modifier = Modifier.padding(10.dp),
     ) {
+        asyncLoad(status) {
+            Scaffold(
+                modifier = modifier.fillMaxSize(),
+                topBar = {
+                    Text("Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+                },
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = {
+                            nav.pushToFront(NavigationConfig.AddEditOccasion())
+                        },
+                        containerColor = secondaryColor,
+                        contentColor = Color.Black
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Add")
+                    }
+                }
+            ) { innerPadding ->
+                LazyColumn(
+                    contentPadding = innerPadding,
+                    modifier = Modifier.padding(top = 10.dp)
+                ) {
+                    items(component.occasions) { occasion ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
+                                .clickable {
+                                    nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
+                                }
+                        ) {
+                            Text(text = "${occasion.name} - ${occasion.eventDate}")
+                        }
+                    }
+                }
+            }
+        }
+/*
         when (status) {
             Status.LOADING -> {
                 LoadingScreen(modifier)
             }
 
             Status.SUCCESS -> {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        Text("Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = {
-                                nav.pushToFront(NavigationConfig.AddEditOccasion())
-                            },
-                            containerColor = secondaryColor,
-                            contentColor = Color.Black
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = "Add")
-                        }
-                    }
-                ) { innerPadding ->
-                    LazyColumn(
-                        contentPadding = innerPadding,
-                        modifier = Modifier.padding(top = 10.dp)
-                    ) {
-                        items(component.occasions) { occasion ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
-                                    .clickable {
-                                        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
-                                    }
-                            ) {
-                                Text(text = "${occasion.name} - ${occasion.eventDate}")
-                            }
-                        }
-                    }
-                }
+
             }
 
             Status.ERROR -> {
                 Text("Error loading meals")
             }
         }
+*/
     }
 }
