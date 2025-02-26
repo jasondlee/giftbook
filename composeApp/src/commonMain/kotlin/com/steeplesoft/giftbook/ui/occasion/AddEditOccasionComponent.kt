@@ -2,10 +2,8 @@ package com.steeplesoft.giftbook.ui.occasion
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.root.NavigationConfig
 import com.steeplesoft.giftbook.ui.root.nav
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +37,6 @@ class DefaultAddEditOccasionComponent(
             }
 
             nav.pop()
-            nav.pop()
-            nav.pushToFront(NavigationConfig.Occasions)
         }
     }
 }
