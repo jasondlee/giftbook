@@ -28,15 +28,16 @@ import androidx.compose.ui.unit.toSize
 @Composable
 fun <T> ComboBox(
     label: String,
-    selected: OptionItems<T>,
-    items: List<OptionItems<T>>,
-    onChange: (OptionItems<T>) -> Unit
+    selected: T,
+    items: List<T>,
+    itemLabel: (T) -> String,
+    onChange: (T) -> Unit
 ) {
     // Declaring a boolean value to store the expanded state of the Text Field
     var mExpanded by remember { mutableStateOf(false) }
 
     var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
-    var _selected  by remember { mutableStateOf(selected) }
+    var _selected  by remember { mutableStateOf(itemLabel(selected)) }
 
     // Up Icon when expanded and down icon when collapsed
     val icon = if (mExpanded)
@@ -47,7 +48,7 @@ fun <T> ComboBox(
     Column(Modifier.padding(20.dp)) {
         // Create an Outlined Text Field with icon and not expanded
         OutlinedTextField(
-            value = _selected.label,
+            value = _selected,
             readOnly = true,
             onValueChange = {},
             modifier = Modifier
@@ -73,10 +74,10 @@ fun <T> ComboBox(
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(text = item.label) },
+                    text = { Text(text = itemLabel(item)) },
                     onClick = {
                         onChange(item)
-                        _selected = item
+                        _selected = itemLabel(item)
                         mExpanded = false
                     }
                 )

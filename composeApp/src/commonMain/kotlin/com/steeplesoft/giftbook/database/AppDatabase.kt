@@ -4,6 +4,7 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.steeplesoft.giftbook.database.dao.OccasionDao
@@ -12,6 +13,7 @@ import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipientCrossRef
 import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.now
 import giftbook.composeapp.generated.resources.Res
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 // https://developer.android.com/kotlin/multiplatform/room
@@ -32,6 +35,11 @@ fun getRoomDatabase(): AppDatabase {
     val database = getDatabaseBuilder()
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
+
+
+        /*RoomDatabase.QueryCallback { sqlQuery, bindArgs ->
+            println("SQL Query: $sqlQuery SQL Args: $bindArgs")
+        }, Executors.newSingleThreadExecutor())*/
         .build()
 
     loadDemoData(database)
@@ -49,6 +57,8 @@ fun getRoomDatabase(): AppDatabase {
     ],
     version = 1
 )
+
+@TypeConverters(LocalDateConverter::class)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun occasionDao(): OccasionDao
@@ -75,8 +85,9 @@ private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
         dao.insertAll(
-            Occasion(1, "Christmas"),
-            Occasion(2, "Birthday")
+            Occasion(1, "Christmas", LocalDate.now()),
+            Occasion(2, "Birthday", LocalDate.now()),
+            Occasion(3, "Christmas 2024", LocalDate(2024,12,25)),
         )
         dao.addRecipients(
             OccasionRecipientCrossRef(1, 1),

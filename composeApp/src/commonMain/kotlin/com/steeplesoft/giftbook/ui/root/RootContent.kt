@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.ui.clickme.clickMe
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.MyTopAppBar
 import com.steeplesoft.giftbook.ui.home.homeContent
+import com.steeplesoft.giftbook.ui.occasion.occasionList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,7 +40,11 @@ fun RootContent(
                 }
             },
             bottomBar = {
-                BottomNavBar { navItem -> { } }
+                BottomNavBar(onNavigate = { navItem ->
+                    {
+                        nav.pushToFront(navItem.route)
+                    }
+                })
             },
         ) { innerPadding ->
             Children(
@@ -50,6 +56,7 @@ fun RootContent(
                 when (val child = it.instance) {
                     is RootComponent.Child.ClickMe -> clickMe(child.component, childModifier)
                     is RootComponent.Child.Home -> homeContent(child.component, childModifier)
+                    is RootComponent.Child.Occasions -> occasionList(child.component, childModifier)
                 }
             }
         }

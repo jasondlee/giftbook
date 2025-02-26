@@ -14,7 +14,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.ComboBox
 import com.steeplesoft.giftbook.ui.LoadingScreen
-import com.steeplesoft.giftbook.ui.OptionItems
 import com.steeplesoft.giftbook.ui.Status
 
 @Composable
@@ -23,7 +22,7 @@ fun homeContent(component: HomeComponent,
     val status by component.requestStatus.subscribeAsState()
 
     Column(
-        modifier = Modifier.padding(10.dp),
+        modifier = modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         when (status) {
@@ -32,15 +31,14 @@ fun homeContent(component: HomeComponent,
             }
 
             Status.SUCCESS -> {
-                val optionItems = component.occasions.map { OptionItems(it.name, it) }
-                val selected  by remember { mutableStateOf(optionItems.first()) }
+                val optionItems = component.occasions //.map { OptionItems(it.name, it) }
+                val selected: Occasion?  by remember { mutableStateOf(null) }
 
                 ComboBox(label = "Current Occasion",
                     selected = selected,
-                    onChange = { newValue : OptionItems<Occasion> ->
-                        println("oc = $newValue")
-                    },
-                    items = optionItems)
+                    onChange = { newValue  -> println("oc = $newValue") },
+                    items = optionItems,
+                    itemLabel = { item -> item?.name ?: "--" })
             }
 
             Status.ERROR -> {

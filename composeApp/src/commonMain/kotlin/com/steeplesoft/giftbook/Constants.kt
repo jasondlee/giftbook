@@ -9,6 +9,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 val TAG = "GIFTBOOK"
 
@@ -33,3 +37,6 @@ val typography = Typography(
         fontSize = 16.sp
     )
 )
+
+fun LocalDate.Companion.now() = Clock.System.now()
+    .toLocalDateTime(TimeZone.currentSystemDefault()).date
