@@ -17,6 +17,7 @@ import com.steeplesoft.giftbook.ui.clickme.clickMe
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.MyTopAppBar
 import com.steeplesoft.giftbook.ui.home.homeContent
+import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import kotlinx.coroutines.launch
 
@@ -57,6 +58,7 @@ fun RootContent(
                     is RootComponent.Child.ClickMe -> clickMe(child.component, childModifier)
                     is RootComponent.Child.Home -> homeContent(child.component, childModifier)
                     is RootComponent.Child.Occasions -> occasionList(child.component, childModifier)
+                    is RootComponent.Child.AddEditOccasion -> addEditOccasion(child.component, childModifier)
                 }
             }
         }

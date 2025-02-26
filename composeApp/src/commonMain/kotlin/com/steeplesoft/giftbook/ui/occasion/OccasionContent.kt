@@ -21,9 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.secondaryColor
 import com.steeplesoft.giftbook.ui.LoadingScreen
 import com.steeplesoft.giftbook.ui.Status
+import com.steeplesoft.giftbook.ui.root.NavigationConfig
+import com.steeplesoft.giftbook.ui.root.nav
 
 @Composable
 fun occasionList(
@@ -49,7 +52,7 @@ fun occasionList(
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = {
-//                            nav.pushToFront(NavigationConfig.AddEditPerson())
+                                nav.pushToFront(NavigationConfig.AddEditOccasion())
                             },
                             containerColor = secondaryColor,
                             contentColor = Color.Black

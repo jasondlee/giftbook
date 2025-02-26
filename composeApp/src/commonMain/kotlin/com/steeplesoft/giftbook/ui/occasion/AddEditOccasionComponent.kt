@@ -1,0 +1,42 @@
+package com.steeplesoft.giftbook.ui.occasion
+
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushToFront
+import com.steeplesoft.giftbook.database.db
+import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.ui.root.NavigationConfig
+import com.steeplesoft.giftbook.ui.root.nav
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+interface AddEditOccasionComponent {
+    val occasion: Occasion?
+    val form: OccasionForm
+    fun save() : Unit
+}
+
+class DefaultAddEditOccasionComponent(
+    componentContext: ComponentContext,
+    override val occasion: Occasion?
+) : AddEditOccasionComponent,
+    ComponentContext by componentContext {
+    override val form = OccasionForm(occasion)
+
+    override fun save() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val newOccasion = Occasion(
+                occasion?.id ?: 0,
+                form.name.state.value!!,
+                form.eventDate.state.value!!
+            )
+
+            db.occasionDao().insertAll(newOccasion)
+
+            nav.pop()
+            nav.pop()
+            nav.pushToFront(NavigationConfig.Occasions)
+        }
+    }
+}

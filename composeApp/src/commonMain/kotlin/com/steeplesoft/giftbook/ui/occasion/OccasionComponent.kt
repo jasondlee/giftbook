@@ -23,7 +23,6 @@ class DefaultOccasionComponent(
     ComponentContext by componentContext {
     override var occasions = emptyList<Occasion>()
     override var requestStatus  = MutableValue(Status.LOADING)
-
     init {
         CoroutineScope(Dispatchers.IO).launch {
             occasions = db.occasionDao().getFutureOccasions()

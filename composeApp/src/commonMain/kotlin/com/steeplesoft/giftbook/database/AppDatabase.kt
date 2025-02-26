@@ -13,7 +13,6 @@ import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipientCrossRef
 import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.now
 import giftbook.composeapp.generated.resources.Res
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -85,8 +84,8 @@ private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
         dao.insertAll(
-            Occasion(1, "Christmas", LocalDate.now()),
-            Occasion(2, "Birthday", LocalDate.now()),
+            Occasion(1, "Christmas 2025", LocalDate(2025,12,25)),
+            Occasion(2, "Birthday", LocalDate(2025,8,1)),
             Occasion(3, "Christmas 2024", LocalDate(2024,12,25)),
         )
         dao.addRecipients(

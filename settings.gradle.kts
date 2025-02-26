@@ -25,6 +25,8 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        maven { url = uri("https://repository.steeplesoft.com/steeplesoft-snapshots") }
+        maven { url = uri("https://repository.steeplesoft.com/steeplesoft-releases") }
     }
 }
 

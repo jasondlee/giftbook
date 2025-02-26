@@ -9,6 +9,8 @@ import com.steeplesoft.giftbook.ui.clickme.ClickMeComponent
 import com.steeplesoft.giftbook.ui.clickme.DefaultClickMeComponent
 import com.steeplesoft.giftbook.ui.home.DefaultHomeComponent
 import com.steeplesoft.giftbook.ui.home.HomeComponent
+import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
+import com.steeplesoft.giftbook.ui.occasion.DefaultAddEditOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.DefaultOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.OccasionComponent
 
@@ -19,6 +21,7 @@ interface RootComponent {
         class ClickMe(val component: ClickMeComponent) : Child
         class Home(val component: HomeComponent) : Child
         class Occasions(val component: OccasionComponent) : Child
+        class AddEditOccasion(val component: AddEditOccasionComponent) : Child
     }
 }
 
@@ -48,6 +51,8 @@ class DefaultRootComponent(componentContext: ComponentContext) :
                 RootComponent.Child.Home(DefaultHomeComponent(componentContext))
             is NavigationConfig.Occasions ->
                 RootComponent.Child.Occasions(DefaultOccasionComponent(componentContext))
+            is NavigationConfig.AddEditOccasion ->
+                RootComponent.Child.AddEditOccasion(DefaultAddEditOccasionComponent(componentContext, config.occasion))
         }
     }
 }
