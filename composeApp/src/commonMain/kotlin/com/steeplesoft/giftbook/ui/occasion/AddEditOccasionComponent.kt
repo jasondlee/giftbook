@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 interface AddEditOccasionComponent {
     val occasion: Occasion?
     val form: OccasionForm
-    fun save() : Unit
+    fun save(): Unit
 }
 
 class DefaultAddEditOccasionComponent(
@@ -32,7 +32,11 @@ class DefaultAddEditOccasionComponent(
                 form.eventDate.state.value!!
             )
 
-            db.occasionDao().insertAll(newOccasion)
+            if (occasion == null) {
+                db.occasionDao().insertAll(newOccasion)
+            } else {
+                db.occasionDao().update(newOccasion)
+            }
 
             nav.pop()
             nav.pop()

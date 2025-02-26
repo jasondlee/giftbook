@@ -1,5 +1,6 @@
 package com.steeplesoft.giftbook.ui.occasion
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,6 +69,9 @@ fun occasionList(
                         items(component.occasions) { occasion ->
                             Row(
                                 modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
+                                    .clickable {
+                                        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
+                                    }
                             ) {
                                 Text(text = "${occasion.name} - ${occasion.eventDate}")
                             }

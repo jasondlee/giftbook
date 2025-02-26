@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipientCrossRef
 import com.steeplesoft.giftbook.database.model.OccasionWithRecipients
@@ -23,7 +24,11 @@ interface OccasionDao {
 
     @Insert
     @Transaction
-    suspend fun insertAll(vararg meals: Occasion)
+    suspend fun insertAll(vararg occasion: Occasion)
+
+    @Update
+    @Transaction
+    suspend fun update(occasion: Occasion)
 
     @Query("SELECT * FROM Occasion")
     fun getOccasionRecipients(): List<OccasionWithRecipients>
