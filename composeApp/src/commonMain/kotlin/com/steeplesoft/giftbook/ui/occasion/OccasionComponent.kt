@@ -1,36 +1,36 @@
 package com.steeplesoft.giftbook.ui.occasion
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.update
-import com.arkivanov.essenty.lifecycle.doOnResume
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.Status
+import com.steeplesoft.giftbook.ui.root.NavigationConfig
+import com.steeplesoft.giftbook.ui.root.nav
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
 interface OccasionComponent {
-    val occasions : List<Occasion>
-    var requestStatus : MutableValue<Status>
-
+    val occasion: Occasion
+    fun edit()
+    fun delete()
 }
 
 class DefaultOccasionComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    override val occasion: Occasion
 ) : OccasionComponent,
     ComponentContext by componentContext {
-    override var occasions = emptyList<Occasion>()
-    override var requestStatus  = MutableValue(Status.LOADING)
-    init {
-        componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
-                occasions = db.occasionDao().getFutureOccasions()
+    override fun edit() {
+        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
+    }
 
-                requestStatus.update { Status.SUCCESS }
-            }
+    override fun delete() {
+        CoroutineScope(Dispatchers.Main).launch {
+            db.occasionDao().delete(occasion)
+
+            nav.pop()
         }
     }
 }

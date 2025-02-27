@@ -1,92 +1,96 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.steeplesoft.giftbook.ui.occasion
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.arkivanov.decompose.router.stack.pushToFront
+import com.steeplesoft.giftbook.mainColor
 import com.steeplesoft.giftbook.secondaryColor
-import com.steeplesoft.giftbook.ui.asyncLoad
-import com.steeplesoft.giftbook.ui.root.NavigationConfig
-import com.steeplesoft.giftbook.ui.root.nav
+import com.steeplesoft.giftbook.ui.ConfirmationDialog
 
 @Composable
-fun occasionList(
+fun occasionView(
     component: OccasionComponent,
     modifier: Modifier = Modifier
 ) {
-    val status by component.requestStatus.subscribeAsState()
+    val occasion = component.occasion
+    val showDialog = remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier.padding(10.dp),
-    ) {
-        asyncLoad(status) {
-            Scaffold(
-                modifier = modifier.fillMaxSize(),
-                topBar = {
-                    Text("Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
-                },
-                floatingActionButton = {
-                    FloatingActionButton(
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Occasion Details",
+                    fontWeight = FontWeight.Bold, fontSize = 30.sp) },
+                actions = {
+                    IconButton(
+                        colors = IconButtonColors(
+                            containerColor = secondaryColor,
+                            contentColor = Color.Black,
+                            disabledContainerColor = mainColor,
+                            disabledContentColor = Color.Black
+                        ),
                         onClick = {
-                            nav.pushToFront(NavigationConfig.AddEditOccasion())
-                        },
-                        containerColor = secondaryColor,
-                        contentColor = Color.Black
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add")
+                            component.edit()
+                        }) {
+                        Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                    }
+                    IconButton(
+                        colors = IconButtonColors(
+                            containerColor = secondaryColor,
+                            contentColor = Color.Black,
+                            disabledContainerColor = mainColor,
+                            disabledContentColor = Color.Black
+                        ),
+                        onClick = {
+                            showDialog.value = true
+                        }) {
+                        Icon(Icons.Filled.Delete, contentDescription = "Delete")
                     }
                 }
-            ) { innerPadding ->
-                LazyColumn(
-                    contentPadding = innerPadding,
-                    modifier = Modifier.padding(top = 10.dp)
-                ) {
-                    items(component.occasions) { occasion ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
-                                .clickable {
-                                    nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
-                                }
-                        ) {
-                            Text(text = "${occasion.name} - ${occasion.eventDate}")
-                        }
-                    }
+            )
+        }
+    ) { paddingValues ->
+        if (showDialog.value) {
+            ConfirmationDialog(
+                onDismissRequest = { showDialog.value = false },
+                onConfirmation = {
+                    showDialog.value = false
+                    component.delete()
+                },
+                dialogTitle = "Confirmation",
+                dialogText = "Are you sure you want to delete ${occasion.name}?",
+                icon = Icons.Default.QuestionMark
+            )
+        }
+        LazyColumn(
+            modifier = Modifier.padding(paddingValues)
+                .padding(start = 10.dp, end = 10.dp)
+        ) {
+            item {
+                Column {
+                    Text(text = "${occasion.name} - ${occasion.eventDate}")
                 }
             }
         }
-/*
-        when (status) {
-            Status.LOADING -> {
-                LoadingScreen(modifier)
-            }
-
-            Status.SUCCESS -> {
-
-            }
-
-            Status.ERROR -> {
-                Text("Error loading meals")
-            }
-        }
-*/
     }
 }

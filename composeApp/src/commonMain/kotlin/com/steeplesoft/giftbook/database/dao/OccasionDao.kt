@@ -1,6 +1,7 @@
 package com.steeplesoft.giftbook.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
@@ -29,6 +30,10 @@ interface OccasionDao {
     @Update
     @Transaction
     suspend fun update(occasion: Occasion)
+
+    @Delete
+    @Transaction
+    suspend fun delete(occasion: Occasion)
 
     @Query("SELECT * FROM Occasion")
     fun getOccasionRecipients(): List<OccasionWithRecipients>
