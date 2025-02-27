@@ -3,7 +3,6 @@ package com.steeplesoft.giftbook
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -15,13 +14,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 val TAG = "GIFTBOOK"
-
-val mainColor = Color(0xFFfbeace) // peach
-val secondaryColor = Color(0xFFf5d4b2) // tan
-
-val Teal200 = Color(0xFF03DAC5)
-val Navy700 = Color(0xFF000080)
-val Navy200 = Color(0xFF5858EB)
 
 val shapes = Shapes(
     small = RoundedCornerShape(4.dp),

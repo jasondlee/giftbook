@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
-import com.steeplesoft.giftbook.mainColor
 import com.steeplesoft.giftbook.ui.root.nav
 
 @Composable
@@ -23,7 +22,7 @@ fun BottomNavBar(
         NavigationItem.Recipients,
         NavigationItem.GiftIdeas
     )
-    NavigationBar(containerColor = mainColor) {
+    NavigationBar/*(containerColor = mainColor)*/ {
         val labelSize = 10.sp
         //getting the list of bottom navigation items for our data class
         NavigationBarItem(

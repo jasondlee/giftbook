@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.pushToFront
-import com.steeplesoft.giftbook.secondaryColor
 import com.steeplesoft.giftbook.ui.asyncLoad
 import com.steeplesoft.giftbook.ui.root.NavigationConfig
 import com.steeplesoft.giftbook.ui.root.nav
@@ -49,7 +48,7 @@ fun occasionList(
                         onClick = {
                             nav.pushToFront(NavigationConfig.AddEditOccasion())
                         },
-                        containerColor = secondaryColor,
+//                        containerColor = secondaryColor,
                         contentColor = Color.Black
                     ) {
                         Icon(Icons.Default.Add, contentDescription = "Add")

@@ -6,7 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.steeplesoft.giftbook.secondaryColor
 
 @Composable
 fun ConfirmationDialog(
@@ -18,7 +17,7 @@ fun ConfirmationDialog(
 ) {
     AlertDialog(
         icon = {
-            Icon(icon, contentDescription = "", tint = secondaryColor)
+            Icon(icon, contentDescription = ""/*, tint = secondaryColor*/)
         },
         title = { Text(text = dialogTitle) },
         text = { Text(text = dialogText) },
