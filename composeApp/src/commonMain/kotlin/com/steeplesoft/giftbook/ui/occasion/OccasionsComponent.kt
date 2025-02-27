@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 interface OccasionsComponent {
     val occasions : List<Occasion>
     var requestStatus : MutableValue<Status>
-
 }
 
 class DefaultOccasionsComponent(

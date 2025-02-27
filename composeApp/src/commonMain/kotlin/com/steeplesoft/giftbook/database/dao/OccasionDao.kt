@@ -21,7 +21,7 @@ interface OccasionDao {
 
     @Transaction
     @Query("SELECT * from Occasion where eventDate >= :limit")
-    fun getFutureOccasions(limit : String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
+    fun getFutureOccasions(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
 
     @Insert
     @Transaction
@@ -35,8 +35,8 @@ interface OccasionDao {
     @Transaction
     suspend fun delete(occasion: Occasion)
 
-    @Query("SELECT * FROM Occasion")
-    fun getOccasionRecipients(): List<OccasionWithRecipients>
+    @Query("SELECT * FROM Occasion WHERE id = :id")
+    fun getOccasionRecipients(id: Int): OccasionWithRecipients
 
     @Insert
     @Transaction
