@@ -5,15 +5,14 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
-import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipientCrossRef
+import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.Recipient
-import giftbook.composeapp.generated.resources.Res
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 // https://developer.android.com/kotlin/multiplatform/room
 
@@ -43,6 +41,15 @@ fun getRoomDatabase(): AppDatabase {
 
     loadDemoData(database)
 
+    CoroutineScope(Dispatchers.IO).launch {
+        val fenton = database.giftIdeaDao().getCurrentGiftIdeasForRecip(1)
+        val laura = database.giftIdeaDao().getCurrentGiftIdeasForRecip(2)
+        val laura2 = database.giftIdeaDao().getUsedGiftIdeasForRecip(2)
+        println(fenton)
+        println(laura)
+        println(laura2)
+    }
+
     return database
 }
 
@@ -51,7 +58,7 @@ fun getRoomDatabase(): AppDatabase {
         Occasion::class,
         GiftIdea::class,
         Recipient::class,
-        OccasionRecipientCrossRef::class,
+        OccasionRecipient::class,
 //        OccasionWithRecipients::class
     ],
     version = 1
@@ -62,6 +69,7 @@ fun getRoomDatabase(): AppDatabase {
 abstract class AppDatabase : RoomDatabase() {
     abstract fun occasionDao(): OccasionDao
     abstract fun recipientDao(): RecipientDao
+    abstract fun giftIdeaDao(): GiftIdeaDao
 }
 
 // The Room compiler generates the `actual` implementations.
@@ -76,7 +84,27 @@ fun loadDemoData(database: AppDatabase) {
         mutex.withLock {
             loadRecipients(database)
             loadOccasions(database)
+            loadGiftIdes(database)
         }
+    }
+}
+
+private suspend fun loadGiftIdes(database: AppDatabase) {
+    val dao = database.giftIdeaDao()
+    if (dao.getAll().isEmpty()) {
+        dao.insertAll(
+            GiftIdea(0, "Idea 1", null, 1, null, 10f),
+            GiftIdea(0, "Idea 2", null, 1, null, 15f),
+            GiftIdea(0, "Idea 3", null, 1, null, 25f),
+            GiftIdea(0, "Idea 1", null, 2, 2, 35f, 42f),
+            GiftIdea(0, "Idea 2", null, 2, null, 5f),
+            GiftIdea(0, "Idea 1", null, 5, 4, 5f, 2f),
+            GiftIdea(0, "Idea 2", null, 5, 4, 15f, 18f),
+            GiftIdea(0, "Idea 3", null, 5, null, 20f),
+            GiftIdea(0, "Idea 1", null, 6, null, 10f),
+            GiftIdea(0, "Idea 2", null, 6, 4, 20f,28f),
+            GiftIdea(0, "Idea 3", null, 6, null, 5f),
+        )
     }
 }
 
@@ -85,13 +113,19 @@ private suspend fun loadOccasions(database: AppDatabase) {
     if (dao.getAll().isEmpty()) {
         dao.insertAll(
             Occasion(1, "Christmas 2025", LocalDate(2025,12,25)),
-            Occasion(2, "Birthday", LocalDate(2025,8,1)),
+            Occasion(2, "Laura's Birthday", LocalDate(2025,8,1)),
             Occasion(3, "Christmas 2024", LocalDate(2024,12,25)),
+            Occasion(4, "Valentine's Day", LocalDate(2026,2,14)),
         )
         dao.addRecipients(
-            OccasionRecipientCrossRef(1, 1),
-            OccasionRecipientCrossRef(1, 2),
-            OccasionRecipientCrossRef(2, 2),
+            OccasionRecipient(1, 1, 5, 150f),
+            OccasionRecipient(1, 2, 5, 150f),
+            OccasionRecipient(1, 3, 5, 150f),
+            OccasionRecipient(1, 4, 5, 150f),
+            OccasionRecipient(2, 2, 5, 150f),
+            OccasionRecipient(4, 2, 5, 150f),
+            OccasionRecipient(4, 5, 3, 35f),
+            OccasionRecipient(4, 6, 3, 35f),
         )
     }
 }
@@ -100,42 +134,12 @@ private suspend fun loadRecipients(database: AppDatabase) {
     val dao = database.recipientDao()
     if (dao.getAll().isEmpty()) {
         dao.insertAll(
-            Recipient(1, "Jack"),
-            Recipient(2, "Jill")
+            Recipient(1, "Fenton"),
+            Recipient(2, "Laura"),
+            Recipient(3, "Frank"),
+            Recipient(4, "Joe"),
+            Recipient(5, "Iola Morton"),
+            Recipient(6, "Callie Shaw"),
         )
     }
-}
-
-class PrepopulateRoomCallback() : RoomDatabase.Callback() {
-    @OptIn(ExperimentalResourceApi::class)
-    suspend fun readFile(path: String): String {
-        val readBytes = Res.readBytes(path)
-        return readBytes.decodeToString(0, readBytes.size)
-    }
-
-    override fun onCreate(connection: SQLiteConnection) {
-        super.onCreate(connection)
-
-        CoroutineScope(Dispatchers.IO).launch {
-//            prePopulateUsers()
-        }
-    }
-
-/*
-    private suspend fun prePopulateUsers() {
-        try {
-            val file = readFile("files/dummyData.json")
-            val userList = Json.decodeFromString<List<User>>(file)
-            userList.takeIf { it.isNotEmpty() }?.let { list ->
-                val userDao = db.userDao()
-                list.forEach {
-                    userDao.insertAll(it)
-                }
-                AppLogger.d(TAG, "successfully pre-populated users into database")
-            }
-        } catch (exception: Exception) {
-            AppLogger.e(TAG, exception.message ?: "failed to pre-populate users into database")
-        }
-    }
-*/
 }

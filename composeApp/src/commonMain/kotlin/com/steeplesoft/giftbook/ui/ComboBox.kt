@@ -3,7 +3,6 @@ package com.steeplesoft.giftbook.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
@@ -35,9 +33,8 @@ fun <T> ComboBox(
 ) {
     // Declaring a boolean value to store the expanded state of the Text Field
     var mExpanded by remember { mutableStateOf(false) }
-
     var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
-    var _selected  by remember { mutableStateOf(itemLabel(selected)) }
+    var current by remember { mutableStateOf(itemLabel(selected)) }
 
     // Up Icon when expanded and down icon when collapsed
     val icon = if (mExpanded)
@@ -45,10 +42,10 @@ fun <T> ComboBox(
     else
         Icons.Filled.KeyboardArrowDown
 
-    Column(Modifier.padding(20.dp)) {
+    Column {
         // Create an Outlined Text Field with icon and not expanded
         OutlinedTextField(
-            value = _selected,
+            value = current,
             readOnly = true,
             onValueChange = {},
             modifier = Modifier
@@ -77,7 +74,7 @@ fun <T> ComboBox(
                     text = { Text(text = itemLabel(item)) },
                     onClick = {
                         onChange(item)
-                        _selected = itemLabel(item)
+                        current = itemLabel(item)
                         mExpanded = false
                     }
                 )

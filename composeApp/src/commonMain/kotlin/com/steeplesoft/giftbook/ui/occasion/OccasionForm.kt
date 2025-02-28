@@ -5,6 +5,7 @@ import ch.benlu.composeform.FieldState
 import ch.benlu.composeform.Form
 import ch.benlu.composeform.validators.NotEmptyValidator
 import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.now
 import kotlinx.datetime.LocalDate
 
 class OccasionForm(val occasion: Occasion?) : Form() {
@@ -20,6 +21,6 @@ class OccasionForm(val occasion: Occasion?) : Form() {
         validators = mutableListOf(NotEmptyValidator()),
     )
     val eventDate: FieldState<LocalDate?> = FieldState(
-        state = mutableStateOf(occasion?.eventDate)
+        state = mutableStateOf(occasion?.eventDate ?: LocalDate.now())
     )
 }

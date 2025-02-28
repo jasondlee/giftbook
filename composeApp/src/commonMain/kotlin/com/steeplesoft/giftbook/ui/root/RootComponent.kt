@@ -11,10 +11,10 @@ import com.steeplesoft.giftbook.ui.home.DefaultHomeComponent
 import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.DefaultAddEditOccasionComponent
-import com.steeplesoft.giftbook.ui.occasion.DefaultOccasionComponent
-import com.steeplesoft.giftbook.ui.occasion.DefaultOccasionsComponent
-import com.steeplesoft.giftbook.ui.occasion.OccasionComponent
-import com.steeplesoft.giftbook.ui.occasion.OccasionsComponent
+import com.steeplesoft.giftbook.ui.occasion.DefaultOccasionListComponent
+import com.steeplesoft.giftbook.ui.occasion.DefaultViewOccasionComponent
+import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
+import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
 
 interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
@@ -22,8 +22,8 @@ interface RootComponent {
     sealed interface Child {
         class ClickMe(val component: ClickMeComponent) : Child
         class Home(val component: HomeComponent) : Child
-        class Occasions(val component: OccasionsComponent) : Child
-        class ViewOccasion(val component: OccasionComponent) : Child
+        class Occasions(val component: OccasionListComponent) : Child
+        class ViewOccasion(val component: ViewOccasionComponent) : Child
         class AddEditOccasion(val component: AddEditOccasionComponent) : Child
     }
 }
@@ -53,9 +53,9 @@ class DefaultRootComponent(componentContext: ComponentContext) :
             is NavigationConfig.Home ->
                 RootComponent.Child.Home(DefaultHomeComponent(componentContext))
             is NavigationConfig.Occasions ->
-                RootComponent.Child.Occasions(DefaultOccasionsComponent(componentContext))
+                RootComponent.Child.Occasions(DefaultOccasionListComponent(componentContext))
             is NavigationConfig.ViewOccasion ->
-                RootComponent.Child.ViewOccasion(DefaultOccasionComponent(componentContext, config.occasion))
+                RootComponent.Child.ViewOccasion(DefaultViewOccasionComponent(componentContext, config.occasion))
             is NavigationConfig.AddEditOccasion ->
                 RootComponent.Child.AddEditOccasion(DefaultAddEditOccasionComponent(componentContext, config.occasion))
         }

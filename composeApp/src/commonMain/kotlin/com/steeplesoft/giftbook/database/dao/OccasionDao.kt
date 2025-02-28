@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipientCrossRef
+import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.OccasionWithRecipients
 import com.steeplesoft.giftbook.now
 import kotlinx.datetime.LocalDate
@@ -38,7 +38,10 @@ interface OccasionDao {
     @Query("SELECT * FROM Occasion WHERE id = :id")
     fun getOccasionRecipients(id: Int): OccasionWithRecipients
 
+    @Query("SELECT * FROM Occasion where eventDate >= :limit")
+    fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>
+
     @Insert
     @Transaction
-    suspend fun addRecipients(vararg recips: OccasionRecipientCrossRef)
+    suspend fun addRecipients(vararg recips: OccasionRecipient)
 }

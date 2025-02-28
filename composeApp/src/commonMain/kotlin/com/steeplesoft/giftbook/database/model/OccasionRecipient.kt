@@ -2,6 +2,7 @@ package com.steeplesoft.giftbook.database.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.Relation
 
@@ -11,24 +12,17 @@ import androidx.room.Relation
 
 @Entity(
     primaryKeys = ["occasionId", "recipientId"],
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = Occasion::class,
-//            parentColumns = ["id"],
-//            childColumns = ["occasionId"]
-//        ),
-//        ForeignKey(
-//            entity = Recipient::class,
-//            parentColumns = ["id"],
-//            childColumns = ["recipientId"]
-//        )
-//    ]
+    foreignKeys = [
+        ForeignKey(entity = Occasion::class, parentColumns = ["id"], childColumns = ["occasionId"]),
+        ForeignKey(entity = Recipient::class, parentColumns = ["id"], childColumns = ["recipientId"])
+    ]
 )
-data class OccasionRecipientCrossRef (
-    var occasionId: Int,
-    var recipientId: Int
+data class OccasionRecipient (
+    val occasionId: Int,
+    val recipientId: Int,
+    val targetCount: Int,
+    val targetCost: Float
 )
-
 
 data class OccasionWithRecipients(
     @Embedded
@@ -39,10 +33,10 @@ data class OccasionWithRecipients(
         entity = Recipient::class,
         entityColumn = "id",
         associateBy = Junction(
-            value = OccasionRecipientCrossRef::class,
+            value = OccasionRecipient::class,
             parentColumn = "occasionId",
             entityColumn = "recipientId"
         )
     )
-    val recipient: List<Recipient>
+    val recipients: List<Recipient>
 )

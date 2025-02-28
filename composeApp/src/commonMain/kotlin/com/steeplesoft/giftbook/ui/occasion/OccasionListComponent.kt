@@ -12,14 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
-interface OccasionsComponent {
+interface OccasionListComponent {
     val occasions : List<Occasion>
     var requestStatus : MutableValue<Status>
 }
 
-class DefaultOccasionsComponent(
+class DefaultOccasionListComponent(
     componentContext: ComponentContext
-) : OccasionsComponent,
+) : OccasionListComponent,
     ComponentContext by componentContext {
     override var occasions = emptyList<Occasion>()
     override var requestStatus  = MutableValue(Status.LOADING)
@@ -27,7 +27,6 @@ class DefaultOccasionsComponent(
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
                 occasions = db.occasionDao().getFutureOccasions()
-
                 requestStatus.update { Status.SUCCESS }
             }
         }

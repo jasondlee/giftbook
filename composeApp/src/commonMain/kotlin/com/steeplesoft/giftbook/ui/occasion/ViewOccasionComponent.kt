@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
-interface OccasionComponent {
+interface ViewOccasionComponent {
     val occasion: Occasion
     var requestStatus: MutableValue<Status>
     var recips: OccasionWithRecipients?
@@ -25,10 +25,10 @@ interface OccasionComponent {
     fun delete()
 }
 
-class DefaultOccasionComponent(
+class DefaultViewOccasionComponent(
     componentContext: ComponentContext,
     override val occasion: Occasion
-) : OccasionComponent,
+) : ViewOccasionComponent,
     ComponentContext by componentContext {
     override var recips : OccasionWithRecipients? = null
     override var requestStatus = MutableValue(Status.LOADING)

@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.database.model.Recipient
 import com.steeplesoft.giftbook.ui.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,9 @@ interface HomeComponent {
     val occasion: Occasion?
     val occasions: List<Occasion>
     var requestStatus : MutableValue<Status>
+    var occasionProgress: MutableValue<List<OccasionProgress>>
+
+    fun onOccasionChange(newValue: Occasion)
 }
 
 class DefaultHomeComponent(
@@ -24,12 +28,41 @@ class DefaultHomeComponent(
     override val occasion: Occasion? = null
     override var occasions = emptyList<Occasion>()
     override var requestStatus  = MutableValue(Status.LOADING)
+    override var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            occasions = db.occasionDao().getAll()
+            occasions = db.occasionDao().getFutureOccasions()
 
             requestStatus.update { Status.SUCCESS }
         }
     }
+
+    override fun onOccasionChange(changed: Occasion) {
+        db.getCoroutineScope().launch {
+            val dao = db.recipientDao()
+            val list = dao.getRecipientsForOccasion(changed.id).map {
+                val recipient = dao.getRecipient(it.recipientId)
+                val ideas = db.giftIdeaDao().getCurrentGiftIdeasForRecipAndOccasion(it.recipientId, changed.id)
+                val progress = OccasionProgress(
+                    recipient,
+                    targetCount = it.targetCount,
+                    actualCount = ideas.filter { idea -> idea.occasionId != null }.size,
+                    actualCost = ideas.map { idea -> idea.actualCost ?: 0f }.sum(),
+                    targetCost = it.targetCost
+                )
+                progress
+            }
+
+            occasionProgress.update { list }
+        }
+    }
 }
+
+data class OccasionProgress(
+    val recipient: Recipient,
+    val targetCount: Int,
+    val actualCount: Int,
+    val targetCost: Float,
+    val actualCost: Float
+)
