@@ -1,10 +1,7 @@
-package com.steeplesoft.giftbook.ui.root
+package com.steeplesoft.giftbook.ui.drawer
 
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.steeplesoft.giftbook.database.model.Occasion
 import kotlinx.serialization.Serializable
-
-val nav = StackNavigation<NavigationConfig>()
 
 @Serializable
 sealed interface NavigationConfig {

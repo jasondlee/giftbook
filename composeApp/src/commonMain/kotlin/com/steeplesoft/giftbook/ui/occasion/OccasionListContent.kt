@@ -15,11 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.steeplesoft.giftbook.ui.FAB
-import com.steeplesoft.giftbook.ui.asyncLoad
-import com.steeplesoft.giftbook.ui.root.NavigationConfig
-import com.steeplesoft.giftbook.ui.root.nav
+import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.ui.general.FAB
+import com.steeplesoft.giftbook.ui.general.asyncLoad
+import org.koin.compose.koinInject
 
 @Composable
 fun occasionList(
@@ -27,6 +28,7 @@ fun occasionList(
     modifier: Modifier = Modifier
 ) {
     val status by component.requestStatus.subscribeAsState()
+    val nav : StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     Column(
         modifier = modifier.padding(10.dp),
@@ -39,7 +41,8 @@ fun occasionList(
             LazyColumn(modifier = Modifier.padding(top = 10.dp)) {
                 items(component.occasions) { occasion ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(bottom = 10.dp)
                             .clickable {
                                 nav.bringToFront(NavigationConfig.ViewOccasion(occasion))
                             }

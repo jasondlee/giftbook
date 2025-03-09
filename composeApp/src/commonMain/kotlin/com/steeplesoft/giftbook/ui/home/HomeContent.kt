@@ -1,5 +1,6 @@
 package com.steeplesoft.giftbook.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,10 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.ComboBox
-import com.steeplesoft.giftbook.ui.FAB
-import com.steeplesoft.giftbook.ui.asyncLoad
+import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.ui.general.ComboBox
+import com.steeplesoft.giftbook.ui.general.FAB
+import com.steeplesoft.giftbook.ui.general.asyncLoad
+import org.koin.compose.koinInject
 
 @Composable
 fun homeContent(
@@ -33,6 +38,7 @@ fun homeContent(
 ) {
     val status by component.requestStatus.subscribeAsState()
     val occasionProgress by component.occasionProgress.subscribeAsState()
+    val nav : StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     Column(
         modifier = modifier.padding(10.dp),
@@ -40,7 +46,16 @@ fun homeContent(
     ) {
         asyncLoad(status) {
             val optionItems = component.occasions
-            var current: Occasion? by remember { mutableStateOf(null) }
+            var current: Occasion? by remember { mutableStateOf(
+                if (component.occasions.isNotEmpty())
+                    component.occasions.first()
+                else
+                    null
+            ) }
+
+            current?.let {
+                component.onOccasionChange(it)
+            }
 
             ComboBox(label = "Current Occasion",
                 selected = current,
@@ -65,6 +80,9 @@ fun homeContent(
                     ) {
                         Column(
                             modifier = Modifier.padding(15.dp)
+                                .clickable {
+                                    nav.bringToFront(NavigationConfig.ViewOccasionRecip(it.recipient.id, it.occasionId))
+                                }
                         ) {
                             Text(it.recipient.name, fontSize = 18.sp)
                             OccasionProgressRow("Number", it.targetCount.toFloat(), it.actualCount.toFloat())

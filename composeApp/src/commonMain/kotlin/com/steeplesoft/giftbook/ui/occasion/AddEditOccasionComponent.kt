@@ -1,15 +1,17 @@
 package com.steeplesoft.giftbook.ui.occasion
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.pop
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.root.NavigationConfig
-import com.steeplesoft.giftbook.ui.root.nav
+import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 interface AddEditOccasionComponent {
     val occasion: Occasion?
@@ -21,7 +23,10 @@ class DefaultAddEditOccasionComponent(
     componentContext: ComponentContext,
     override val occasion: Occasion?
 ) : AddEditOccasionComponent,
-    ComponentContext by componentContext {
+    ComponentContext by componentContext,
+    KoinComponent {
+    private val nav : StackNavigation<NavigationConfig> by inject()
+
     override val form = OccasionForm(occasion)
 
     override fun save() {

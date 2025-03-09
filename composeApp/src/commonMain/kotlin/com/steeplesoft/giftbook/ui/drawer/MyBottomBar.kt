@@ -8,14 +8,17 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
-import com.steeplesoft.giftbook.ui.root.nav
+import org.koin.compose.koinInject
 
 @Composable
 fun BottomNavBar(
     onNavigate: (NavigationItem) -> Unit
 ) {
+    val nav : StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
+
     val items = listOf(
         NavigationItem.Home,
         NavigationItem.Occasions,

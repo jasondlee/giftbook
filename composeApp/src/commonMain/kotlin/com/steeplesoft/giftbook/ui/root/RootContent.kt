@@ -12,21 +12,26 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
-import com.steeplesoft.giftbook.ui.clickme.clickMe
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.MyTopAppBar
+import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.homeContent
 import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
+import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
 fun RootContent(
     component: RootComponent,
     modifier: Modifier = Modifier
 ) {
+    val nav : StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -56,11 +61,11 @@ fun RootContent(
             ) {
                 val childModifier = Modifier.fillMaxSize()
                 when (val child = it.instance) {
-                    is RootComponent.Child.ClickMe -> clickMe(child.component, childModifier)
                     is RootComponent.Child.Home -> homeContent(child.component, childModifier)
                     is RootComponent.Child.Occasions -> occasionList(child.component, childModifier)
                     is RootComponent.Child.ViewOccasion -> viewOccasion(child.component, childModifier)
                     is RootComponent.Child.AddEditOccasion -> addEditOccasion(child.component, childModifier)
+                    is RootComponent.Child.ViewOccasionRecip -> viewOccasionRecip(child.component, childModifier)
                 }
             }
         }

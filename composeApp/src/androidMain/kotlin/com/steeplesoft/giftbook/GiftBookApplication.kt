@@ -1,6 +1,8 @@
 package com.steeplesoft.giftbook
 
 import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 
 class GiftBookApplication : Application() {
     override fun onCreate() {
@@ -8,15 +10,9 @@ class GiftBookApplication : Application() {
 
         AppContext.apply { set(applicationContext) }
 
-/*
-        startKoin {
-            // Log Koin into Android logger
+        initKoin {
             androidLogger()
-            // Reference Android context
-            androidContext(this@MyApplication)
-
-            modules(appModule, provideRepositoryModule, provideDataSourceModule)
+            androidContext(this@GiftBookApplication)
         }
-*/
     }
 }

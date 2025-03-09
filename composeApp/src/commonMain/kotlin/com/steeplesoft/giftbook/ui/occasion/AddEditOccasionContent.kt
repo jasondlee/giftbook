@@ -9,8 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ch.benlu.composeform.fields.DateField
-import ch.benlu.composeform.fields.TextField
+import com.steeplesoft.kmpform.fields.DateField
+import com.steeplesoft.kmpform.fields.TextField
 
 @Composable
 fun addEditOccasion(
