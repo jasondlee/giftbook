@@ -6,11 +6,12 @@ import com.arkivanov.decompose.value.update
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.ui.Status
+import com.steeplesoft.giftbook.ui.general.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 interface HomeComponent {
     val occasion: Occasion?
@@ -46,6 +47,7 @@ class DefaultHomeComponent(
                 val ideas = db.giftIdeaDao().getCurrentGiftIdeasForRecipAndOccasion(it.recipientId, changed.id)
                 val progress = OccasionProgress(
                     recipient,
+                    changed.id,
                     targetCount = it.targetCount,
                     actualCount = ideas.filter { idea -> idea.occasionId != null }.size,
                     actualCost = ideas.map { idea -> idea.actualCost ?: 0f }.sum(),
@@ -59,8 +61,10 @@ class DefaultHomeComponent(
     }
 }
 
+@Serializable
 data class OccasionProgress(
     val recipient: Recipient,
+    val occasionId: Int,
     val targetCount: Int,
     val actualCount: Int,
     val targetCost: Float,

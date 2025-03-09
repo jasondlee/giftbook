@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.ui
+package com.steeplesoft.giftbook.ui.general
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

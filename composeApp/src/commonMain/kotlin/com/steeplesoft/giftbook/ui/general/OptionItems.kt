@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.ui
+package com.steeplesoft.giftbook.ui.general
 
 data class OptionItems<T> (
     val label: String,

@@ -15,21 +15,12 @@ import giftbook.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun MyTopAppBar(
-    onNavIconClick: () -> Unit
-) {
+fun MyTopAppBar(onNavIconClick: () -> Unit) {
     TopAppBar(
         title = { Text(stringResource(Res.string.app_name)) },
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    onNavIconClick()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Open Navigation Drawer"
-                )
+            IconButton(onClick = { onNavIconClick() }) {
+                Icon(imageVector = Icons.Filled.Menu, contentDescription = "Open Drawer")
             }
         }
     )

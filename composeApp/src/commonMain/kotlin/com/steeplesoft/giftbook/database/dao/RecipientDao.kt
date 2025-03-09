@@ -29,6 +29,9 @@ interface RecipientDao {
     @Delete
     suspend fun delete(recipient: Recipient)
 
+    @Query("SELECT * FROM OccasionRecipient WHERE occasionId = :occasionId and recipientId = :recipientId")
+    fun getRecipientForOccasion(occasionId: Int, recipientId: Int): OccasionRecipient
+
     @Query("SELECT * FROM OccasionRecipient WHERE occasionId = :id")
     fun getRecipientsForOccasion(id: Int): List<OccasionRecipient>
 

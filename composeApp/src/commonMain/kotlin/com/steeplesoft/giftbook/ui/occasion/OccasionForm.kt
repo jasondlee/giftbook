@@ -1,11 +1,11 @@
 package com.steeplesoft.giftbook.ui.occasion
 
 import androidx.compose.runtime.mutableStateOf
-import ch.benlu.composeform.FieldState
-import ch.benlu.composeform.Form
-import ch.benlu.composeform.validators.NotEmptyValidator
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.now
+import com.steeplesoft.kmpform.FieldState
+import com.steeplesoft.kmpform.Form
+import com.steeplesoft.kmpform.validators.NotEmptyValidator
 import kotlinx.datetime.LocalDate
 
 class OccasionForm(val occasion: Occasion?) : Form() {

@@ -6,7 +6,7 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.Status
+import com.steeplesoft.giftbook.ui.general.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

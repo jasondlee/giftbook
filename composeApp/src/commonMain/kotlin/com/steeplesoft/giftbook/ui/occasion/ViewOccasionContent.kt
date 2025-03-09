@@ -5,8 +5,6 @@ package com.steeplesoft.giftbook.ui.occasion
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +19,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.steeplesoft.giftbook.ui.AddEditHeader
-import com.steeplesoft.giftbook.ui.ConfirmationDialog
-import com.steeplesoft.giftbook.ui.FAB
-import com.steeplesoft.giftbook.ui.asyncLoad
+import com.steeplesoft.giftbook.ui.general.AddEditHeader
+import com.steeplesoft.giftbook.ui.general.ConfirmationDialog
+import com.steeplesoft.giftbook.ui.general.FAB
+import com.steeplesoft.giftbook.ui.general.asyncLoad
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 
@@ -45,8 +43,7 @@ fun viewOccasion(
                 component.delete()
             },
             dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to delete ${occasion.name}?",
-            icon = Icons.Default.QuestionMark
+            dialogText = "Are you sure you want to delete ${occasion.name}?"
         )
     }
     asyncLoad(status) {
@@ -92,7 +89,6 @@ fun viewOccasion(
             }
         }
     }
-
 }
 
 
