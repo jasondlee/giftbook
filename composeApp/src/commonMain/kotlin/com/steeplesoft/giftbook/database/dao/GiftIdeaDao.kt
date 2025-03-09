@@ -9,14 +9,14 @@ import com.steeplesoft.giftbook.database.model.GiftIdea
 @Dao
 interface GiftIdeaDao {
     @Query("SELECT * from GiftIdea")
-    fun getAll(): List<GiftIdea>
+    suspend fun getAll(): List<GiftIdea>
 
     @Insert
     @Transaction
     suspend fun insertAll(vararg idea: GiftIdea)
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NULL")
-    fun getCurrentGiftIdeasForRecip(recipId: Int): List<GiftIdea>
+    suspend fun getCurrentGiftIdeasForRecip(recipId: Int): List<GiftIdea>
 
     @Query("""
         SELECT g.*
@@ -24,8 +24,8 @@ interface GiftIdeaDao {
         WHERE g.recipientId = :recipId
           AND (g.occasionId IS NULL OR g.occasionId = :occasionId)
     """)
-    fun getCurrentGiftIdeasForRecipAndOccasion(recipId: Int, occasionId: Int): List<GiftIdea>
+    suspend fun getCurrentGiftIdeasForRecipAndOccasion(recipId: Int, occasionId: Int): List<GiftIdea>
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NOT NULL")
-    fun getUsedGiftIdeasForRecip(recipId: Int): List<GiftIdea>
+    suspend fun getUsedGiftIdeasForRecip(recipId: Int): List<GiftIdea>
 }

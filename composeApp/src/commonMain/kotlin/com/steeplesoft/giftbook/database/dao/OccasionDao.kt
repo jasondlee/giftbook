@@ -17,10 +17,10 @@ import kotlinx.datetime.format
 interface OccasionDao {
     @Transaction
     @Query("SELECT * FROM Occasion")
-    fun getAll(): List<Occasion>
+    suspend fun getAll(): List<Occasion>
 
     @Query("SELECT * FROM Occasion WHERE id = :occasionId")
-    fun getOccasion(occasionId: Int): Occasion
+    suspend fun getOccasion(occasionId: Int): Occasion
 
     @Insert
     @Transaction
@@ -28,7 +28,7 @@ interface OccasionDao {
 
     @Transaction
     @Query("SELECT * from Occasion where eventDate >= :limit")
-    fun getFutureOccasions(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
+    suspend fun getFutureOccasions(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
 
     @Insert
     @Transaction
@@ -43,8 +43,8 @@ interface OccasionDao {
     suspend fun delete(occasion: Occasion)
 
     @Query("SELECT * FROM Occasion WHERE id = :id")
-    fun getOccasionRecipients(id: Int): OccasionWithRecipients
+    suspend fun getOccasionRecipients(id: Int): OccasionWithRecipients
 
     @Query("SELECT * FROM Occasion where eventDate >= :limit")
-    fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>
+    suspend fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>
 }

@@ -54,52 +54,64 @@ kotlin {
 
             implementation(libs.koin.android)
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.kotlinx.datetime)
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.kotlinx.datetime)
 
-            // Decompose
-            implementation(libs.decompose)
-            implementation(libs.decompose.extensions)
-            // Decompose
+                // Decompose
+                implementation(libs.decompose)
+                implementation(libs.decompose.extensions)
+                // Decompose
 
-            // Room
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
-            // Room
+                // Room
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.sqlite.bundled)
+                // Room
 
-            // Koin
-            implementation(project.dependencies.platform(libs.koin.bom))
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            // Koin
+                // Koin
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                // Koin
 
-            implementation(libs.ktor.serialization.json)
+                implementation(libs.ktor.serialization.json)
 
-            implementation(libs.kmp.form)
+                implementation(libs.kmp.form)
+            }
         }
-        iosMain.dependencies {
-            // Decompose
-            api(libs.decompose)
-            api(libs.decompose.extensions)
-            api(libs.essenty.lifecycle)
-            api(libs.essenty.statekeeper)
-            // Decompose
+//        iosMain.dependencies {
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                // Decompose
+                api(libs.decompose)
+                api(libs.decompose.extensions)
+                api(libs.essenty.lifecycle)
+                api(libs.essenty.statekeeper)
+                // Decompose
+            }
         }
     }
 
     // KSP Common sourceSet
-    sourceSets.named("commonMain").configure {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
+//    sourceSets.named("commonMain").configure {
+//        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+//    }
 }
 
 android {
@@ -129,13 +141,6 @@ android {
     }
 }
 
-// Trigger Common Metadata Generation from Native tasks
-//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
-
 dependencies {
     debugImplementation(compose.uiTooling)
 
@@ -143,7 +148,7 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+//    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
 }
 
 room {
