@@ -7,7 +7,7 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
-import com.steeplesoft.giftbook.database.db
+import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionWithRecipients
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
@@ -34,13 +34,15 @@ class DefaultViewOccasionComponent(
     ComponentContext by componentContext,
     KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
+    private val occasionDao : OccasionDao by inject()
+
     override var recips : OccasionWithRecipients? = null
     override var requestStatus = MutableValue(Status.LOADING)
 
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
-                recips = db.occasionDao().getOccasionRecipients(occasion.id)
+                recips = occasionDao.getOccasionRecipients(occasion.id)
 
                 requestStatus.update { Status.SUCCESS }
             }
@@ -53,7 +55,7 @@ class DefaultViewOccasionComponent(
 
     override fun delete() {
         CoroutineScope(Dispatchers.Main).launch {
-            db.occasionDao().delete(occasion)
+            occasionDao.delete(occasion)
 
             nav.pop()
         }

@@ -7,7 +7,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
-import com.steeplesoft.giftbook.database.db
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.DefaultHomeComponent
 import com.steeplesoft.giftbook.ui.home.HomeComponent
@@ -39,10 +38,6 @@ class DefaultRootComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext,
     KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
-
-    init {
-        db.occasionDao()
-    }
 
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = nav,

@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.pop
-import com.steeplesoft.giftbook.database.db
+import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +26,7 @@ class DefaultAddEditOccasionComponent(
     ComponentContext by componentContext,
     KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
+    private val occasionDao : OccasionDao by inject()
 
     override val form = OccasionForm(occasion)
 
@@ -38,9 +39,9 @@ class DefaultAddEditOccasionComponent(
             )
 
             if (occasion == null) {
-                db.occasionDao().insertAll(newOccasion)
+                occasionDao.insertAll(newOccasion)
             } else {
-                db.occasionDao().update(newOccasion)
+                occasionDao.update(newOccasion)
             }
 
             nav.pop()

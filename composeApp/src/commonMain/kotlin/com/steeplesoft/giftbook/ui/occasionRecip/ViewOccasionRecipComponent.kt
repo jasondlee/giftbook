@@ -6,7 +6,8 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
-import com.steeplesoft.giftbook.database.db
+import com.steeplesoft.giftbook.database.dao.OccasionDao
+import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.Recipient
@@ -37,6 +38,9 @@ class DefaultViewOccasionRecipient(
     ComponentContext by componentContext,
     KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
+    private val occasionDao : OccasionDao by inject()
+    private val recipientDao : RecipientDao by inject()
+
 
     override lateinit var occasionRecip: OccasionRecipient
     override lateinit var recip: Recipient
@@ -46,9 +50,9 @@ class DefaultViewOccasionRecipient(
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
-                occasionRecip = db.recipientDao().getRecipientForOccasion(occasionId, recipId)
-                recip = db.recipientDao().getRecipient(recipId)
-                occasion = db.occasionDao().getOccasion(occasionId)
+                occasionRecip = recipientDao.getRecipientForOccasion(occasionId, recipId)
+                recip = recipientDao.getRecipient(recipId)
+                occasion = occasionDao.getOccasion(occasionId)
                 requestStatus.update { Status.SUCCESS }
             }
         }
