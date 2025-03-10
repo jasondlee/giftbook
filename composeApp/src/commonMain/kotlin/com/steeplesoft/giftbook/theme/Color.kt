@@ -1,4 +1,5 @@
-package com.example.compose
+package com.steeplesoft.giftbook.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF415F91)

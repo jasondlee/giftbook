@@ -1,4 +1,4 @@
-package com.example.ui.theme
+package com.steeplesoft.giftbook.theme
 
 import androidx.compose.material3.Typography
 
