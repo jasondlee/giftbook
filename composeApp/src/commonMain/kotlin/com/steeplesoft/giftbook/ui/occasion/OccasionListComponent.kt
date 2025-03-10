@@ -7,6 +7,7 @@ import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.general.Status
+import com.steeplesoft.giftbook.ui.home.OccasionProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -15,7 +16,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 interface OccasionListComponent {
-    val occasions : List<Occasion>
+    val occasions : MutableValue<List<Occasion>>
     var requestStatus : MutableValue<Status>
 }
 
@@ -26,12 +27,15 @@ class DefaultOccasionListComponent(
     KoinComponent {
     private val occasionDao : OccasionDao by inject()
 
-    override var occasions = emptyList<Occasion>()
+    override var occasions: MutableValue<List<Occasion>> = MutableValue(mutableListOf())
+
     override var requestStatus  = MutableValue(Status.LOADING)
+
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
-                occasions = occasionDao.getFutureOccasions()
+                val list = occasionDao.getFutureOccasions()
+                occasions.update { list }
                 requestStatus.update { Status.SUCCESS }
             }
         }

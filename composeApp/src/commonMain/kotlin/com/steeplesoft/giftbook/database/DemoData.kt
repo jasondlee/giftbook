@@ -45,12 +45,14 @@ private suspend fun loadGiftIdes(database: AppDatabase) {
 private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
-        dao.insertAll(
+        listOf(
             Occasion(1, "Christmas 2025", LocalDate(2025,12,25)),
             Occasion(2, "Laura's Birthday", LocalDate(2025,8,1)),
             Occasion(3, "Christmas 2024", LocalDate(2024,12,25)),
             Occasion(4, "Valentine's Day", LocalDate(2026,2,14)),
-        )
+        ).forEach {
+            dao.insert(it)
+        }
         dao.addRecipients(
             OccasionRecipient(1, 1, 5, 150f),
             OccasionRecipient(1, 2, 5, 150f),

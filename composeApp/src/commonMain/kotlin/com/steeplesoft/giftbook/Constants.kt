@@ -5,7 +5,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-const val TAG = "GIFTBOOK"
+internal const val TAG = "GIFTBOOK"
 
-fun LocalDate.Companion.now() = Clock.System.now()
-    .toLocalDateTime(TimeZone.currentSystemDefault()).date
+fun LocalDate.Companion.now() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date

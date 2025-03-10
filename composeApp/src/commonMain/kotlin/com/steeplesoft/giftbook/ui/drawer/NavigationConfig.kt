@@ -18,5 +18,5 @@ sealed interface NavigationConfig {
     data class AddEditOccasion(val occasion: Occasion? = null) : NavigationConfig
 
     @Serializable
-    data class ViewOccasionRecip(val recipId: Int, val occasionId: Int) : NavigationConfig
+    data class ViewOccasionRecip(val recipId: Long, val occasionId: Long) : NavigationConfig
 }

@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Recipient(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = "name")
     var name: String

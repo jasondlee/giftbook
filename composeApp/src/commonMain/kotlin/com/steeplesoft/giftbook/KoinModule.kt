@@ -26,10 +26,7 @@ expect val platformModule : Module
 
 fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
-        modules(
-            appModule,
-            platformModule
-        )
+        modules(appModule, platformModule)
         config?.invoke(this)
     }
 }

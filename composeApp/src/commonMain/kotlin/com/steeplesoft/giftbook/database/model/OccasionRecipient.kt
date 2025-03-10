@@ -18,8 +18,8 @@ import androidx.room.Relation
     ]
 )
 data class OccasionRecipient (
-    val occasionId: Int,
-    val recipientId: Int,
+    val occasionId: Long,
+    val recipientId: Long,
     val targetCount: Int,
     val targetCost: Float
 )

@@ -20,7 +20,7 @@ interface OccasionDao {
     suspend fun getAll(): List<Occasion>
 
     @Query("SELECT * FROM Occasion WHERE id = :occasionId")
-    suspend fun getOccasion(occasionId: Int): Occasion
+    suspend fun getOccasion(occasionId: Long): Occasion
 
     @Insert
     @Transaction
@@ -32,7 +32,7 @@ interface OccasionDao {
 
     @Insert
     @Transaction
-    suspend fun insertAll(vararg occasion: Occasion)
+    suspend fun insert(occasion: Occasion) : Long
 
     @Update
     @Transaction
@@ -42,8 +42,11 @@ interface OccasionDao {
     @Transaction
     suspend fun delete(occasion: Occasion)
 
-    @Query("SELECT * FROM Occasion WHERE id = :id")
-    suspend fun getOccasionRecipients(id: Int): OccasionWithRecipients
+    @Query("""SELECT o.*, r.*
+        FROM Occasion o LEFT OUTER JOIN OccasionRecipient occRecip on o.id = occRecip.occasionId,
+             Recipient r
+        WHERE o.id = :id and occRecip.recipientId = r.id""")
+    suspend fun getOccasionRecipients(id: Long): OccasionWithRecipients
 
     @Query("SELECT * FROM Occasion where eventDate >= :limit")
     suspend fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>

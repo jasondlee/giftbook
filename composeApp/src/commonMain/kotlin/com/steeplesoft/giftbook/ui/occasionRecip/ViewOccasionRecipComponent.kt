@@ -32,8 +32,8 @@ interface ViewOccasionRecipient {
 
 class DefaultViewOccasionRecipient(
     componentContext: ComponentContext,
-    private val recipId: Int,
-    private val occasionId: Int
+    private val recipId: Long,
+    private val occasionId: Long
 ) : ViewOccasionRecipient,
     ComponentContext by componentContext,
     KoinComponent {

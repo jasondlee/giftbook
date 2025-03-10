@@ -19,9 +19,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.ConfirmationDialog
-import com.steeplesoft.giftbook.ui.general.FAB
 import com.steeplesoft.giftbook.ui.general.asyncLoad
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -47,7 +47,7 @@ fun viewOccasion(
         )
     }
     asyncLoad(status) {
-        FAB(
+        ActionButton(
             onClick = {
                 //
             }
@@ -82,11 +82,10 @@ fun viewOccasion(
                     fontWeight = FontWeight.Bold, fontSize = 24.sp
                 )
             }
-            component.recips?.let { recips ->
-                items(recips.recipients) { recip ->
-                    Text(text = recip.name)
-                }
+            items(component.recips) { recip ->
+                Text(text = recip.name)
             }
+
         }
     }
 }

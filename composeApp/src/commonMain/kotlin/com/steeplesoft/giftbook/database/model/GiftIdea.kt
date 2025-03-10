@@ -11,15 +11,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GiftIdea(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Long,
 
     @ColumnInfo(name = "title")
     var title: String,
 
     @ColumnInfo(name = "notes")
     var notes: String? = null,
-    var recipientId: Int,
-    var occasionId: Int? = null,
+    var recipientId: Long,
+    var occasionId: Long? = null,
     val estimatedCost: Float,
     val actualCost: Float? = null,
 )

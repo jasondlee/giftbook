@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FAB(
+fun ActionButton(
     icon: ImageVector = Icons.Filled.Add,
     onClick: () -> Unit
 ) {
@@ -23,9 +23,7 @@ fun FAB(
         modifier = Modifier.fillMaxSize().padding(20.dp),
     ) {
         Row(modifier = Modifier.align(Alignment.BottomEnd)) {
-            FloatingActionButton(
-                onClick = onClick,
-            ) {
+            FloatingActionButton(onClick = onClick) {
                 Icon(icon, contentDescription = "Floating action button")
             }
         }

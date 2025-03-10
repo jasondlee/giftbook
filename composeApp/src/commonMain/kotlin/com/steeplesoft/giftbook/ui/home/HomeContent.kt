@@ -26,8 +26,8 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.ComboBox
-import com.steeplesoft.giftbook.ui.general.FAB
 import com.steeplesoft.giftbook.ui.general.asyncLoad
 import org.koin.compose.koinInject
 
@@ -91,7 +91,7 @@ fun homeContent(
                     }
                 }
             }
-            FAB(
+            ActionButton(
                 onClick = {
 
                 }

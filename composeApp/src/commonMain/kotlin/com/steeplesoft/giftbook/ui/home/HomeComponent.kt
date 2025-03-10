@@ -72,7 +72,7 @@ class DefaultHomeComponent(
 @Serializable
 data class OccasionProgress(
     val recipient: Recipient,
-    val occasionId: Int,
+    val occasionId: Long,
     val targetCount: Int,
     val actualCount: Int,
     val targetCost: Float,

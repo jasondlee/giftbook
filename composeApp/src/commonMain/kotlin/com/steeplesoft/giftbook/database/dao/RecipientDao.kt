@@ -14,10 +14,10 @@ interface RecipientDao {
     suspend fun getAll(): List<Recipient>
 
     @Query("SELECT * FROM recipient WHERE id = :id")
-    suspend fun getRecipient(id: Int): Recipient
+    suspend fun getRecipient(id: Long): Recipient
 
     @Query("SELECT * FROM Recipient WHERE id IN (:ids)")
-    suspend fun loadAllByIds(ids: IntArray): List<Recipient>
+    suspend fun loadAllByIds(ids: LongArray): List<Recipient>
 
     @Query("SELECT * FROM Recipient WHERE name LIKE :name LIMIT 1")
     suspend fun findByName(name: String): Recipient
@@ -30,9 +30,14 @@ interface RecipientDao {
     suspend fun delete(recipient: Recipient)
 
     @Query("SELECT * FROM OccasionRecipient WHERE occasionId = :occasionId and recipientId = :recipientId")
-    suspend fun getRecipientForOccasion(occasionId: Int, recipientId: Int): OccasionRecipient
+    suspend fun getRecipientForOccasion(occasionId: Long, recipientId: Long): OccasionRecipient
 
     @Query("SELECT * FROM OccasionRecipient WHERE occasionId = :id")
-    suspend fun getRecipientsForOccasion(id: Int): List<OccasionRecipient>
+    suspend fun getRecipientsForOccasion(id: Long): List<OccasionRecipient>
 
+    @Query("""SELECT r.* FROM Recipient r, OccasionRecipient jt, Occasion o
+        WHERE occasionId = :id
+          AND o.id = occasionId
+          AND r.id = recipientId""")
+    suspend fun getRecipientListForOccasion(id: Long): List<Recipient>
 }
