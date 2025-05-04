@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,8 +26,8 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
-import com.steeplesoft.giftbook.ui.general.ComboBox
-import com.steeplesoft.giftbook.ui.general.asyncLoad
+import com.steeplesoft.kmpform.components.ComboBox
+import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
@@ -45,26 +44,15 @@ fun homeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         asyncLoad(status) {
-            val optionItems = component.occasions
-            var current: Occasion? by remember { mutableStateOf(
-                if (component.occasions.isNotEmpty())
-                    component.occasions.first()
-                else
-                    null
-            ) }
-
-            current?.let {
-                component.onOccasionChange(it)
-            }
+            val occasions by component.occasions.subscribeAsState()
+            val current: Occasion? by remember { mutableStateOf(component.occasion) }
 
             ComboBox(label = "Current Occasion",
                 selected = current,
                 onChange = { newValue ->
-                    newValue?.let {
-                        component.onOccasionChange(newValue)
-                    }
+                    component.onOccasionChange(newValue!!)
                 },
-                items = optionItems,
+                items = occasions,
                 itemLabel = { item -> item?.name ?: "--" }
             )
 
@@ -85,7 +73,7 @@ fun homeContent(
                                 }
                         ) {
                             Text(it.recipient.name, fontSize = 18.sp)
-                            OccasionProgressRow("Number", it.targetCount.toFloat(), it.actualCount.toFloat())
+                            OccasionProgressRow("Number", it.targetCount, it.actualCount)
                             OccasionProgressRow("Cost", it.targetCost, it.actualCost)
                         }
                     }
@@ -104,8 +92,8 @@ fun homeContent(
 @Composable
 fun OccasionProgressRow(
     label: String,
-    targetNumber: Float,
-    actualNumber: Float
+    targetNumber: Int,
+    actualNumber: Int
 ) {
     Row {
         Column(Modifier.weight(0.2f)) {
@@ -113,7 +101,7 @@ fun OccasionProgressRow(
         }
         Column(modifier = Modifier.align(Alignment.CenterVertically).weight(0.8f)) {
             LinearProgressIndicator(
-                progress = { actualNumber / targetNumber },
+                progress = { (actualNumber / targetNumber).toFloat() },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

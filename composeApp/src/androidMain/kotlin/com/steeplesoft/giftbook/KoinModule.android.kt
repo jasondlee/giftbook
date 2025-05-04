@@ -10,8 +10,7 @@ actual val platformModule = module {
     single<RoomDatabase.Builder<AppDatabase>> {
         val context = AppContext.get()
         Room.databaseBuilder<AppDatabase>(
-            context,
-            context.getDatabasePath(dbFileName).absolutePath
+            context, context.getDatabasePath(dbFileName).absolutePath
         )
     }
 }

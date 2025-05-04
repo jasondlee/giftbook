@@ -8,7 +8,6 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipient
-import com.steeplesoft.giftbook.database.model.OccasionWithRecipients
 import com.steeplesoft.giftbook.now
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -42,12 +41,12 @@ interface OccasionDao {
     @Transaction
     suspend fun delete(occasion: Occasion)
 
-    @Query("""SELECT o.*, r.*
-        FROM Occasion o LEFT OUTER JOIN OccasionRecipient occRecip on o.id = occRecip.occasionId,
-             Recipient r
-        WHERE o.id = :id and occRecip.recipientId = r.id""")
-    suspend fun getOccasionRecipients(id: Long): OccasionWithRecipients
+//    @Query("""SELECT o.*, r.*
+//        FROM Occasion o LEFT OUTER JOIN OccasionRecipient occRecip on o.id = occRecip.occasionId,
+//             Recipient r
+//        WHERE o.id = :id and occRecip.recipientId = r.id""")
+//    suspend fun getOccasionRecipients(id: Long): OccasionWithRecipients
 
-    @Query("SELECT * FROM Occasion where eventDate >= :limit")
-    suspend fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>
+//    @Query("SELECT * FROM Occasion where eventDate >= :limit")
+//    suspend fun getOccasionsAndRecipients(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<OccasionWithRecipients>
 }

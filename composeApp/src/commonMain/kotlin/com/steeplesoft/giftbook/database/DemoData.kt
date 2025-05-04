@@ -26,19 +26,19 @@ fun loadDemoData(database: AppDatabase) {
 private suspend fun loadGiftIdes(database: AppDatabase) {
     val dao = database.giftIdeaDao()
     if (dao.getAll().isEmpty()) {
-        dao.insertAll(
-            GiftIdea(0, "Idea 1", null, 1, null, 10f),
-            GiftIdea(0, "Idea 2", null, 1, null, 15f),
-            GiftIdea(0, "Idea 3", null, 1, null, 25f),
-            GiftIdea(0, "Idea 1", null, 2, 2, 35f, 42f),
-            GiftIdea(0, "Idea 2", null, 2, null, 5f),
-            GiftIdea(0, "Idea 1", null, 5, 4, 5f, 2f),
-            GiftIdea(0, "Idea 2", null, 5, 4, 15f, 18f),
-            GiftIdea(0, "Idea 3", null, 5, null, 20f),
-            GiftIdea(0, "Idea 1", null, 6, null, 10f),
-            GiftIdea(0, "Idea 2", null, 6, 4, 20f,28f),
-            GiftIdea(0, "Idea 3", null, 6, null, 5f),
-        )
+        listOf(
+            GiftIdea(0, "Idea 1", null, 1, null, 10),
+            GiftIdea(0, "Idea 2", null, 1, null, 15),
+            GiftIdea(0, "Idea 3", null, 1, null, 25),
+            GiftIdea(0, "Idea 1", null, 2, 2, 35, 42),
+            GiftIdea(0, "Idea 2", null, 2, null, 5),
+            GiftIdea(0, "Idea 1", null, 5, 4, 5, 2),
+            GiftIdea(0, "Idea 2", null, 5, 4, 15, 18),
+            GiftIdea(0, "Idea 3", null, 5, null, 20),
+            GiftIdea(0, "Idea 1", null, 6, null, 10),
+            GiftIdea(0, "Idea 2", null, 6, 4, 20,28),
+            GiftIdea(0, "Idea 3", null, 6, null, 5),
+        ).forEach { dao.insert(it) }
     }
 }
 
@@ -54,14 +54,14 @@ private suspend fun loadOccasions(database: AppDatabase) {
             dao.insert(it)
         }
         dao.addRecipients(
-            OccasionRecipient(1, 1, 5, 150f),
-            OccasionRecipient(1, 2, 5, 150f),
-            OccasionRecipient(1, 3, 5, 150f),
-            OccasionRecipient(1, 4, 5, 150f),
-            OccasionRecipient(2, 2, 5, 150f),
-            OccasionRecipient(4, 2, 5, 150f),
-            OccasionRecipient(4, 5, 3, 35f),
-            OccasionRecipient(4, 6, 3, 35f),
+            OccasionRecipient(1, 1, 5, 150),
+            OccasionRecipient(1, 2, 5, 150),
+            OccasionRecipient(1, 3, 5, 150),
+            OccasionRecipient(1, 4, 5, 150),
+            OccasionRecipient(2, 2, 5, 150),
+            OccasionRecipient(4, 2, 5, 150),
+            OccasionRecipient(4, 5, 3, 35),
+            OccasionRecipient(4, 6, 3, 35),
         )
     }
 }

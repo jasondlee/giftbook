@@ -20,8 +20,9 @@ data class GiftIdea(
     var notes: String? = null,
     var recipientId: Long,
     var occasionId: Long? = null,
-    val estimatedCost: Float,
-    val actualCost: Float? = null,
+    var estimatedCost: Int,
+    @ColumnInfo
+    var actualCost: Int? = null,
 )
 
 data class RecipientsWithIdeas(

@@ -17,7 +17,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
-import com.steeplesoft.giftbook.ui.general.asyncLoad
+import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable

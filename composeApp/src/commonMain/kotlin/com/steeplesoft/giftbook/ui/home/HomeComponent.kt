@@ -8,7 +8,7 @@ import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.ui.general.Status
+import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -18,8 +18,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 interface HomeComponent {
-    val occasion: Occasion?
-    val occasions: List<Occasion>
+    var occasion: Occasion?
+    val occasions: MutableValue<List<Occasion>>
     var requestStatus : MutableValue<Status>
     var occasionProgress: MutableValue<List<OccasionProgress>>
 
@@ -35,33 +35,37 @@ class DefaultHomeComponent(
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
 
-    override val occasion: Occasion? = null
-    override var occasions = emptyList<Occasion>()
+    override var occasion: Occasion? = null
+    override var occasions = MutableValue(listOf<Occasion>())
     override var requestStatus  = MutableValue(Status.LOADING)
     override var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            occasions = occasionDao.getFutureOccasions()
+            val list = occasionDao.getFutureOccasions()
+            occasions.update { list }
+
+            if (list.isNotEmpty()) {
+                onOccasionChange(list[0])
+            }
 
             requestStatus.update { Status.SUCCESS }
         }
     }
 
-    override fun onOccasionChange(changed: Occasion) {
+    override fun onOccasionChange(newValue: Occasion) {
         CoroutineScope(Dispatchers.IO).launch {
-            val list = recipientDao.getRecipientsForOccasion(changed.id).map {
-                val recipient = recipientDao.getRecipient(it.recipientId)
-                val ideas = giftIdeaDao.getCurrentGiftIdeasForRecipAndOccasion(it.recipientId, changed.id)
-                val progress = OccasionProgress(
-                    recipient,
-                    changed.id,
+            occasion = newValue
+            val list = recipientDao.getRecipientsForOccasion(newValue.id).map {
+                val ideas = giftIdeaDao.lookupIdeasByRecipAndOccasion(it.recipientId, newValue.id)
+                OccasionProgress(
+                    recipientDao.getRecipient(it.recipientId),
+                    newValue.id,
                     targetCount = it.targetCount,
                     actualCount = ideas.filter { idea -> idea.occasionId != null }.size,
-                    actualCost = ideas.map { idea -> idea.actualCost ?: 0f }.sum(),
+                    actualCost = ideas.sumOf { idea -> idea.actualCost ?: 0 },
                     targetCost = it.targetCost
                 )
-                progress
             }
 
             occasionProgress.update { list }
@@ -75,6 +79,6 @@ data class OccasionProgress(
     val occasionId: Long,
     val targetCount: Int,
     val actualCount: Int,
-    val targetCost: Float,
-    val actualCost: Float
+    val targetCost: Int,
+    val actualCost: Int
 )

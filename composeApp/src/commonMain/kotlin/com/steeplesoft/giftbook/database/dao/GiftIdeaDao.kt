@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.steeplesoft.giftbook.database.model.GiftIdea
 
 @Dao
@@ -13,19 +14,23 @@ interface GiftIdeaDao {
 
     @Insert
     @Transaction
-    suspend fun insertAll(vararg idea: GiftIdea)
+    suspend fun insert(idea: GiftIdea): Long
+
+    @Update
+    @Transaction
+    suspend fun update(gift: GiftIdea)
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NULL")
     suspend fun getCurrentGiftIdeasForRecip(recipId: Int): List<GiftIdea>
 
+    @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NOT NULL")
+    suspend fun getUsedGiftIdeasForRecip(recipId: Long): List<GiftIdea>
+
     @Query("""
         SELECT g.*
-        FROM giftidea g
+        FROM GiftIdea g
         WHERE g.recipientId = :recipId
           AND (g.occasionId IS NULL OR g.occasionId = :occasionId)
     """)
-    suspend fun getCurrentGiftIdeasForRecipAndOccasion(recipId: Long, occasionId: Long): List<GiftIdea>
-
-    @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NOT NULL")
-    suspend fun getUsedGiftIdeasForRecip(recipId: Long): List<GiftIdea>
+    suspend fun lookupIdeasByRecipAndOccasion(recipId: Long, occasionId: Long): List<GiftIdea>
 }

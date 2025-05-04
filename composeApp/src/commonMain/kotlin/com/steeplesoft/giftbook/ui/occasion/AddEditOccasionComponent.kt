@@ -39,8 +39,7 @@ class DefaultAddEditOccasionComponent(
             )
 
             if (occasion == null) {
-                val id = occasionDao.insert(newOccasion)
-                newOccasion.id = id
+                newOccasion.id = occasionDao.insert(newOccasion)
             } else {
                 occasionDao.update(newOccasion)
             }

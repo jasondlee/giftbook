@@ -12,7 +12,7 @@ import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.Recipient
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
-import com.steeplesoft.giftbook.ui.general.Status
+import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -45,8 +45,6 @@ class DefaultViewOccasionComponent(
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
                 recips = recipientDao.getRecipientListForOccasion(occasion.id)
-//                    occasionDao.getOccasionRecipients(occasion.id)
-
                 requestStatus.update { Status.SUCCESS }
             }
         }
