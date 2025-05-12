@@ -2,6 +2,7 @@ package com.steeplesoft.giftbook.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 
 // https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 // https://stackoverflow.com/questions/48640803/android-room-relation-many-to-many
@@ -12,6 +13,10 @@ import androidx.room.ForeignKey
     foreignKeys = [
         ForeignKey(entity = Occasion::class, parentColumns = ["id"], childColumns = ["occasionId"]),
         ForeignKey(entity = Recipient::class, parentColumns = ["id"], childColumns = ["recipientId"])
+    ],
+    indices =[
+        Index(value = ["recipientId"]),
+        Index(value = ["occasionId"]),
     ]
 )
 data class OccasionRecipient (

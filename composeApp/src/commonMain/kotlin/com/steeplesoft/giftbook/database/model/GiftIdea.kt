@@ -3,11 +3,15 @@ package com.steeplesoft.giftbook.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import kotlinx.serialization.Serializable
 
-@Entity
+@Entity(indices =[
+    Index(value = ["recipientId"]),
+    Index(value = ["occasionId"]),
+])
 @Serializable
 data class GiftIdea(
     @PrimaryKey(autoGenerate = true)

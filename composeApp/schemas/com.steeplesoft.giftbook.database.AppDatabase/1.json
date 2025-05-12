@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0d20e199f13ae738606b7e378f32a2bc",
+    "identityHash": "151754ea8f404c5cbe09d6e5a0fe9701",
     "entities": [
       {
         "tableName": "Occasion",
@@ -83,7 +83,27 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_GiftIdea_recipientId",
+            "unique": false,
+            "columnNames": [
+              "recipientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GiftIdea_recipientId` ON `${TABLE_NAME}` (`recipientId`)"
+          },
+          {
+            "name": "index_GiftIdea_occasionId",
+            "unique": false,
+            "columnNames": [
+              "occasionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_GiftIdea_occasionId` ON `${TABLE_NAME}` (`occasionId`)"
+          }
+        ]
       },
       {
         "tableName": "Recipient",
@@ -145,6 +165,26 @@
             "recipientId"
           ]
         },
+        "indices": [
+          {
+            "name": "index_OccasionRecipient_recipientId",
+            "unique": false,
+            "columnNames": [
+              "recipientId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_OccasionRecipient_recipientId` ON `${TABLE_NAME}` (`recipientId`)"
+          },
+          {
+            "name": "index_OccasionRecipient_occasionId",
+            "unique": false,
+            "columnNames": [
+              "occasionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_OccasionRecipient_occasionId` ON `${TABLE_NAME}` (`occasionId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "Occasion",
@@ -173,7 +213,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0d20e199f13ae738606b7e378f32a2bc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '151754ea8f404c5cbe09d6e5a0fe9701')"
     ]
   }
 }
