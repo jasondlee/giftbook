@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface NavigationConfig {
     @Serializable
-    data object Home : NavigationConfig
+    data class Home(val occasion: Occasion? = null) : NavigationConfig
 
     @Serializable
     data object Occasions : NavigationConfig

@@ -25,12 +25,12 @@ fun AddEditHeader(
             Text(label, fontWeight = FontWeight.Bold, fontSize = 30.sp)
         }
         Column {
-            IconButton(/*colors = colors,*/ onClick = editClick) {
+            IconButton(onClick = editClick) {
                 Icon(Icons.Filled.Edit, contentDescription = "Edit")
             }
         }
         Column {
-            IconButton(/*colors = colors,*/ onClick = deleteClick) {
+            IconButton(onClick = deleteClick) {
                 Icon(Icons.Filled.Delete, contentDescription = "Delete")
             }
         }

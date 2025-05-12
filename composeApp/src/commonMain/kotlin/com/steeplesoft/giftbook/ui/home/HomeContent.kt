@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
@@ -31,7 +31,7 @@ import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
-fun homeContent(
+fun home(
     component: HomeComponent,
     modifier: Modifier = Modifier
 ) {
@@ -69,7 +69,7 @@ fun homeContent(
                         Column(
                             modifier = Modifier.padding(15.dp)
                                 .clickable {
-                                    nav.bringToFront(NavigationConfig.ViewOccasionRecip(it.recipient.id, it.occasionId))
+                                    nav.replaceAll(NavigationConfig.ViewOccasionRecip(it.recipient.id, it.occasionId))
                                 }
                         ) {
                             Text(it.recipient.name, fontSize = 18.sp)
@@ -101,7 +101,7 @@ fun OccasionProgressRow(
         }
         Column(modifier = Modifier.align(Alignment.CenterVertically).weight(0.8f)) {
             LinearProgressIndicator(
-                progress = { (actualNumber / targetNumber).toFloat() },
+                progress = { (actualNumber.toFloat() / targetNumber) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

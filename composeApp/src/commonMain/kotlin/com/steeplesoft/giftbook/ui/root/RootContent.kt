@@ -20,7 +20,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
-import com.steeplesoft.giftbook.ui.home.homeContent
+import com.steeplesoft.giftbook.ui.home.home
 import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
@@ -74,7 +74,7 @@ fun RootContent(
             ) {
                 val childModifier = Modifier.fillMaxSize()
                 when (val child = it.instance) {
-                    is RootComponent.Child.Home -> homeContent(child.component, childModifier)
+                    is RootComponent.Child.Home -> home(child.component, childModifier)
                     is RootComponent.Child.Occasions -> occasionList(child.component, childModifier)
                     is RootComponent.Child.ViewOccasion -> viewOccasion(child.component, childModifier)
                     is RootComponent.Child.AddEditOccasion -> addEditOccasion(child.component, childModifier)

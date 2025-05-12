@@ -42,7 +42,7 @@ class DefaultRootComponent(componentContext: ComponentContext) :
     override val stack: Value<ChildStack<*, RootComponent.Child>> = childStack(
         source = nav,
         serializer = NavigationConfig.serializer(),
-        initialConfiguration = NavigationConfig.Home,
+        initialConfiguration = NavigationConfig.Home(),
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -53,7 +53,7 @@ class DefaultRootComponent(componentContext: ComponentContext) :
     ): RootComponent.Child {
         return when (config) {
             is NavigationConfig.Home ->
-                RootComponent.Child.Home(DefaultHomeComponent(componentContext))
+                RootComponent.Child.Home(DefaultHomeComponent(componentContext, config.occasion))
             is NavigationConfig.Occasions ->
                 RootComponent.Child.Occasions(DefaultOccasionListComponent(componentContext))
             is NavigationConfig.ViewOccasion ->

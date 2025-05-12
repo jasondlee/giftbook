@@ -27,7 +27,8 @@ interface HomeComponent {
 }
 
 class DefaultHomeComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    override var occasion: Occasion? = null
 ) : HomeComponent,
     ComponentContext by componentContext,
     KoinComponent {
@@ -35,7 +36,6 @@ class DefaultHomeComponent(
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
 
-    override var occasion: Occasion? = null
     override var occasions = MutableValue(listOf<Occasion>())
     override var requestStatus  = MutableValue(Status.LOADING)
     override var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
@@ -46,7 +46,7 @@ class DefaultHomeComponent(
             occasions.update { list }
 
             if (list.isNotEmpty()) {
-                onOccasionChange(list[0])
+                onOccasionChange(occasion ?: list[0])
             }
 
             requestStatus.update { Status.SUCCESS }

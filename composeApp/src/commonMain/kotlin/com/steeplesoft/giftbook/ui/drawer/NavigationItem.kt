@@ -8,8 +8,8 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavigationItem(var route: NavigationConfig, var imageVector: ImageVector, var title: String) {
-    data object Home : NavigationItem(NavigationConfig.Home, Icons.Rounded.Home, "Home")
+    data object Home : NavigationItem(NavigationConfig.Home(), Icons.Rounded.Home, "Home")
     data object Occasions : NavigationItem(NavigationConfig.Occasions, Icons.Rounded.CalendarToday, "Occasions")
-    data object Recipients : NavigationItem(NavigationConfig.Home, Icons.Rounded.Person, "Recipients")
-    data object GiftIdeas : NavigationItem(NavigationConfig.Home, Icons.Rounded.Lightbulb, "Ideas")
+    data object Recipients : NavigationItem(NavigationConfig.Home(), Icons.Rounded.Person, "Recipients")
+    data object GiftIdeas : NavigationItem(NavigationConfig.Home(), Icons.Rounded.Lightbulb, "Ideas")
 }
