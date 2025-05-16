@@ -20,10 +20,15 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.home.home
+import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
+import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
+import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
+import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
@@ -73,12 +78,12 @@ fun RootContent(
                 animation = stackAnimation(slide()),
             ) {
                 val childModifier = Modifier.fillMaxSize()
-                when (val child = it.instance) {
-                    is RootComponent.Child.Home -> home(child.component, childModifier)
-                    is RootComponent.Child.Occasions -> occasionList(child.component, childModifier)
-                    is RootComponent.Child.ViewOccasion -> viewOccasion(child.component, childModifier)
-                    is RootComponent.Child.AddEditOccasion -> addEditOccasion(child.component, childModifier)
-                    is RootComponent.Child.ViewOccasionRecip -> viewOccasionRecip(child.component, childModifier)
+                when (val component = it.instance) {
+                    is HomeComponent -> home(component, childModifier)
+                    is OccasionListComponent -> occasionList(component, childModifier)
+                    is ViewOccasionComponent -> viewOccasion(component, childModifier)
+                    is AddEditOccasionComponent -> addEditOccasion(component, childModifier)
+                    is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
                 }
             }
         }

@@ -13,24 +13,16 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-interface AddEditOccasionComponent {
-    val occasion: Occasion?
-    val form: OccasionForm
-    fun save(): Unit
-}
-
-class DefaultAddEditOccasionComponent(
+class AddEditOccasionComponent(
     componentContext: ComponentContext,
-    override val occasion: Occasion?
-) : AddEditOccasionComponent,
-    ComponentContext by componentContext,
-    KoinComponent {
+    val occasion: Occasion?
+) : ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
 
-    override val form = OccasionForm(occasion)
+    val form = OccasionForm(occasion)
 
-    override fun save() {
+    fun save() {
         CoroutineScope(Dispatchers.Main).launch {
             val newOccasion = Occasion(
                 occasion?.id ?: 0,

@@ -20,26 +20,16 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-interface ViewOccasionComponent {
-    val occasion: Occasion
-    var requestStatus: MutableValue<Status>
-    var recips: List<Recipient>
-    fun edit()
-    fun delete()
-}
-
-class DefaultViewOccasionComponent(
+class ViewOccasionComponent(
     componentContext: ComponentContext,
-    override val occasion: Occasion
-) : ViewOccasionComponent,
-    ComponentContext by componentContext,
-    KoinComponent {
+    val occasion: Occasion
+) : ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
 
-    override var recips : List<Recipient> = emptyList()
-    override var requestStatus = MutableValue(Status.LOADING)
+    var recips : List<Recipient> = emptyList()
+    var requestStatus = MutableValue(Status.LOADING)
 
     init {
         componentContext.doOnResume {
@@ -50,11 +40,11 @@ class DefaultViewOccasionComponent(
         }
     }
 
-    override fun edit() {
+    fun edit() {
         nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
     }
 
-    override fun delete() {
+    fun delete() {
         CoroutineScope(Dispatchers.Main).launch {
             occasionDao.delete(occasion)
 

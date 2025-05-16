@@ -17,28 +17,17 @@ import kotlinx.serialization.Serializable
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-interface HomeComponent {
-    var occasion: Occasion?
-    val occasions: MutableValue<List<Occasion>>
-    var requestStatus : MutableValue<Status>
-    var occasionProgress: MutableValue<List<OccasionProgress>>
-
-    fun onOccasionChange(newValue: Occasion)
-}
-
-class DefaultHomeComponent(
+class HomeComponent(
     componentContext: ComponentContext,
-    override var occasion: Occasion? = null
-) : HomeComponent,
-    ComponentContext by componentContext,
-    KoinComponent {
+    var occasion: Occasion? = null
+) : ComponentContext by componentContext, KoinComponent {
     private val giftIdeaDao : GiftIdeaDao by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
 
-    override var occasions = MutableValue(listOf<Occasion>())
-    override var requestStatus  = MutableValue(Status.LOADING)
-    override var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
+    var occasions = MutableValue(listOf<Occasion>())
+    var requestStatus  = MutableValue(Status.LOADING)
+    var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -53,7 +42,7 @@ class DefaultHomeComponent(
         }
     }
 
-    override fun onOccasionChange(newValue: Occasion) {
+    fun onOccasionChange(newValue: Occasion) {
         CoroutineScope(Dispatchers.IO).launch {
             occasion = newValue
             val list = recipientDao.getRecipientsForOccasion(newValue.id).map {

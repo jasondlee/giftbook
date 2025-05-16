@@ -14,21 +14,14 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-interface OccasionListComponent {
-    val occasions : MutableValue<List<Occasion>>
-    var requestStatus : MutableValue<Status>
-}
-
-class DefaultOccasionListComponent(
+class OccasionListComponent(
     componentContext: ComponentContext
-) : OccasionListComponent,
-    ComponentContext by componentContext,
-    KoinComponent {
+) : ComponentContext by componentContext, KoinComponent {
     private val occasionDao : OccasionDao by inject()
 
-    override var occasions: MutableValue<List<Occasion>> = MutableValue(mutableListOf())
+    var occasions: MutableValue<List<Occasion>> = MutableValue(mutableListOf())
 
-    override var requestStatus  = MutableValue(Status.LOADING)
+    var requestStatus  = MutableValue(Status.LOADING)
 
     init {
         componentContext.doOnResume {

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.arkivanov.decompose.defaultComponentContext
-import com.steeplesoft.giftbook.ui.root.DefaultRootComponent
+import com.steeplesoft.giftbook.ui.root.RootComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Always create the root component outside Compose on the main thread
-        val rootComponent = DefaultRootComponent(defaultComponentContext())
+        val rootComponent = RootComponent(defaultComponentContext())
 
         setContent {
             App(rootComponent = rootComponent)

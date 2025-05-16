@@ -22,35 +22,22 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-interface ViewOccasionRecipient {
-    val occasionRecip: OccasionRecipient
-    var recip : Recipient
-    var occasion : Occasion
-    var gifts: MutableValue<List<GiftIdea>>
-    var requestStatus: MutableValue<Status>
-
-    fun edit()
-    fun delete()
-    fun giftGiven(giftId: Long, cost: Int)
-}
-
-class DefaultViewOccasionRecipient(
+class ViewOccasionRecipient(
     componentContext: ComponentContext,
     private val recipId: Long,
     private val occasionId: Long
-) : ViewOccasionRecipient,
-    ComponentContext by componentContext,
-    KoinComponent {
+) : ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
     private val giftIdeaDao : GiftIdeaDao by inject()
 
-    override lateinit var occasionRecip: OccasionRecipient
-    override lateinit var recip: Recipient
-    override lateinit var occasion: Occasion
-    override var gifts: MutableValue<List<GiftIdea>> = MutableValue(emptyList())
-    override var requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
+    lateinit var occasionRecip: OccasionRecipient
+    lateinit var recip: Recipient
+    lateinit var occasion: Occasion
+
+    var gifts: MutableValue<List<GiftIdea>> = MutableValue(emptyList())
+    var requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
 
     init {
         componentContext.doOnResume {
@@ -66,11 +53,11 @@ class DefaultViewOccasionRecipient(
     }
 
 
-    override fun edit() {
+    fun edit() {
 //        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
     }
 
-    override fun delete() {
+    fun delete() {
         CoroutineScope(Dispatchers.Main).launch {
 //            db.occasionDao().delete(occasion)
 
@@ -78,7 +65,7 @@ class DefaultViewOccasionRecipient(
         }
     }
 
-    override fun giftGiven(giftId: Long, cost: Int) {
+    fun giftGiven(giftId: Long, cost: Int) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val orig = gifts.value
