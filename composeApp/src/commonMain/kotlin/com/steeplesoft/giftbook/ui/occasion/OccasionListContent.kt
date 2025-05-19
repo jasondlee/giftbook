@@ -1,8 +1,11 @@
 package com.steeplesoft.giftbook.ui.occasion
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -18,6 +21,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.kmpform.components.asyncLoad
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -36,16 +40,30 @@ fun occasionList(
         asyncLoad(status) {
             LazyColumn(modifier = Modifier.padding(top = 10.dp)) {
                 item {
-                    Text("Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+                    Text("Gift Giving Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
                 }
                 items(occasions) { occasion ->
-                    Text(
-                        modifier = Modifier.clickable {
+                    Row {
+                        Image(
+                            modifier = Modifier.size(48.dp)
+                                .padding(end=10.dp),
+                            painter = painterResource(occasion.eventType.image),
+                            contentDescription = ""
+                        )
+                        Column(modifier = Modifier.clickable {
                             nav.bringToFront(NavigationConfig.ViewOccasion(occasion))
-                        },
-                        fontSize = 18.sp,
-                        text = "${occasion.name} - ${occasion.eventDate}"
-                    )
+                        }) {
+                            Text(
+                                fontSize = 24.sp,
+                                text = occasion.name
+                            )
+                            Text(
+                                fontSize = 18.sp,
+                                text = "${occasion.eventDate}"
+                            )
+                        }
+                    }
+                    DividingLine()
                 }
             }
             ActionButton(

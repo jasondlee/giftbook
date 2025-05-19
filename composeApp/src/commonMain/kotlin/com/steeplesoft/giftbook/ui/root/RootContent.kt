@@ -30,6 +30,8 @@ import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
+import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
+import com.steeplesoft.giftbook.ui.recipients.recipientList
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
@@ -84,6 +86,7 @@ fun RootContent(
                     is ViewOccasionComponent -> viewOccasion(component, childModifier)
                     is AddEditOccasionComponent -> addEditOccasion(component, childModifier)
                     is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
+                    is RecipientListComponent -> recipientList(component, childModifier)
                 }
             }
         }

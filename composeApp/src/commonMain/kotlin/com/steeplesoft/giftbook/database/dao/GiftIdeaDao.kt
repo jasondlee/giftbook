@@ -21,7 +21,7 @@ interface GiftIdeaDao {
     suspend fun update(gift: GiftIdea)
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NULL")
-    suspend fun getCurrentGiftIdeasForRecip(recipId: Int): List<GiftIdea>
+    suspend fun getCurrentGiftIdeasForRecip(recipId: Long): List<GiftIdea>
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NOT NULL")
     suspend fun getUsedGiftIdeasForRecip(recipId: Long): List<GiftIdea>

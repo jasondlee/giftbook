@@ -1,5 +1,6 @@
 package com.steeplesoft.giftbook.database
 
+import com.steeplesoft.giftbook.database.model.EventType
 import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipient
@@ -46,10 +47,10 @@ private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
         listOf(
-            Occasion(1, "Christmas 2025", LocalDate(2025,12,25)),
-            Occasion(2, "Laura's Birthday", LocalDate(2025,8,1)),
-            Occasion(3, "Christmas 2024", LocalDate(2024,12,25)),
-            Occasion(4, "Valentine's Day", LocalDate(2026,2,14)),
+            Occasion(1, "Christmas 2025", LocalDate(2025,12,25), EventType.CHRISTMAS),
+            Occasion(2, "Laura's Birthday", LocalDate(2025,8,1), EventType.BIRTHDAY),
+            Occasion(3, "Christmas 2024", LocalDate(2024,12,25), EventType.CHRISTMAS),
+            Occasion(4, "Valentine's Day", LocalDate(2026,2,14), EventType.VALENTINES),
         ).forEach {
             dao.insert(it)
         }

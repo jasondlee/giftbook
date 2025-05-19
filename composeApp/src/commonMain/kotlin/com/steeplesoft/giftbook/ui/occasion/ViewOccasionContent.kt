@@ -2,6 +2,7 @@
 
 package com.steeplesoft.giftbook.ui.occasion
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -64,29 +65,35 @@ fun viewOccasion(
                 )
             }
             item {
-                Text(buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Name: ")
-                    }
-                    append(occasion.name)
-                })
-            }
-            item {
-                Text(buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Date: ")
-                    }
-                    append(occasion.eventDate.format(LocalDate.Formats.ISO))
-                })
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Name: ")
+                        }
+                        append(occasion.name)
+                    },
+                    fontSize = 20.sp,
+                )
             }
             item {
                 Text(
-                    "Recipients:",
-                    fontWeight = FontWeight.Bold, fontSize = 24.sp
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Date: ")
+                        }
+                        append(occasion.eventDate.format(LocalDate.Formats.ISO))
+                    },
+                    fontSize = 20.sp,
                 )
             }
+            item {
+                Text("Recipients:", fontWeight = FontWeight.Bold, fontSize = 24.sp)
+            }
             items(component.recips) { recip ->
-                Text(text = recip.name)
+                Column {
+                    Text(text = recip.name, fontSize = 20.sp,)
+                    DividingLine()
+                }
             }
 
         }
