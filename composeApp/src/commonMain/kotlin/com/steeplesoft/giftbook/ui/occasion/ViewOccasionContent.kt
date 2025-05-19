@@ -87,6 +87,17 @@ fun viewOccasion(
                 )
             }
             item {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Event Type: ")
+                        }
+                        append(occasion.eventType.label)
+                    },
+                    fontSize = 20.sp,
+                )
+            }
+            item {
                 Text("Recipients:", fontWeight = FontWeight.Bold, fontSize = 24.sp)
             }
             items(component.recips) { recip ->

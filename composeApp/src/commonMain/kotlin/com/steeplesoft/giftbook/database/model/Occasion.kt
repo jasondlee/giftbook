@@ -46,13 +46,16 @@ class EventTypeConverter {
 }
 
 
-enum class EventType(val code: Int, val image: DrawableResource) {
-    BIRTHDAY(0, Res.drawable.cake),
-    CHRISTMAS(1, Res.drawable.nativity),
-    ANNIVERSARY(2, Res.drawable.anniversary),
-    GRADUATION(3, Res.drawable.graduation),
-    VALENTINES(4, Res.drawable.valentines),
-    OTHER(999, Res.drawable.gift);
+enum class EventType(
+    val code: Int,
+    val label: String,
+    val image: DrawableResource) {
+    BIRTHDAY(0, "Birthday", Res.drawable.cake),
+    CHRISTMAS(1, "Christmas", Res.drawable.nativity),
+    ANNIVERSARY(2, "Anniversary", Res.drawable.anniversary),
+    GRADUATION(3, "Graduation", Res.drawable.graduation),
+    VALENTINES(4, "Valentine's Day", Res.drawable.valentines),
+    OTHER(999, "Other", Res.drawable.gift);
 
     companion object {
         fun of(code: Int): EventType {

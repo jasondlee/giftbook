@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "151754ea8f404c5cbe09d6e5a0fe9701",
+    "identityHash": "9a645d180d31bebe5c836aafe4f0ce5c",
     "entities": [
       {
         "tableName": "Occasion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `eventDate` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `eventDate` TEXT NOT NULL, `eventType` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -24,6 +24,12 @@
             "fieldPath": "eventDate",
             "columnName": "eventDate",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventType",
+            "columnName": "eventType",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -213,7 +219,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '151754ea8f404c5cbe09d6e5a0fe9701')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a645d180d31bebe5c836aafe4f0ce5c')"
     ]
   }
 }

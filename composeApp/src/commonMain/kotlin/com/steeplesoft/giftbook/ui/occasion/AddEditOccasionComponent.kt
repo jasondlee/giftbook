@@ -40,4 +40,10 @@ class AddEditOccasionComponent(
             nav.bringToFront(NavigationConfig.ViewOccasion(newOccasion))
         }
     }
+
+    fun cancel() {
+        CoroutineScope(Dispatchers.Main).launch {
+            nav.pop()
+        }
+    }
 }
