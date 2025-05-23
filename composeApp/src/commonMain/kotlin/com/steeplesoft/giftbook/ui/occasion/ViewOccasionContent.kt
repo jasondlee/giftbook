@@ -53,7 +53,7 @@ fun viewOccasion(
     asyncLoad(status) {
         ActionButton(
             onClick = {
-                //
+                component.addRecipient()
             }
         )
         LazyColumn(modifier = Modifier.padding(10.dp)) {

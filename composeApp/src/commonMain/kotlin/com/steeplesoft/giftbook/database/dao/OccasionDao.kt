@@ -31,15 +31,15 @@ interface OccasionDao {
 
     @Insert
     @Transaction
-    suspend fun insertOccasionReicip(occasion: OccasionRecipient)
+    suspend fun insertOccasionRecip(occasion: OccasionRecipient)
 
     @Update
     @Transaction
-    suspend fun updateOccasionReicip(occasion: OccasionRecipient)
+    suspend fun updateOccasionRecip(occasion: OccasionRecipient)
 
     @Delete
     @Transaction
-    suspend fun deleteOccasionReicip(occasion: OccasionRecipient)
+    suspend fun deleteOccasionRecip(occasion: OccasionRecipient)
 
     @Insert
     @Transaction

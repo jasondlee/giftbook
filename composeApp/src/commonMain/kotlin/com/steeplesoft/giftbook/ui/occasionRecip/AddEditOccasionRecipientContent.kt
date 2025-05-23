@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -15,6 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.kmpform.components.ComboBox
+import com.steeplesoft.kmpform.components.asyncLoad
 
 @Composable
 fun addEditOccasionRecipient(
@@ -25,59 +32,74 @@ fun addEditOccasionRecipient(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        val form = component.form
+        val status by component.requestStatus.subscribeAsState()
 
-        Text(
-            buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("Occasion: ")
-                }
-                append(component.occasion.name)
-            },
-            fontSize = 20.sp,
-        )
+        asyncLoad(status) {
+            val form = component.form
 
-        if (component.recipient != null) {
             Text(
                 buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Recipient: ")
+                        append("Occasion: ")
                     }
-                    append(component.recipient.name)
+                    append(component.occasion.name)
                 },
                 fontSize = 20.sp,
             )
-        } else {
-            Text(text="TBD")
-        }
 
-        IntegerField(
-            label = "Target Count",
-            form = form,
-            fieldState = form.count,
-        ).Field()
+            if (component.recipient != null) {
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Recipient: ")
+                        }
+                        append(component.recipient!!.name)
+                    },
+                    fontSize = 20.sp,
+                )
+            } else {
+                val recipients by component.recipients.subscribeAsState()
 
-        IntegerField(
-            label = "Target Cost",
-            form = form,
-            fieldState = form.cost,
-        ).Field()
+                val current: Recipient? by remember { mutableStateOf(component.recipient) }
 
-        Row(modifier = Modifier.padding(top = 5.dp).fillMaxWidth()) {
-            Button(
-                onClick = { component.save() },
-                modifier = Modifier.padding(end = 3.dp)
-                    .fillMaxWidth(0.5f)
-            ) {
-                Text("Save")
+                ComboBox(label = "Recipient",
+                    selected = current,
+                    onChange = { newValue ->
+                        component.recipient = newValue
+                    },
+                    items = recipients,
+                    itemLabel = { recip -> recip?.name ?: "--" }
+                )
             }
 
-            Button(
-                onClick = { component.cancel() },
-                modifier = Modifier.padding(start = 3.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Cancel")
+            IntegerField(
+                label = "Target Count",
+                form = form,
+                fieldState = form.count,
+            ).Field()
+
+            IntegerField(
+                label = "Target Cost",
+                form = form,
+                fieldState = form.cost,
+            ).Field()
+
+            Row(modifier = Modifier.padding(top = 5.dp).fillMaxWidth()) {
+                Button(
+                    onClick = { component.save() },
+                    modifier = Modifier.padding(end = 3.dp)
+                        .fillMaxWidth(0.5f)
+                ) {
+                    Text("Save")
+                }
+
+                Button(
+                    onClick = { component.cancel() },
+                    modifier = Modifier.padding(start = 3.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text("Cancel")
+                }
             }
         }
     }
