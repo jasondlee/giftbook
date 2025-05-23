@@ -69,7 +69,7 @@ fun home(
                         Column(
                             modifier = Modifier.padding(15.dp)
                                 .clickable {
-                                    nav.replaceAll(NavigationConfig.ViewOccasionRecip(it.recipient.id, it.occasionId))
+                                    nav.replaceAll(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
                                 }
                         ) {
                             Text(it.recipient.name, fontSize = 18.sp)

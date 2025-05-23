@@ -31,6 +31,18 @@ interface OccasionDao {
 
     @Insert
     @Transaction
+    suspend fun insertOccasionReicip(occasion: OccasionRecipient)
+
+    @Update
+    @Transaction
+    suspend fun updateOccasionReicip(occasion: OccasionRecipient)
+
+    @Delete
+    @Transaction
+    suspend fun deleteOccasionReicip(occasion: OccasionRecipient)
+
+    @Insert
+    @Transaction
     suspend fun insert(occasion: Occasion) : Long
 
     @Update

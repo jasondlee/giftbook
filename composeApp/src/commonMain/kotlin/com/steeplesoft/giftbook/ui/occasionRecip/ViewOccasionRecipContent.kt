@@ -70,7 +70,7 @@ fun viewOccasionRecip(
     asyncLoad(status) {
         ActionButton(
             onClick = {
-                //
+                component.edit()
             }
         )
         Column(modifier = Modifier.padding(10.dp)) {

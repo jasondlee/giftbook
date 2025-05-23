@@ -1,6 +1,7 @@
 package com.steeplesoft.giftbook.ui.drawer
 
 import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.Recipient
 import kotlinx.serialization.Serializable
 
@@ -19,10 +20,14 @@ sealed interface NavigationConfig {
     data class AddEditOccasion(val occasion: Occasion? = null) : NavigationConfig
 
     @Serializable
-    data class ViewOccasionRecip(val recipId: Long, val occasionId: Long) : NavigationConfig
+    data class ViewOccasionRecipient(val recipId: Long, val occasionId: Long) : NavigationConfig
+
+    @Serializable
+    data class AddEditOccasionRecipient(val occasion: Occasion, val recipient: Recipient, val occasionRecip: OccasionRecipient): NavigationConfig
 
     @Serializable
     data object Recipients : NavigationConfig
+
     @Serializable
     data class ViewRecipient(val recipient: Recipient) : NavigationConfig
 }

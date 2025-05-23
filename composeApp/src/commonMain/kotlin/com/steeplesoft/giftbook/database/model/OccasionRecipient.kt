@@ -3,6 +3,7 @@ package com.steeplesoft.giftbook.database.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import kotlinx.serialization.Serializable
 
 // https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 // https://stackoverflow.com/questions/48640803/android-room-relation-many-to-many
@@ -19,6 +20,7 @@ import androidx.room.Index
         Index(value = ["occasionId"]),
     ]
 )
+@Serializable
 data class OccasionRecipient (
     val occasionId: Long,
     val recipientId: Long,

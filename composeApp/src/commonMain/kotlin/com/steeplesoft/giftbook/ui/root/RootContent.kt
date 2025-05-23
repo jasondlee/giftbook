@@ -28,7 +28,9 @@ import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
+import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientComponent
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
+import com.steeplesoft.giftbook.ui.occasionRecip.addEditOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
 import com.steeplesoft.giftbook.ui.recipients.recipientList
@@ -79,13 +81,15 @@ fun RootContent(
                 modifier = modifier.padding(innerPadding).padding(top = 10.dp),
                 animation = stackAnimation(slide()),
             ) {
-                val childModifier = Modifier.fillMaxSize()
+                val childModifier = modifier.fillMaxSize()
+                    .padding(10.dp)
                 when (val component = it.instance) {
                     is HomeComponent -> home(component, childModifier)
                     is OccasionListComponent -> occasionList(component, childModifier)
                     is ViewOccasionComponent -> viewOccasion(component, childModifier)
                     is AddEditOccasionComponent -> addEditOccasion(component, childModifier)
                     is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
+                    is AddEditOccasionRecipientComponent -> addEditOccasionRecipient(component, childModifier)
                     is RecipientListComponent -> recipientList(component, childModifier)
                 }
             }

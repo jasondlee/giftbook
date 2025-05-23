@@ -3,6 +3,7 @@ package com.steeplesoft.giftbook.ui.occasionRecip
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
@@ -54,7 +55,7 @@ class ViewOccasionRecipient(
 
 
     fun edit() {
-//        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
+        nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(occasion, recip, occasionRecip))
     }
 
     fun delete() {

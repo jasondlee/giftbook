@@ -1,3 +1,5 @@
+@file:Suppress("AndroidUnresolvedRoomSqlReference")
+
 package com.steeplesoft.giftbook.database.dao
 
 import androidx.room.Dao
