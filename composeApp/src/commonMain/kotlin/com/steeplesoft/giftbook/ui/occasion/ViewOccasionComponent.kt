@@ -55,4 +55,8 @@ class ViewOccasionComponent(
     fun addRecipient() {
         nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(occasion))
     }
+
+    fun editOccasionRecipient(recipient: Recipient) {
+        nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(occasion, recipient))
+    }
 }

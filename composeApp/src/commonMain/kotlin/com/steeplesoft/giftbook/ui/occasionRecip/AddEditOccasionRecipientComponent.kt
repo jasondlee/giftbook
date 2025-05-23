@@ -24,13 +24,13 @@ class AddEditOccasionRecipientComponent(
     val componentContext: ComponentContext,
     val occasion: Occasion,
     var recipient: Recipient? = null,
-    val occasionRecipient: OccasionRecipient? = null
+    var occasionRecipient: OccasionRecipient? = null
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav: StackNavigation<NavigationConfig> by inject()
     private val occasionDao: OccasionDao by inject()
     private val recipientDao: RecipientDao by inject()
 
-    val form =  OccasionRecipForm(occasionRecipient)
+    var form = OccasionRecipForm(occasionRecipient)
     var requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
     var recipients: MutableValue<List<Recipient>> = MutableValue(emptyList())
 
@@ -43,6 +43,12 @@ class AddEditOccasionRecipientComponent(
                     val available = allRecips.filter { !recipsForOccasion.contains(it.id) }
                     recipients.update { available }
                 }
+
+                if (recipient != null && occasionRecipient == null) {
+                    occasionRecipient = recipientDao.getRecipientForOccasion(occasion.id, recipient!!.id)
+                }
+
+                form =  OccasionRecipForm(occasionRecipient)
 
                 requestStatus.update { Status.SUCCESS }
             }

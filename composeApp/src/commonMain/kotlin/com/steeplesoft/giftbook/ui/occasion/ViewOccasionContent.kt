@@ -2,6 +2,7 @@
 
 package com.steeplesoft.giftbook.ui.occasion
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -58,13 +59,13 @@ fun viewOccasion(
         )
         LazyColumn(modifier = Modifier.padding(10.dp)) {
             item {
+                val fontSize = 24.sp
+
                 AddEditHeader(
                     label = "Occasion Details",
                     editClick = { component.edit() },
                     deleteClick = { showDialog.value = true }
                 )
-            }
-            item {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -72,10 +73,8 @@ fun viewOccasion(
                         }
                         append(occasion.name)
                     },
-                    fontSize = 20.sp,
+                    fontSize = fontSize,
                 )
-            }
-            item {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -83,10 +82,8 @@ fun viewOccasion(
                         }
                         append(occasion.eventDate.format(LocalDate.Formats.ISO))
                     },
-                    fontSize = 20.sp,
+                    fontSize = fontSize,
                 )
-            }
-            item {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -94,15 +91,20 @@ fun viewOccasion(
                         }
                         append(occasion.eventType.label)
                     },
-                    fontSize = 20.sp,
+                    fontSize = fontSize,
                 )
-            }
-            item {
-                Text("Recipients:", fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                Text("Recipients:",
+                    modifier = Modifier.padding(top=5.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = fontSize
+                )
             }
             items(component.recips) { recip ->
                 Column {
-                    Text(text = recip.name, fontSize = 20.sp,)
+                    Text(text = recip.name, fontSize = 20.sp,
+                        modifier = Modifier.clickable {
+                            component.editOccasionRecipient(recip)
+                        })
                     DividingLine()
                 }
             }
