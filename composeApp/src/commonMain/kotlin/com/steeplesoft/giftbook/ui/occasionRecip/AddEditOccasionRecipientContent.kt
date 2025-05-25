@@ -22,6 +22,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.steeplesoft.giftbook.database.model.Recipient
 import com.steeplesoft.kmpform.components.ComboBox
 import com.steeplesoft.kmpform.components.asyncLoad
+import com.steeplesoft.kmpform.fields.IntegerField
 
 @Composable
 fun addEditOccasionRecipient(

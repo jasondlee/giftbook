@@ -28,13 +28,13 @@ class ViewOccasionComponent(
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
 
-    var recips : List<Recipient> = emptyList()
+    var recips : MutableList<Recipient> = mutableListOf()
     var requestStatus = MutableValue(Status.LOADING)
 
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
-                recips = recipientDao.getRecipientListForOccasion(occasion.id)
+                recips = recipientDao.getRecipientListForOccasion(occasion.id).toMutableList()
                 requestStatus.update { Status.SUCCESS }
             }
         }
@@ -49,6 +49,16 @@ class ViewOccasionComponent(
             occasionDao.delete(occasion)
 
             nav.pop()
+        }
+    }
+
+    fun deleteRecip(recip: Recipient) {
+        CoroutineScope(Dispatchers.Main).launch {
+            requestStatus.update { Status.LOADING }
+            occasionDao.deleteOccasionRecip(recipientDao.getRecipientForOccasion(occasion.id, recip.id))
+            recips.remove(recip)
+            requestStatus.update { Status.SUCCESS }
+
         }
     }
 

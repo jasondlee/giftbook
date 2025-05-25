@@ -64,7 +64,7 @@ fun viewOccasionRecip(
             },
             dialogTitle = "Confirmation",
             dialogText = "Are you sure you want to remove ${component.recip.name} from ${component.occasion.name}?",
-            icon = Icons.Default.QuestionMark
+            icon = Icons.Filled.QuestionMark
         )
     }
     asyncLoad(status) {

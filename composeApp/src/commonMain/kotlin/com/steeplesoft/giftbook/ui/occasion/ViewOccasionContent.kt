@@ -4,18 +4,23 @@ package com.steeplesoft.giftbook.ui.occasion
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +28,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.database.model.Recipient
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.kmpform.components.ConfirmationDialog
@@ -36,19 +42,33 @@ fun viewOccasion(
     modifier: Modifier = Modifier
 ) {
     val occasion = component.occasion
-    val showDialog = remember { mutableStateOf(false) }
+    var recip : MutableState<Recipient?> = remember { mutableStateOf(null) }
+    val deleteOccasionDialog = remember { mutableStateOf(false) }
+    val deleteRecipientDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
 
-    if (showDialog.value) {
+    if (deleteOccasionDialog.value) {
         ConfirmationDialog(
-            onDismissRequest = { showDialog.value = false },
+            onDismissRequest = { deleteOccasionDialog.value = false },
             onConfirmation = {
-                showDialog.value = false
+                deleteOccasionDialog.value = false
                 component.delete()
             },
             dialogTitle = "Confirmation",
             dialogText = "Are you sure you want to delete ${occasion.name}?",
-            icon = Icons.Default.QuestionMark
+            icon = Icons.Filled.QuestionMark
+        )
+    }
+    if (deleteRecipientDialog.value) {
+        ConfirmationDialog(
+            onDismissRequest = { deleteRecipientDialog.value = false },
+            onConfirmation = {
+                deleteRecipientDialog.value = false
+                component.deleteRecip(recip.value!!)
+            },
+            dialogTitle = "Confirmation",
+            dialogText = "Are you sure you want to remove ${recip.value?.name} from  ${occasion.name}?",
+            icon = Icons.Filled.QuestionMark
         )
     }
     asyncLoad(status) {
@@ -64,7 +84,7 @@ fun viewOccasion(
                 AddEditHeader(
                     label = "Occasion Details",
                     editClick = { component.edit() },
-                    deleteClick = { showDialog.value = true }
+                    deleteClick = { deleteOccasionDialog.value = true }
                 )
                 Text(
                     buildAnnotatedString {
@@ -93,22 +113,36 @@ fun viewOccasion(
                     },
                     fontSize = fontSize,
                 )
-                Text("Recipients:",
-                    modifier = Modifier.padding(top=5.dp),
+                Text(
+                    "Recipients:",
+                    modifier = Modifier.padding(top = 5.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = fontSize
                 )
             }
-            items(component.recips) { recip ->
-                Column {
-                    Text(text = recip.name, fontSize = 20.sp,
-                        modifier = Modifier.clickable {
-                            component.editOccasionRecipient(recip)
-                        })
-                    DividingLine()
-                }
-            }
+            items(component.recips) { curr ->
+                    Row {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = curr.name,
+                                fontSize = 20.sp,
+                                modifier = Modifier
+                                    .clickable { component.editOccasionRecipient(curr) }
+                            )
+                        }
+                        Column {
+                                Icon(Icons.Filled.Delete,
+                                    contentDescription = "Edit",
+                                    tint = Color.Red,
+                                    modifier = Modifier.clickable {
+                                        recip.value = curr
+                                        deleteRecipientDialog.value = true
+                                    })
 
+                        }
+                    }
+                    DividingLine()
+            }
         }
     }
 }
