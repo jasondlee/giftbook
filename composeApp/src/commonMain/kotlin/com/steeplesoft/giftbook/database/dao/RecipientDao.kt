@@ -7,12 +7,13 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.Recipient
 
 @Dao
 interface RecipientDao {
-    @Query("SELECT * FROM Recipient")
+    @Query("SELECT * FROM Recipient ORDER BY name")
     suspend fun getAll(): List<Recipient>
 
     @Query("SELECT * FROM recipient WHERE id = :id")
@@ -27,6 +28,10 @@ interface RecipientDao {
     @Insert
     @Transaction
     suspend fun insertAll(vararg recipients: Recipient)
+
+    @Update
+    @Transaction
+    suspend fun update(recipient: Recipient)
 
     @Delete
     suspend fun delete(recipient: Recipient)

@@ -29,5 +29,8 @@ sealed interface NavigationConfig {
     data object Recipients : NavigationConfig
 
     @Serializable
+    data class AddEditRecipient(val recipient: Recipient? = null) : NavigationConfig
+
+    @Serializable
     data class ViewRecipient(val recipient: Recipient) : NavigationConfig
 }

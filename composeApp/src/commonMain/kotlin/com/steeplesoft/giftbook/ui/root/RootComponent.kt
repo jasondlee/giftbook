@@ -12,6 +12,7 @@ import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
 import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
 import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientComponent
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
+import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -37,6 +38,7 @@ class RootComponent(componentContext: ComponentContext) :
             is NavigationConfig.ViewOccasionRecipient -> ViewOccasionRecipient(componentContext, config.recipId, config.occasionId)
             is NavigationConfig.AddEditOccasionRecipient -> AddEditOccasionRecipientComponent(componentContext, config.occasion, config.recipient, config.occasionRecip)
             is NavigationConfig.Recipients -> RecipientListComponent(componentContext)
+            is NavigationConfig.AddEditRecipient -> AddEditRecipientComponent(componentContext, config.recipient)
             is NavigationConfig.ViewRecipient -> TODO()
         }
     }

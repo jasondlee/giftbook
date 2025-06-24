@@ -1,6 +1,7 @@
 package com.steeplesoft.giftbook.ui.root
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +33,9 @@ import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientCompone
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.addEditOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
+import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
+import com.steeplesoft.giftbook.ui.recipients.addEditRecipientContent
 import com.steeplesoft.giftbook.ui.recipients.recipientList
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
@@ -78,11 +81,10 @@ fun RootContent(
         ) { innerPadding ->
             Children(
                 stack = component.stack,
-                modifier = modifier.padding(innerPadding).padding(top = 10.dp),
+                modifier = modifier.padding(innerPadding).padding(5.dp),
                 animation = stackAnimation(slide()),
             ) {
-                val childModifier = modifier.fillMaxSize()
-                    .padding(10.dp)
+                val childModifier = modifier.fillMaxWidth().padding(10.dp)
                 when (val component = it.instance) {
                     is HomeComponent -> home(component, childModifier)
                     is OccasionListComponent -> occasionList(component, childModifier)
@@ -91,6 +93,7 @@ fun RootContent(
                     is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
                     is AddEditOccasionRecipientComponent -> addEditOccasionRecipient(component, childModifier)
                     is RecipientListComponent -> recipientList(component, childModifier)
+                    is AddEditRecipientComponent -> addEditRecipientContent(component, childModifier)
                 }
             }
         }

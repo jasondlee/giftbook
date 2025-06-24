@@ -73,7 +73,7 @@ fun viewOccasionRecip(
                 component.edit()
             }
         )
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = modifier) {
             AddEditHeader(
                 label = component.occasion.name,
                 editClick = { component.edit() },
@@ -123,7 +123,11 @@ fun viewOccasionRecip(
                                 checked = gift.occasionId != null,
                                 onCheckedChange = { checked ->
                                     currentGift = gift
-                                    showCostDialog = true
+                                    if (checked) {
+                                        showCostDialog = true
+                                    } else {
+                                       component.resetGiftGiven(gift.id)
+                                    }
                                 }
                             )
                         }

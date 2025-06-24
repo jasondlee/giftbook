@@ -5,6 +5,7 @@ package com.steeplesoft.giftbook.ui.occasion
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,7 +43,7 @@ fun viewOccasion(
     modifier: Modifier = Modifier
 ) {
     val occasion = component.occasion
-    var recip : MutableState<Recipient?> = remember { mutableStateOf(null) }
+    var recip: MutableState<Recipient?> = remember { mutableStateOf(null) }
     val deleteOccasionDialog = remember { mutableStateOf(false) }
     val deleteRecipientDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
@@ -77,7 +78,7 @@ fun viewOccasion(
                 component.addRecipient()
             }
         )
-        LazyColumn(modifier = Modifier.padding(10.dp)) {
+        LazyColumn(modifier = modifier) {
             item {
                 val fontSize = 24.sp
 
@@ -121,27 +122,30 @@ fun viewOccasion(
                 )
             }
             items(component.recips) { curr ->
-                    Row {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = curr.name,
-                                fontSize = 20.sp,
-                                modifier = Modifier
-                                    .clickable { component.editOccasionRecipient(curr) }
-                            )
-                        }
-                        Column {
-                                Icon(Icons.Filled.Delete,
-                                    contentDescription = "Edit",
-                                    tint = Color.Red,
-                                    modifier = Modifier.clickable {
-                                        recip.value = curr
-                                        deleteRecipientDialog.value = true
-                                    })
-
-                        }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .clickable {
+                            component.editOccasionRecipient(curr)
+                        }) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = curr.name,
+                            fontSize = 24.sp
+                        )
                     }
-                    DividingLine()
+                    Column {
+                        Icon(
+                            Icons.Filled.Delete,
+                            contentDescription = "Edit",
+                            tint = Color.Red,
+                            modifier = Modifier.clickable {
+                                recip.value = curr
+                                deleteRecipientDialog.value = true
+                            })
+
+                    }
+                }
+                DividingLine()
             }
         }
     }

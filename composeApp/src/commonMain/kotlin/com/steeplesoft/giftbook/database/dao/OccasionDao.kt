@@ -26,7 +26,7 @@ interface OccasionDao {
     suspend fun addRecipients(vararg recips: OccasionRecipient)
 
     @Transaction
-    @Query("SELECT * from Occasion where eventDate >= :limit")
+    @Query("SELECT * from Occasion where eventDate >= :limit order by eventDate")
     suspend fun getFutureOccasions(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
 
     @Insert

@@ -40,7 +40,7 @@ fun home(
     val nav : StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     Column(
-        modifier = modifier.padding(10.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         asyncLoad(status) {

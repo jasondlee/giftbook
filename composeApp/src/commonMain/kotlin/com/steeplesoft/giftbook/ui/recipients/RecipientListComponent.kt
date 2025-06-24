@@ -3,6 +3,7 @@ package com.steeplesoft.giftbook.ui.recipients
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.Recipient
 import com.steeplesoft.kmpform.components.Status
@@ -19,11 +20,15 @@ class RecipientListComponent(componentContext: ComponentContext): ComponentConte
     var requestStatus  = MutableValue(Status.LOADING)
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = recipientDao.getAll()
-            recipients.update { list }
+        componentContext.doOnResume {
+            CoroutineScope(Dispatchers.IO).launch {
+                requestStatus.update { Status.LOADING }
 
-            requestStatus.update { Status.SUCCESS }
+                val list = recipientDao.getAll()
+                recipients.update { list }
+
+                requestStatus.update { Status.SUCCESS }
+            }
         }
     }
 }

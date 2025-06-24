@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,25 +35,25 @@ fun occasionList(
 
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
-    Column(
-        modifier = modifier.padding(10.dp),
-    ) {
+    Column(modifier = modifier) {
         asyncLoad(status) {
-            LazyColumn(modifier = Modifier.padding(top = 10.dp)) {
+            LazyColumn {
                 item {
                     Text("Gift Giving Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
                 }
                 items(occasions) { occasion ->
-                    Row {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable {
+                                nav.bringToFront(NavigationConfig.ViewOccasion(occasion))
+                            }) {
                         Image(
                             modifier = Modifier.size(48.dp)
-                                .padding(end=10.dp),
+                                .padding(end = 10.dp),
                             painter = painterResource(occasion.eventType.image),
                             contentDescription = ""
                         )
-                        Column(modifier = Modifier.clickable {
-                            nav.bringToFront(NavigationConfig.ViewOccasion(occasion))
-                        }) {
+                        Column {
                             Text(
                                 fontSize = 24.sp,
                                 text = occasion.name

@@ -90,4 +90,25 @@ class ViewOccasionRecipient(
             gifts.update { orig }
         }
     }
+
+    fun resetGiftGiven(giftId: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val orig = gifts.value
+            val gift = orig.first { it.id == giftId }
+
+            gift.occasionId = null
+            gift.actualCost = null
+
+            giftIdeaDao.update(gift)
+
+            /*
+             * This seems really odd, but if I get gifts.value, change the list, then call gifts.update, nothing happens. The only
+             * way I've found to get the UI to update is to set gifts to an empty list, then back to the real list. Surely I'm just
+             * missing something, but this works for now, so I'll revisit this later when I have more time. -- jdl 2025/03/16
+             */
+            gifts.update { emptyList() }
+            gifts.update { orig }
+        }
+    }
 }
