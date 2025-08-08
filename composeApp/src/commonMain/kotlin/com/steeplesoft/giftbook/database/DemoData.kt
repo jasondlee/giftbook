@@ -37,7 +37,7 @@ private suspend fun loadGiftIdes(database: AppDatabase) {
             GiftIdea(0, "Idea 2", null, 5, 4, 15, 18),
             GiftIdea(0, "Idea 3", null, 5, null, 20),
             GiftIdea(0, "Idea 1", null, 6, null, 10),
-            GiftIdea(0, "Idea 2", null, 6, 4, 20,28),
+            GiftIdea(0, "Idea 2", null, 6, 4, 20, 28),
             GiftIdea(0, "Idea 3", null, 6, null, 5),
         ).forEach { dao.insert(it) }
     }
@@ -47,31 +47,32 @@ private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
         listOf(
-            Occasion(1, "Christmas 2025", LocalDate(2025,12,25), EventType.CHRISTMAS),
-            Occasion(2, "Laura's Birthday 2025", LocalDate(2025,8,1), EventType.BIRTHDAY),
-            Occasion(3, "Christmas 2024", LocalDate(2024,12,25), EventType.CHRISTMAS),
-            Occasion(4, "Valentine's Day 2026", LocalDate(2026,2,14), EventType.VALENTINES),
-            Occasion(5, "Christmas 2026", LocalDate(2026,12,25), EventType.CHRISTMAS),
-            Occasion(6, "Fenton's Birthday 2025", LocalDate(2025,11,21), EventType.BIRTHDAY),
-            Occasion(7, "Valentine's Day 2027", LocalDate(2027,2,14), EventType.VALENTINES),
-            Occasion(8, "Christmas 2027", LocalDate(2027,12,25), EventType.CHRISTMAS),
+            Occasion(1, "Christmas 2025", LocalDate(2025, 12, 25), EventType.CHRISTMAS),
+            Occasion(2, "Laura's Birthday 2025", LocalDate(2025, 8, 1), EventType.BIRTHDAY),
+            Occasion(3, "Christmas 2024", LocalDate(2024, 12, 25), EventType.CHRISTMAS),
+            Occasion(4, "Valentine's Day 2026", LocalDate(2026, 2, 14), EventType.VALENTINES),
+            Occasion(5, "Christmas 2026", LocalDate(2026, 12, 25), EventType.CHRISTMAS),
+            Occasion(6, "Fenton's Birthday 2025", LocalDate(2025, 11, 21), EventType.BIRTHDAY),
+            Occasion(7, "Valentine's Day 2027", LocalDate(2027, 2, 14), EventType.VALENTINES),
+            Occasion(8, "Christmas 2027", LocalDate(2027, 12, 25), EventType.CHRISTMAS),
         ).forEach {
             dao.insert(it)
         }
+
         dao.addRecipients(
-            OccasionRecipient(1, 1, 5, 150),
-            OccasionRecipient(1, 2, 5, 150),
-            OccasionRecipient(1, 3, 5, 150),
-            OccasionRecipient(1, 4, 5, 150),
-            OccasionRecipient(1, 5, 5, 150),
-            OccasionRecipient(1, 6, 5, 150),
-            OccasionRecipient(1, 7, 5, 150),
-            OccasionRecipient(1, 8, 5, 150),
             OccasionRecipient(2, 2, 5, 150),
-            OccasionRecipient(4, 2, 5, 150),
-            OccasionRecipient(4, 5, 3, 35),
-            OccasionRecipient(4, 6, 3, 35),
+            OccasionRecipient(6, 1, 3, 35),
         )
+        (1L..8).map { recip ->
+            dao.addRecipients(
+                OccasionRecipient(1, recip, 3, 35),
+                OccasionRecipient(3, recip, 3, 35),
+                OccasionRecipient(4, recip, 3, 35),
+                OccasionRecipient(5, recip, 3, 35),
+                OccasionRecipient(7, recip, 3, 35),
+                OccasionRecipient(8, recip, 3, 35)
+            )
+        }.toTypedArray()
     }
 }
 
