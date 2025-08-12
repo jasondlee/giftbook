@@ -1,7 +1,6 @@
 package com.steeplesoft.giftbook.ui.idea
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.unit.dp
 import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.kmpform.FieldState
 import com.steeplesoft.kmpform.Form
