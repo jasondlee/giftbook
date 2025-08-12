@@ -1,5 +1,6 @@
 package com.steeplesoft.giftbook.ui.drawer
 
+import com.steeplesoft.giftbook.database.model.GiftIdea
 import com.steeplesoft.giftbook.database.model.Occasion
 import com.steeplesoft.giftbook.database.model.OccasionRecipient
 import com.steeplesoft.giftbook.database.model.Recipient
@@ -33,4 +34,7 @@ sealed interface NavigationConfig {
 
     @Serializable
     data class ViewRecipient(val recipient: Recipient) : NavigationConfig
+
+    @Serializable
+    data class AddEditIdea(val recipient: Recipient, val idea: GiftIdea? = null) : NavigationConfig
 }

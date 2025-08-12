@@ -2,7 +2,7 @@ package com.steeplesoft.giftbook.ui.recipients
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
@@ -37,6 +37,14 @@ class ViewRecipientComponent(
         }
     }
 
+    fun addIdea() {
+        nav.pushToFront(NavigationConfig.AddEditIdea(recipient))
+    }
+
+    fun editIdea(idea: GiftIdea) {
+        nav.pushToFront(NavigationConfig.AddEditIdea(recipient, idea))
+    }
+
     fun edit() {
 //        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
     }
@@ -45,7 +53,7 @@ class ViewRecipientComponent(
         CoroutineScope(Dispatchers.Main).launch {
 //            occasionDao.delete(occasion)
 
-            nav.pop()
+//            nav.pop()
         }
     }
 }

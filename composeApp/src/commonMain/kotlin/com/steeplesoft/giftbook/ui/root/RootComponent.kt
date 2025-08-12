@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.HomeComponent
+import com.steeplesoft.giftbook.ui.idea.AddEditIdeaComponent
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
 import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
@@ -14,9 +15,9 @@ import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientCompone
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
 import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
+import com.steeplesoft.giftbook.ui.recipients.ViewRecipientComponent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-
 class RootComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
@@ -39,7 +40,8 @@ class RootComponent(componentContext: ComponentContext) :
             is NavigationConfig.AddEditOccasionRecipient -> AddEditOccasionRecipientComponent(componentContext, config.occasion, config.recipient, config.occasionRecip)
             is NavigationConfig.Recipients -> RecipientListComponent(componentContext)
             is NavigationConfig.AddEditRecipient -> AddEditRecipientComponent(componentContext, config.recipient)
-            is NavigationConfig.ViewRecipient -> TODO()
+            is NavigationConfig.ViewRecipient -> ViewRecipientComponent(componentContext, config.recipient)
+            is NavigationConfig.AddEditIdea -> AddEditIdeaComponent(componentContext, config.recipient, config.idea)
         }
     }
 }

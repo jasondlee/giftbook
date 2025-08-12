@@ -40,7 +40,7 @@ fun recipientList(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
-                                nav.bringToFront(NavigationConfig.AddEditRecipient(recipient))
+                                nav.bringToFront(NavigationConfig.ViewRecipient(recipient))
                             }) {
                         Text(
                             fontSize = 24.sp,

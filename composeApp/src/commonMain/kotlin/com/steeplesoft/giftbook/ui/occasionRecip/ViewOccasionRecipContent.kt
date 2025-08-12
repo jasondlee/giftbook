@@ -1,10 +1,6 @@
 package com.steeplesoft.giftbook.ui.occasionRecip
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -14,11 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -84,7 +76,9 @@ fun viewOccasionRecip(
                     append(component.recip.name)
                 }
 
-            }/*, modifier = modifier.bottomBorder(1.dp, color = Color.Red)*/)
+            }
+                /*, modifier = modifier.bottomBorder(1.dp, color = Color.Red)*/
+            )
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Target Gift Count: ")
@@ -126,7 +120,7 @@ fun viewOccasionRecip(
                                     if (checked) {
                                         showCostDialog = true
                                     } else {
-                                       component.resetGiftGiven(gift.id)
+                                        component.resetGiftGiven(gift.id)
                                     }
                                 }
                             )
@@ -143,7 +137,8 @@ fun viewOccasionRecip(
                     }
                 }
                 item {
-                    Button(modifier = Modifier.fillMaxWidth(),
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             nav.bringToFront(NavigationConfig.Home(component.occasion))
                         }) {

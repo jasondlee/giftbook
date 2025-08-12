@@ -16,7 +16,7 @@ import com.steeplesoft.kmpform.fields.DateField
 import com.steeplesoft.kmpform.fields.TextField
 
 @Composable
-fun addEditOccasion(
+fun AddEditOccasion(
     component: AddEditOccasionComponent,
     modifier: Modifier = Modifier
 ) {

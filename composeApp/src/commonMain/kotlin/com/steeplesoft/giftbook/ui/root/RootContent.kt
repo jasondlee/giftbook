@@ -23,10 +23,12 @@ import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.home.home
+import com.steeplesoft.giftbook.ui.idea.AddEditIdea
+import com.steeplesoft.giftbook.ui.idea.AddEditIdeaComponent
+import com.steeplesoft.giftbook.ui.occasion.AddEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
 import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
 import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
-import com.steeplesoft.giftbook.ui.occasion.addEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.occasionList
 import com.steeplesoft.giftbook.ui.occasion.viewOccasion
 import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientComponent
@@ -35,7 +37,9 @@ import com.steeplesoft.giftbook.ui.occasionRecip.addEditOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
 import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
+import com.steeplesoft.giftbook.ui.recipients.ViewRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.addEditRecipientContent
+import com.steeplesoft.giftbook.ui.recipients.recipient
 import com.steeplesoft.giftbook.ui.recipients.recipientList
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
@@ -89,11 +93,16 @@ fun RootContent(
                     is HomeComponent -> home(component, childModifier)
                     is OccasionListComponent -> occasionList(component, childModifier)
                     is ViewOccasionComponent -> viewOccasion(component, childModifier)
-                    is AddEditOccasionComponent -> addEditOccasion(component, childModifier)
+                    is AddEditOccasionComponent -> AddEditOccasion(component, childModifier)
                     is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
                     is AddEditOccasionRecipientComponent -> addEditOccasionRecipient(component, childModifier)
                     is RecipientListComponent -> recipientList(component, childModifier)
+                    is ViewRecipientComponent -> recipient(component, childModifier)
                     is AddEditRecipientComponent -> addEditRecipientContent(component, childModifier)
+                    is AddEditIdeaComponent -> AddEditIdea(component, childModifier)
+                    else -> {
+                        Text("Unknown child: ${it.instance}")
+                    }
                 }
             }
         }
