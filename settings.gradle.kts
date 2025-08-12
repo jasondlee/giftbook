@@ -1,4 +1,4 @@
-rootProject.name = "GiftBook"
+rootProject.name = "Giftbook"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
