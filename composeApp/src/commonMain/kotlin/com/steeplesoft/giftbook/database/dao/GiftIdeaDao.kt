@@ -1,6 +1,7 @@
 package com.steeplesoft.giftbook.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
@@ -19,6 +20,10 @@ interface GiftIdeaDao {
     @Update
     @Transaction
     suspend fun update(gift: GiftIdea)
+
+    @Delete
+    @Transaction
+    suspend fun delete(gift: GiftIdea)
 
     @Query("SELECT g.* FROM giftidea g WHERE g.recipientId = :recipId AND g.occasionId IS NULL")
     suspend fun getCurrentGiftIdeasForRecip(recipId: Long): List<GiftIdea>

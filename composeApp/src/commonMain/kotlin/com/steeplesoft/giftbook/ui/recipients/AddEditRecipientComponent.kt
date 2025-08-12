@@ -2,6 +2,7 @@ package com.steeplesoft.giftbook.ui.recipients
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.pop
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.model.Recipient
@@ -42,6 +43,7 @@ class AddEditRecipientComponent(
             }
 
             nav.pop()
+            nav.bringToFront(NavigationConfig.ViewRecipient(recip))
         }
     }
 

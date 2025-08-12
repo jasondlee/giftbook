@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9a645d180d31bebe5c836aafe4f0ce5c",
+    "identityHash": "8fef3959adb0ba1ae2a8fab647d36006",
     "entities": [
       {
         "tableName": "Occasion",
@@ -42,7 +42,7 @@
       },
       {
         "tableName": "GiftIdea",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `notes` TEXT, `recipientId` INTEGER NOT NULL, `occasionId` INTEGER, `estimatedCost` INTEGER NOT NULL, `actualCost` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `notes` TEXT, `recipientId` INTEGER NOT NULL, `occasionId` INTEGER, `estimatedCost` INTEGER NOT NULL, `actualCost` INTEGER, FOREIGN KEY(`recipientId`) REFERENCES `Recipient`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -109,6 +109,19 @@
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_GiftIdea_occasionId` ON `${TABLE_NAME}` (`occasionId`)"
           }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Recipient",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "recipientId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
         ]
       },
       {
@@ -137,7 +150,7 @@
       },
       {
         "tableName": "OccasionRecipient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`occasionId` INTEGER NOT NULL, `recipientId` INTEGER NOT NULL, `targetCount` INTEGER NOT NULL, `targetCost` INTEGER NOT NULL, PRIMARY KEY(`occasionId`, `recipientId`), FOREIGN KEY(`occasionId`) REFERENCES `Occasion`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`recipientId`) REFERENCES `Recipient`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`occasionId` INTEGER NOT NULL, `recipientId` INTEGER NOT NULL, `targetCount` INTEGER NOT NULL, `targetCost` INTEGER NOT NULL, PRIMARY KEY(`occasionId`, `recipientId`), FOREIGN KEY(`occasionId`) REFERENCES `Occasion`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`recipientId`) REFERENCES `Recipient`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "occasionId",
@@ -194,7 +207,7 @@
         "foreignKeys": [
           {
             "table": "Occasion",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "occasionId"
@@ -205,7 +218,7 @@
           },
           {
             "table": "Recipient",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "recipientId"
@@ -219,7 +232,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a645d180d31bebe5c836aafe4f0ce5c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8fef3959adb0ba1ae2a8fab647d36006')"
     ]
   }
 }

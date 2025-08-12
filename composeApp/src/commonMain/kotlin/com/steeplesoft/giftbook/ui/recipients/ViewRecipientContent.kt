@@ -47,7 +47,7 @@ fun recipient(
             onDismissRequest = { deleteRecipientDialog.value = false },
             onConfirmation = {
                 deleteRecipientDialog.value = false
-//                component.deleteRecip(recip.value!!)
+                component.deleteRecipient()
             },
             dialogTitle = "Confirmation",
             dialogText = "Are you sure you want to delete ${component.recipient.name}?",
@@ -59,7 +59,7 @@ fun recipient(
             onDismissRequest = { deleteIdeaDialog.value = false },
             onConfirmation = {
                 deleteIdeaDialog.value = false
-                component.delete()
+                component.deleteIdea(toDelete.value!!)
             },
             dialogTitle = "Confirmation",
             dialogText = "Are you sure you want to delete ${toDelete.value?.title}?",
@@ -76,7 +76,7 @@ fun recipient(
         Column(modifier = modifier) {
             AddEditHeader(
                 label = component.recipient.name,
-                editClick = { component.edit() },
+                editClick = { component.editRecipient() },
                 deleteClick = { deleteRecipientDialog.value = true }
             )
             LazyColumn {
