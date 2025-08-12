@@ -38,7 +38,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 
 @Composable
-fun viewOccasion(
+fun ViewOccasion(
     component: ViewOccasionComponent,
     modifier: Modifier = Modifier
 ) {
@@ -150,5 +150,3 @@ fun viewOccasion(
         }
     }
 }
-
-

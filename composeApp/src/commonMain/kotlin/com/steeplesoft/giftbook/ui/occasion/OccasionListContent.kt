@@ -26,7 +26,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
 @Composable
-fun occasionList(
+fun OccasionList(
     component: OccasionListComponent,
     modifier: Modifier = Modifier
 ) {

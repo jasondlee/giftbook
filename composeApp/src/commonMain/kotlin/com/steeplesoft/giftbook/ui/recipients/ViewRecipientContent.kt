@@ -31,7 +31,7 @@ import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
-fun recipient(
+fun ViewRecipient(
     component: ViewRecipientComponent,
     modifier: Modifier = Modifier
 ) {

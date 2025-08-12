@@ -25,7 +25,7 @@ import com.steeplesoft.kmpform.components.asyncLoad
 import com.steeplesoft.kmpform.fields.IntegerField
 
 @Composable
-fun addEditOccasionRecipient(
+fun AddEditOccasionRecipient(
     component: AddEditOccasionRecipientComponent,
     modifier: Modifier
 ) {

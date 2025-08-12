@@ -22,7 +22,7 @@ import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
-fun recipientList(
+fun RecipientList(
     component: RecipientListComponent,
     modifier: Modifier = Modifier
 ) {

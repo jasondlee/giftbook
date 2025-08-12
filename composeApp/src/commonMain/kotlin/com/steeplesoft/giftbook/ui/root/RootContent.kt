@@ -21,26 +21,26 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
 import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.ui.home.Home
 import com.steeplesoft.giftbook.ui.home.HomeComponent
-import com.steeplesoft.giftbook.ui.home.home
 import com.steeplesoft.giftbook.ui.idea.AddEditIdea
 import com.steeplesoft.giftbook.ui.idea.AddEditIdeaComponent
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasion
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
+import com.steeplesoft.giftbook.ui.occasion.OccasionList
 import com.steeplesoft.giftbook.ui.occasion.OccasionListComponent
+import com.steeplesoft.giftbook.ui.occasion.ViewOccasion
 import com.steeplesoft.giftbook.ui.occasion.ViewOccasionComponent
-import com.steeplesoft.giftbook.ui.occasion.occasionList
-import com.steeplesoft.giftbook.ui.occasion.viewOccasion
+import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipient
 import com.steeplesoft.giftbook.ui.occasionRecip.AddEditOccasionRecipientComponent
+import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecip
 import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
-import com.steeplesoft.giftbook.ui.occasionRecip.addEditOccasionRecipient
-import com.steeplesoft.giftbook.ui.occasionRecip.viewOccasionRecip
 import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
+import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientContent
+import com.steeplesoft.giftbook.ui.recipients.RecipientList
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
+import com.steeplesoft.giftbook.ui.recipients.ViewRecipient
 import com.steeplesoft.giftbook.ui.recipients.ViewRecipientComponent
-import com.steeplesoft.giftbook.ui.recipients.addEditRecipientContent
-import com.steeplesoft.giftbook.ui.recipients.recipient
-import com.steeplesoft.giftbook.ui.recipients.recipientList
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
@@ -90,15 +90,15 @@ fun RootContent(
             ) {
                 val childModifier = modifier.fillMaxWidth().padding(10.dp)
                 when (val component = it.instance) {
-                    is HomeComponent -> home(component, childModifier)
-                    is OccasionListComponent -> occasionList(component, childModifier)
-                    is ViewOccasionComponent -> viewOccasion(component, childModifier)
+                    is HomeComponent -> Home(component, childModifier)
+                    is OccasionListComponent -> OccasionList(component, childModifier)
+                    is ViewOccasionComponent -> ViewOccasion(component, childModifier)
                     is AddEditOccasionComponent -> AddEditOccasion(component, childModifier)
-                    is ViewOccasionRecipient -> viewOccasionRecip(component, childModifier)
-                    is AddEditOccasionRecipientComponent -> addEditOccasionRecipient(component, childModifier)
-                    is RecipientListComponent -> recipientList(component, childModifier)
-                    is ViewRecipientComponent -> recipient(component, childModifier)
-                    is AddEditRecipientComponent -> addEditRecipientContent(component, childModifier)
+                    is ViewOccasionRecipient -> ViewOccasionRecip(component, childModifier)
+                    is AddEditOccasionRecipientComponent -> AddEditOccasionRecipient(component, childModifier)
+                    is RecipientListComponent -> RecipientList(component, childModifier)
+                    is ViewRecipientComponent -> ViewRecipient(component, childModifier)
+                    is AddEditRecipientComponent -> AddEditRecipientContent(component, childModifier)
                     is AddEditIdeaComponent -> AddEditIdea(component, childModifier)
                     else -> {
                         Text("Unknown child: ${it.instance}")

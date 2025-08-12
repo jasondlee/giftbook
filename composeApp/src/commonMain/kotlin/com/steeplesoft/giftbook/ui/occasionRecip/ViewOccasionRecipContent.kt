@@ -38,7 +38,7 @@ import org.koin.compose.koinInject
 
 @ExperimentalMaterial3Api
 @Composable
-fun viewOccasionRecip(
+fun ViewOccasionRecip(
     component: ViewOccasionRecipient,
     modifier: Modifier = Modifier
 ) {

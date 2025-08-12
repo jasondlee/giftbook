@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.steeplesoft.kmpform.fields.TextField
 
 @Composable
-fun addEditRecipientContent(
+fun AddEditRecipientContent(
     component: AddEditRecipientComponent,
     modifier: Modifier = Modifier
 ) {
