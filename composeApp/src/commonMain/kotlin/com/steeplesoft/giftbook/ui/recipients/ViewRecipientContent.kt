@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -87,10 +88,20 @@ fun ViewRecipient(
                                     component.editIdea(item)
                             }) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = item.title,
-                                fontSize = 24.sp
-                            )
+                            Row {
+                                Text(
+                                    text = item.title,
+                                    fontSize = 24.sp
+                                )
+                            }
+                            Row {
+                                if (!item.notes.isNullOrBlank()) {
+                                    Text(
+                                        text = item.notes!!,
+                                        fontStyle = FontStyle.Italic,
+                                    )
+                                }
+                            }
                         }
                         Column {
                             Icon(
