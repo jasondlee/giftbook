@@ -1,21 +1,21 @@
-package com.steeplesoft.giftbook.ui.drawer
+package com.steeplesoft.giftbook
 
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipient
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.GiftIdea
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.Recipient
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface NavigationConfig {
     @Serializable
-    data class Home(val occasion: Occasion? = null) : NavigationConfig
+    data class Home(val occasionId: Long? = null) : NavigationConfig
 
     @Serializable
     data object Occasions : NavigationConfig
 
     @Serializable
-    data class ViewOccasion(val occasion: Occasion) : NavigationConfig
+    data class ViewOccasion(val occasionId: Long) : NavigationConfig
 
     @Serializable
     data class AddEditOccasion(val occasion: Occasion? = null) : NavigationConfig
@@ -33,7 +33,7 @@ sealed interface NavigationConfig {
     data class AddEditRecipient(val recipient: Recipient? = null) : NavigationConfig
 
     @Serializable
-    data class ViewRecipient(val recipient: Recipient) : NavigationConfig
+    data class ViewRecipient(val recipientId: Long) : NavigationConfig
 
     @Serializable
     data class AddEditIdea(val recipient: Recipient, val idea: GiftIdea? = null) : NavigationConfig

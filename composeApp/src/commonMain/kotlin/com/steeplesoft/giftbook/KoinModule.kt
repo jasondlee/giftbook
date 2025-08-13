@@ -8,7 +8,6 @@ import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.loadDemoData
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.core.context.startKoin
@@ -48,4 +47,3 @@ val appModule = module {
     single<OccasionDao> { val db : AppDatabase by inject(); db.occasionDao() }
     single<RecipientDao> { val db : AppDatabase by inject(); db.recipientDao() }
 }
-

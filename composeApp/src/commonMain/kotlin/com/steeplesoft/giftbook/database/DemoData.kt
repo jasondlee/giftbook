@@ -1,10 +1,10 @@
 package com.steeplesoft.giftbook.database
 
-import com.steeplesoft.giftbook.database.model.EventType
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipient
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.EventType
+import com.steeplesoft.giftbook.model.GiftIdea
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.Recipient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

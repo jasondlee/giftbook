@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.ui.occasionRecip
+package com.steeplesoft.giftbook.ui.general
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

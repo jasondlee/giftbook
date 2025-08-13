@@ -5,7 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.idea.AddEditIdeaComponent
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
@@ -32,15 +32,16 @@ class RootComponent(componentContext: ComponentContext) :
 
     private fun child(config: NavigationConfig, componentContext: ComponentContext): ComponentContext {
         return when (config) {
-            is NavigationConfig.Home -> HomeComponent(componentContext, config.occasion)
+            is NavigationConfig.Home -> HomeComponent(componentContext, config.occasionId)
             is NavigationConfig.Occasions -> OccasionListComponent(componentContext)
-            is NavigationConfig.ViewOccasion -> ViewOccasionComponent(componentContext, config.occasion)
+            is NavigationConfig.Recipients -> RecipientListComponent(componentContext)
+
+            is NavigationConfig.ViewOccasion -> ViewOccasionComponent(componentContext, config.occasionId)
             is NavigationConfig.AddEditOccasion -> AddEditOccasionComponent(componentContext, config.occasion)
             is NavigationConfig.ViewOccasionRecipient -> ViewOccasionRecipient(componentContext, config.recipId, config.occasionId)
             is NavigationConfig.AddEditOccasionRecipient -> AddEditOccasionRecipientComponent(componentContext, config.occasion, config.recipient, config.occasionRecip)
-            is NavigationConfig.Recipients -> RecipientListComponent(componentContext)
             is NavigationConfig.AddEditRecipient -> AddEditRecipientComponent(componentContext, config.recipient)
-            is NavigationConfig.ViewRecipient -> ViewRecipientComponent(componentContext, config.recipient)
+            is NavigationConfig.ViewRecipient -> ViewRecipientComponent(componentContext, config.recipientId)
             is NavigationConfig.AddEditIdea -> AddEditIdeaComponent(componentContext, config.recipient, config.idea)
         }
     }

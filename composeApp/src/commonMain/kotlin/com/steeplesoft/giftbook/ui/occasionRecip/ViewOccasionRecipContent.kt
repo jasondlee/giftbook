@@ -36,10 +36,11 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.NavigationConfig
+import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
+import com.steeplesoft.giftbook.ui.general.GiftCostDialog
 import com.steeplesoft.kmpform.components.ConfirmationDialog
 import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
@@ -148,7 +149,7 @@ fun ViewOccasionRecip(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            nav.bringToFront(NavigationConfig.Home(component.occasion))
+                            nav.bringToFront(NavigationConfig.Home(component.occasion.id))
                         }) {
                         Text("Done")
                     }

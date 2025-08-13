@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.ui.occasion
+package com.steeplesoft.giftbook.ui.general
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider

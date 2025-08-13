@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.steeplesoft.giftbook.database.model.GiftIdea
+import com.steeplesoft.giftbook.model.GiftIdea
 
 @Dao
 interface GiftIdeaDao {

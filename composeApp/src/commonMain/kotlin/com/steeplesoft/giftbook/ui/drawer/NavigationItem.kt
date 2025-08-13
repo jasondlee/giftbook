@@ -1,5 +1,6 @@
 package com.steeplesoft.giftbook.ui.drawer
 
+import com.steeplesoft.giftbook.NavigationConfig
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.calendar
 import giftbook.composeapp.generated.resources.group

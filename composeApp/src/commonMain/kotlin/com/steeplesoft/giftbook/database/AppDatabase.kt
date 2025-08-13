@@ -8,10 +8,10 @@ import androidx.room.TypeConverters
 import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipient
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.GiftIdea
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.Recipient
 
 // https://developer.android.com/kotlin/multiplatform/room
 

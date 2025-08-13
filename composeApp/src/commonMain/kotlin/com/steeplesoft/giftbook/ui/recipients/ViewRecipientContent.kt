@@ -21,11 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.NavigationConfig
+import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
-import com.steeplesoft.giftbook.ui.occasion.DividingLine
+import com.steeplesoft.giftbook.ui.general.DividingLine
 import com.steeplesoft.kmpform.components.ConfirmationDialog
 import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject

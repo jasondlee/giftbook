@@ -19,7 +19,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.kmpform.components.ComboBox
 import com.steeplesoft.kmpform.components.asyncLoad
 import com.steeplesoft.kmpform.fields.IntegerField

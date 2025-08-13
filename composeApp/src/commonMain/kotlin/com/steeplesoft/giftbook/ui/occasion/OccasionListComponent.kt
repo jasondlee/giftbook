@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.database.dao.OccasionDao
-import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

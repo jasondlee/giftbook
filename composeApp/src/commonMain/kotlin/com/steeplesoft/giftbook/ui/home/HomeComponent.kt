@@ -3,11 +3,12 @@ package com.steeplesoft.giftbook.ui.home
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import org.koin.core.component.inject
 
 class HomeComponent(
     componentContext: ComponentContext,
-    var occasion: Occasion? = null
+    var occasionId: Long? = null
 ) : ComponentContext by componentContext, KoinComponent {
     private val giftIdeaDao : GiftIdeaDao by inject()
     private val occasionDao : OccasionDao by inject()
@@ -28,17 +29,23 @@ class HomeComponent(
     var occasions = MutableValue(listOf<Occasion>())
     var requestStatus  = MutableValue(Status.LOADING)
     var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
+    var occasion: Occasion? = null
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = occasionDao.getFutureOccasions()
-            occasions.update { list }
+        componentContext.doOnResume {
+            CoroutineScope(Dispatchers.IO).launch {
+                val list = occasionDao.getFutureOccasions()
+                occasionId?.let {
+                    occasion = occasionDao.getOccasion(it)
+                }
+                occasions.update { list }
 
-            if (list.isNotEmpty()) {
-                onOccasionChange(occasion ?: list[0])
+                if (list.isNotEmpty()) {
+                    onOccasionChange(occasion ?: list[0])
+                }
+
+                requestStatus.update { Status.SUCCESS }
             }
-
-            requestStatus.update { Status.SUCCESS }
         }
     }
 

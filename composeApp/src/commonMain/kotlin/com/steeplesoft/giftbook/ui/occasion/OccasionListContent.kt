@@ -19,8 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
+import com.steeplesoft.giftbook.ui.general.DividingLine
 import com.steeplesoft.kmpform.components.asyncLoad
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
@@ -45,7 +46,7 @@ fun OccasionList(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
-                                nav.bringToFront(NavigationConfig.ViewOccasion(occasion))
+                                nav.bringToFront(NavigationConfig.ViewOccasion(occasion.id))
                             }) {
                         Image(
                             modifier = Modifier.size(48.dp)

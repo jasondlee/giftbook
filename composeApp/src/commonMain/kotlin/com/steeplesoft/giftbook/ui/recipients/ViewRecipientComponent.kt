@@ -7,11 +7,11 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.model.GiftIdea
+import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import org.koin.core.component.inject
 
 class ViewRecipientComponent(
     componentContext: ComponentContext,
-    val recipient: Recipient
+    val recipientId: Long
 ) : ComponentContext by componentContext, KoinComponent {
     private val ideaDao : GiftIdeaDao by inject()
     private val recipientDao : RecipientDao by inject()
@@ -30,10 +30,12 @@ class ViewRecipientComponent(
 
     var requestStatus = MutableValue(Status.LOADING)
     var ideas : List<GiftIdea> = emptyList()
+    lateinit var recipient: Recipient
 
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
+                recipient = recipientDao.getRecipient(recipientId)
                 loadIdeasForRecipient()
             }
         }

@@ -2,11 +2,11 @@ package com.steeplesoft.giftbook.ui.occasion
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.pop
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.OccasionDao
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.form.OccasionForm
+import com.steeplesoft.giftbook.model.Occasion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +37,7 @@ class AddEditOccasionComponent(
             }
 
             nav.pop()
-            nav.bringToFront(NavigationConfig.ViewOccasion(newOccasion))
+//            nav.bringToFront(NavigationConfig.ViewOccasion(newOccasion.id))
         }
     }
 

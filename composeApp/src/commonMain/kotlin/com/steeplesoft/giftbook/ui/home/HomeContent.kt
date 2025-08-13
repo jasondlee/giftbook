@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.replaceAll
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.arkivanov.decompose.router.stack.bringToFront
+import com.steeplesoft.giftbook.NavigationConfig
+import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.kmpform.components.ComboBox
 import com.steeplesoft.kmpform.components.asyncLoad
@@ -69,7 +69,7 @@ fun Home(
                         Column(
                             modifier = Modifier.padding(15.dp)
                                 .clickable {
-                                    nav.replaceAll(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
+                                    nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
                                 }
                         ) {
                             Text(it.recipient.name, fontSize = 18.sp)

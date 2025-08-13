@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
-import com.steeplesoft.giftbook.ui.occasion.DividingLine
+import com.steeplesoft.giftbook.ui.general.DividingLine
 import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
@@ -40,7 +40,7 @@ fun RecipientList(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
-                                nav.bringToFront(NavigationConfig.ViewRecipient(recipient))
+                                nav.bringToFront(NavigationConfig.ViewRecipient(recipient.id))
                             }) {
                         Text(
                             fontSize = 24.sp,

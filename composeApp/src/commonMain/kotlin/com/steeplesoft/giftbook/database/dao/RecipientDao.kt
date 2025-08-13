@@ -8,8 +8,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.steeplesoft.giftbook.database.model.OccasionRecipient
-import com.steeplesoft.giftbook.database.model.Recipient
+import com.steeplesoft.giftbook.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.Recipient
 
 @Dao
 interface RecipientDao {

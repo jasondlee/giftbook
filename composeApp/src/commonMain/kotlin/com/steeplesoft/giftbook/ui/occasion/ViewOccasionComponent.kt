@@ -8,11 +8,11 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.kmpform.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +23,12 @@ import org.koin.core.component.inject
 
 class ViewOccasionComponent(
     componentContext: ComponentContext,
-    val occasion: Occasion
+    private val occasionId: Long
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
+    lateinit var occasion: Occasion
 
     var recips : MutableList<Recipient> = mutableListOf()
     var requestStatus = MutableValue(Status.LOADING)
@@ -35,6 +36,7 @@ class ViewOccasionComponent(
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.IO).launch {
+                occasion = occasionDao.getOccasion(occasionId)
                 recips = recipientDao.getRecipientListForOccasion(occasion.id).toMutableList()
                 requestStatus.update { Status.SUCCESS }
             }

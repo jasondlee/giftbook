@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.database.model
+package com.steeplesoft.giftbook.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

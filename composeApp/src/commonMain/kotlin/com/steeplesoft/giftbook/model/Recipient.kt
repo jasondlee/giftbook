@@ -1,4 +1,4 @@
-package com.steeplesoft.giftbook.database.model
+package com.steeplesoft.giftbook.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,4 +14,3 @@ data class Recipient(
     @ColumnInfo(name = "name")
     var name: String
 )
-

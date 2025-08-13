@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
+import com.steeplesoft.giftbook.NavigationConfig
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.back
 import org.jetbrains.compose.resources.painterResource

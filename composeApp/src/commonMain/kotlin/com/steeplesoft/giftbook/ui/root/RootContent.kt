@@ -19,8 +19,8 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.ui.drawer.BottomNavBar
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
 import com.steeplesoft.giftbook.ui.home.Home
 import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.idea.AddEditIdea

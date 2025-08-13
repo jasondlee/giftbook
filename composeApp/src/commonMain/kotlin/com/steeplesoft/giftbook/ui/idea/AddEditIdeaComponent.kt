@@ -3,10 +3,11 @@ package com.steeplesoft.giftbook.ui.idea
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
+import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
-import com.steeplesoft.giftbook.database.model.GiftIdea
-import com.steeplesoft.giftbook.database.model.Recipient
-import com.steeplesoft.giftbook.ui.drawer.NavigationConfig
+import com.steeplesoft.giftbook.form.IdeaForm
+import com.steeplesoft.giftbook.model.GiftIdea
+import com.steeplesoft.giftbook.model.Recipient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

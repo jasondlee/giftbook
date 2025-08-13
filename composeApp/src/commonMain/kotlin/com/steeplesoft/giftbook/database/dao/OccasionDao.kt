@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.steeplesoft.giftbook.database.model.Occasion
-import com.steeplesoft.giftbook.database.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.model.OccasionRecipient
 import com.steeplesoft.giftbook.now
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format

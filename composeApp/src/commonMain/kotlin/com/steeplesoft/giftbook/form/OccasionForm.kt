@@ -1,8 +1,8 @@
-package com.steeplesoft.giftbook.ui.occasion
+package com.steeplesoft.giftbook.form
 
 import androidx.compose.runtime.mutableStateOf
-import com.steeplesoft.giftbook.database.model.EventType
-import com.steeplesoft.giftbook.database.model.Occasion
+import com.steeplesoft.giftbook.model.EventType
+import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.now
 import com.steeplesoft.kmpform.FieldState
 import com.steeplesoft.kmpform.Form
