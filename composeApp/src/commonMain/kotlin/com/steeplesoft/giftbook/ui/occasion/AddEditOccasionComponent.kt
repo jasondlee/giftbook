@@ -27,7 +27,8 @@ class AddEditOccasionComponent(
             val newOccasion = Occasion(
                 occasion?.id ?: 0,
                 form.name.state.value!!,
-                form.eventDate.state.value!!
+                form.eventDate.state.value!!,
+                eventType = form.eventType.state.value!!.eventType
             )
 
             if (occasion == null) {

@@ -47,14 +47,18 @@ private suspend fun loadOccasions(database: AppDatabase) {
     val dao = database.occasionDao()
     if (dao.getAll().isEmpty()) {
         listOf(
-            Occasion(1, "Christmas 2025", LocalDate(2025, 12, 25), EventType.CHRISTMAS),
-            Occasion(2, "Laura's Birthday 2025", LocalDate(2025, 8, 1), EventType.BIRTHDAY),
             Occasion(3, "Christmas 2024", LocalDate(2024, 12, 25), EventType.CHRISTMAS),
-            Occasion(4, "Valentine's Day 2026", LocalDate(2026, 2, 14), EventType.VALENTINES),
+            Occasion(1, "Christmas 2025", LocalDate(2025, 12, 25), EventType.CHRISTMAS),
             Occasion(5, "Christmas 2026", LocalDate(2026, 12, 25), EventType.CHRISTMAS),
-            Occasion(6, "Fenton's Birthday 2025", LocalDate(2025, 11, 21), EventType.BIRTHDAY),
-            Occasion(7, "Valentine's Day 2027", LocalDate(2027, 2, 14), EventType.VALENTINES),
             Occasion(8, "Christmas 2027", LocalDate(2027, 12, 25), EventType.CHRISTMAS),
+
+            Occasion(2, "Laura's Birthday 2025", LocalDate(2025, 8, 1), EventType.BIRTHDAY),
+            Occasion(6, "Fenton's Birthday 2025", LocalDate(2025, 11, 21), EventType.BIRTHDAY),
+
+            Occasion(4, "Valentine's Day 2026", LocalDate(2026, 2, 14), EventType.VALENTINES),
+            Occasion(7, "Valentine's Day 2027", LocalDate(2027, 2, 14), EventType.VALENTINES),
+
+            Occasion(9, "College Graduation", LocalDate(2030, 5, 14), EventType.GRADUATION),
         ).forEach {
             dao.insert(it)
         }

@@ -4,7 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 
-class GiftBookApplication : Application() {
+class GiftbookApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
@@ -12,7 +12,7 @@ class GiftBookApplication : Application() {
 
         initKoin {
             androidLogger()
-            androidContext(this@GiftBookApplication)
+            androidContext(this@GiftbookApplication)
         }
     }
 }
