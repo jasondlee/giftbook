@@ -79,9 +79,10 @@ fun Home(
                     }
                 }
             }
+
             ActionButton(
                 onClick = {
-
+                    component.addRecipient()
                 }
             )
         }

@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.steeplesoft.kmpform.fields.ComboBoxField
 import com.steeplesoft.kmpform.fields.DateField
 import com.steeplesoft.kmpform.fields.TextField
@@ -27,6 +28,7 @@ fun AddEditOccasion(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
+                Text(text = component.occasion?.let { "Edit Occasion" } ?: "Add New Occasion", fontSize = 30.sp)
                 TextField(
                     label = "Occasion Name",
                     form = form,
