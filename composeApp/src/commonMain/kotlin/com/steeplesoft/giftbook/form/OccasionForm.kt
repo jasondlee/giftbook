@@ -1,13 +1,13 @@
 package com.steeplesoft.giftbook.form
 
 import androidx.compose.runtime.mutableStateOf
+import com.steeplesoft.camper.FieldState
+import com.steeplesoft.camper.Form
+import com.steeplesoft.camper.fields.PickerValue
+import com.steeplesoft.camper.validators.NotBlankValidator
 import com.steeplesoft.giftbook.model.EventType
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.now
-import com.steeplesoft.kmpform.FieldState
-import com.steeplesoft.kmpform.Form
-import com.steeplesoft.kmpform.fields.PickerValue
-import com.steeplesoft.kmpform.validators.NotEmptyValidator
 import kotlinx.datetime.LocalDate
 
 class OccasionForm(val occasion: Occasion?) : Form() {
@@ -20,7 +20,7 @@ class OccasionForm(val occasion: Occasion?) : Form() {
 
     val name: FieldState<String?> = FieldState(
         state = mutableStateOf(occasion?.name),
-        validators = mutableListOf(NotEmptyValidator()),
+        validators = mutableListOf(NotBlankValidator()),
     )
     val eventDate: FieldState<LocalDate?> = FieldState(
         state = mutableStateOf(occasion?.eventDate ?: LocalDate.now())
@@ -36,9 +36,9 @@ class OccasionForm(val occasion: Occasion?) : Form() {
             EventTypeOption.OTHER
         ),
         optionItemFormatter = { it?.eventType?.label ?: "Unknown" },
-        validators = mutableListOf(
-            NotEmptyValidator()
-        )
+//        validators = mutableListOf(
+//            NotBlankValidator()
+//        )
     )
 }
 

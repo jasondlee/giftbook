@@ -3,8 +3,8 @@ package com.steeplesoft.giftbook.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.steeplesoft.giftbook.database.EventTypeConverter
 import com.steeplesoft.giftbook.database.LocalDateConverter
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
@@ -24,15 +24,3 @@ data class Occasion (
     @ColumnInfo(name="eventType", typeAffinity = ColumnInfo.INTEGER)
     var eventType: EventType = EventType.OTHER
 )
-
-class EventTypeConverter {
-    @TypeConverter
-    fun toEventType(type: Int): EventType {
-        return EventType.of(type)
-    }
-
-    @TypeConverter
-    fun fromEventType(type: EventType): Int {
-        return type.code
-    }
-}

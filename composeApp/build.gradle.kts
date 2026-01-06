@@ -76,7 +76,7 @@ kotlin {
 
             implementation(libs.ktor.serialization.json)
 
-            implementation(libs.kmp.form)
+            implementation(libs.camper)
         }
 
         androidMain.dependencies {
@@ -128,6 +128,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -137,8 +141,4 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
 }

@@ -19,10 +19,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.camper.components.AsyncLoad
+import com.steeplesoft.camper.components.ComboBox
+import com.steeplesoft.camper.fields.IntegerField
 import com.steeplesoft.giftbook.model.Recipient
-import com.steeplesoft.kmpform.components.ComboBox
-import com.steeplesoft.kmpform.components.asyncLoad
-import com.steeplesoft.kmpform.fields.IntegerField
 
 @Composable
 fun AddEditOccasionRecipient(
@@ -35,7 +35,7 @@ fun AddEditOccasionRecipient(
     ) {
         val status by component.requestStatus.subscribeAsState()
 
-        asyncLoad(status) {
+        AsyncLoad(status) {
             val form = component.form
 
             Text(

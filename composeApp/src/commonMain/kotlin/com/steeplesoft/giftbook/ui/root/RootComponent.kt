@@ -9,6 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.OccasionDao
+import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.ui.home.HomeComponent
 import com.steeplesoft.giftbook.ui.idea.AddEditIdeaComponent
 import com.steeplesoft.giftbook.ui.occasion.AddEditOccasionComponent
@@ -29,6 +30,7 @@ class RootComponent(componentContext: ComponentContext) :
     ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
+    private val recipientDao : RecipientDao by inject()
 
     val stack: Value<ChildStack<*, ComponentContext>> = childStack(
         source = nav,
@@ -41,9 +43,14 @@ class RootComponent(componentContext: ComponentContext) :
     init {
         componentContext.doOnResume {
             CoroutineScope(Dispatchers.Main).launch {
-                val list = occasionDao.getFutureOccasions()
-                if (list.isEmpty()) {
+                val occasions = occasionDao.getFutureOccasions()
+                if (occasions.isEmpty()) {
                     nav.bringToFront(NavigationConfig.AddEditOccasion())
+                } else {
+                    val recipients = recipientDao.getAll()
+                    if (recipients.isEmpty()) {
+                        nav.bringToFront(NavigationConfig.AddEditRecipient())
+                    }
                 }
             }
         }

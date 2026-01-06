@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
+import com.steeplesoft.camper.components.AsyncLoad
+import com.steeplesoft.camper.components.ComboBox
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.ui.general.ActionButton
-import com.steeplesoft.kmpform.components.ComboBox
-import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
@@ -43,7 +43,7 @@ fun Home(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        asyncLoad(status) {
+        AsyncLoad(status) {
             val occasions by component.occasions.subscribeAsState()
             val current: Occasion? by remember { mutableStateOf(component.occasion) }
 

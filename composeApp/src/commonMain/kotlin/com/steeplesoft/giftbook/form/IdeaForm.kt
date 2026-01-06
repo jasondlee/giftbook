@@ -1,11 +1,11 @@
 package com.steeplesoft.giftbook.form
 
 import androidx.compose.runtime.mutableStateOf
+import com.steeplesoft.camper.FieldState
+import com.steeplesoft.camper.Form
+import com.steeplesoft.camper.Validator
+import com.steeplesoft.camper.validators.NotBlankValidator
 import com.steeplesoft.giftbook.model.GiftIdea
-import com.steeplesoft.kmpform.FieldState
-import com.steeplesoft.kmpform.Form
-import com.steeplesoft.kmpform.Validator
-import com.steeplesoft.kmpform.validators.NotEmptyValidator
 
 class IdeaForm(val idea : GiftIdea? = null) : Form() {
     override fun self(): Form {
@@ -16,7 +16,7 @@ class IdeaForm(val idea : GiftIdea? = null) : Form() {
 
     val title : FieldState<String?> = FieldState(
         state = mutableStateOf(idea?.title),
-        validators = mutableListOf(NotEmptyValidator()))
+        validators = mutableListOf(NotBlankValidator()))
     val notes : FieldState<String?> = FieldState(
         state = mutableStateOf(idea?.notes))
     val estimatedCost : FieldState<String?> = FieldState(

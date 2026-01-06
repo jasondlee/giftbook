@@ -22,13 +22,13 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.steeplesoft.camper.components.AsyncLoad
+import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.DividingLine
-import com.steeplesoft.kmpform.components.ConfirmationDialog
-import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
@@ -68,7 +68,7 @@ fun ViewRecipient(
         )
     }
 
-    asyncLoad(status) {
+    AsyncLoad(status) {
         ActionButton(
             onClick = {
                 component.addIdea()

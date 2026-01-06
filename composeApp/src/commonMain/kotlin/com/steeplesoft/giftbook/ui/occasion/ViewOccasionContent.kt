@@ -29,12 +29,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.camper.components.AsyncLoad
+import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.DividingLine
-import com.steeplesoft.kmpform.components.ConfirmationDialog
-import com.steeplesoft.kmpform.components.asyncLoad
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 
@@ -73,7 +73,7 @@ fun ViewOccasion(
             icon = Icons.Filled.QuestionMark
         )
     }
-    asyncLoad(status) {
+    AsyncLoad(status) {
         ActionButton(
             onClick = {
                 component.addRecipient()

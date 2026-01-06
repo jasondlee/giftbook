@@ -15,10 +15,10 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
+import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.DividingLine
-import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @Composable
@@ -30,7 +30,7 @@ fun RecipientList(
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     Column(modifier = modifier) {
-        asyncLoad(status) {
+        AsyncLoad(status) {
             val recipients by component.recipients.subscribeAsState()
             LazyColumn {
                 item {

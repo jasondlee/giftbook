@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.steeplesoft.kmpform.fields.TextField
+import com.steeplesoft.camper.fields.TextField
 
 @Composable
 fun AddEditIdea(

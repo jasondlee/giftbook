@@ -14,20 +14,17 @@ import platform.Foundation.NSUserDomainMask
 
 actual val platformModule = module {
     single<RoomDatabase.Builder<AppDatabase>> {
-        fun documentDirectory(): String {
-            val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
-                directory = NSDocumentDirectory,
-                inDomain = NSUserDomainMask,
-                appropriateForURL = null,
-                create = false,
-                error = null,
-            )
-            return requireNotNull(documentDirectory?.path)
-        }
+        val documentDirectoryUrl = NSFileManager.defaultManager.URLForDirectory(
+            directory = NSDocumentDirectory,
+            inDomain = NSUserDomainMask,
+            appropriateForURL = null,
+            create = false,
+            error = null,
+        )
+        val documentDirectory = requireNotNull(documentDirectoryUrl?.path)
 
-        val dbFilePath = documentDirectory() + "/" + dbFileName
         Room.databaseBuilder<AppDatabase>(
-            name = dbFilePath,
+            name = "$documentDirectory/$dbFileName",
         )
     }
 }

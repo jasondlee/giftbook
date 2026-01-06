@@ -36,13 +36,13 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
+import com.steeplesoft.camper.components.AsyncLoad
+import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.GiftCostDialog
-import com.steeplesoft.kmpform.components.ConfirmationDialog
-import com.steeplesoft.kmpform.components.asyncLoad
 import org.koin.compose.koinInject
 
 @ExperimentalMaterial3Api
@@ -68,7 +68,7 @@ fun ViewOccasionRecip(
             icon = Icons.Filled.QuestionMark
         )
     }
-    asyncLoad(status) {
+    AsyncLoad(status) {
         ActionButton(
             onClick = {
                 component.edit()

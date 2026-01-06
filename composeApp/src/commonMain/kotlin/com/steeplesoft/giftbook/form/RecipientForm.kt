@@ -1,10 +1,10 @@
 package com.steeplesoft.giftbook.form
 
 import androidx.compose.runtime.mutableStateOf
+import com.steeplesoft.camper.FieldState
+import com.steeplesoft.camper.Form
+import com.steeplesoft.camper.validators.NotBlankValidator
 import com.steeplesoft.giftbook.model.Recipient
-import com.steeplesoft.kmpform.FieldState
-import com.steeplesoft.kmpform.Form
-import com.steeplesoft.kmpform.validators.NotEmptyValidator
 
 class RecipientForm(val recipient: Recipient?) : Form() {
     override fun self(): Form {
@@ -14,6 +14,6 @@ class RecipientForm(val recipient: Recipient?) : Form() {
 
     val name : FieldState<String?> = FieldState(
         state = mutableStateOf(recipient?.name),
-        validators = mutableListOf(NotEmptyValidator())
+        validators = mutableListOf(NotBlankValidator())
     )
 }

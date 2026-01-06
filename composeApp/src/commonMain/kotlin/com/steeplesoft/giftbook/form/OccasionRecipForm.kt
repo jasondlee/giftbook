@@ -1,9 +1,9 @@
 package com.steeplesoft.giftbook.form
 
 import androidx.compose.runtime.mutableStateOf
+import com.steeplesoft.camper.FieldState
+import com.steeplesoft.camper.Form
 import com.steeplesoft.giftbook.model.OccasionRecipient
-import com.steeplesoft.kmpform.FieldState
-import com.steeplesoft.kmpform.Form
 
 class OccasionRecipForm(val occasionRecip: OccasionRecipient?) : Form() {
 

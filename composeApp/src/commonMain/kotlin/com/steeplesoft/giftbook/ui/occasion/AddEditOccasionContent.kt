@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.steeplesoft.kmpform.fields.ComboBoxField
-import com.steeplesoft.kmpform.fields.DateField
-import com.steeplesoft.kmpform.fields.TextField
+import com.steeplesoft.camper.fields.ComboBoxField
+import com.steeplesoft.camper.fields.DateField
+import com.steeplesoft.camper.fields.TextField
 
 @Composable
 fun AddEditOccasion(
