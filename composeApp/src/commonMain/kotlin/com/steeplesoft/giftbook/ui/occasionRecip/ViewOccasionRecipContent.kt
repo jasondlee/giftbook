@@ -71,7 +71,7 @@ fun ViewOccasionRecip(
     AsyncLoad(status) {
         ActionButton(
             onClick = {
-                component.edit()
+                component.addIdea()
             }
         )
         Column(modifier = modifier) {
@@ -118,7 +118,7 @@ fun ViewOccasionRecip(
                 )
             }
 
-            LazyColumn {
+            LazyColumn(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)) {
                 items(gifts) { gift ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column {
@@ -135,12 +135,13 @@ fun ViewOccasionRecip(
                             )
                         }
                         Column(modifier = Modifier.padding(start = 10.dp)) {
+                            val noPad = Modifier.padding(0.dp)
                             Text(
-                                text = "${gift.title}${gift.actualCost?.let { " - \$$it" } ?: ""}", fontSize = 18.sp,
-                                modifier = modifier.wrapContentHeight(align = Alignment.Bottom),
+                                text = "${gift.title}${gift.actualCost?.let { " - \$$it" } ?: " - (up to \$${gift.estimatedCost})"}", fontSize = 18.sp,
+                                modifier = noPad.wrapContentHeight(align = Alignment.Bottom)
                             )
                             gift.notes?.let {
-                                Text(it, fontStyle = FontStyle.Italic)
+                                Text(it, fontStyle = FontStyle.Italic, modifier = noPad)
                             }
                         }
                     }

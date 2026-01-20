@@ -39,6 +39,11 @@ private suspend fun loadGiftIdes(database: AppDatabase) {
             GiftIdea(0, "Idea 1", null, 6, null, 10),
             GiftIdea(0, "Idea 2", null, 6, 4, 20, 28),
             GiftIdea(0, "Idea 3", null, 6, null, 5),
+            GiftIdea(0, "Idea 4", null, 1, null, 25),
+            GiftIdea(0, "Idea 5", null, 1, null, 25),
+            GiftIdea(0, "Idea 6", null, 1, null, 25),
+            GiftIdea(0, "Idea 7", null, 1, null, 25),
+            GiftIdea(0, "Idea 8", null, 1, null, 25),
         ).forEach { dao.insert(it) }
     }
 }

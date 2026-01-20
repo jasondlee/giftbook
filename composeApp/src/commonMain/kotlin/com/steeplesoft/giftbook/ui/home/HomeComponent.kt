@@ -12,12 +12,11 @@ import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.Occasion
-import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.model.OccasionProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -86,12 +85,3 @@ class HomeComponent(
     }
 }
 
-@Serializable
-data class OccasionProgress(
-    val recipient: Recipient,
-    val occasionId: Long,
-    val targetCount: Int,
-    val actualCount: Int,
-    val targetCost: Int,
-    val actualCost: Int
-)

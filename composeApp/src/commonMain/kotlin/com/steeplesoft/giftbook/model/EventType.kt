@@ -36,9 +36,3 @@ enum class EventType(
         }
     }
 }
-
-//                Image(
-//                    painter = painterResource(Res.drawable.back),
-//                    contentDescription = "Back",
-//                    modifier = Modifier.size(48.dp)
-//                )
