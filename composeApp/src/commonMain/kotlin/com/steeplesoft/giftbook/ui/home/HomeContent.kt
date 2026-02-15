@@ -1,7 +1,6 @@
 package com.steeplesoft.giftbook.ui.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,56 +37,51 @@ fun Home(
     val occasionProgress by component.occasionProgress.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        AsyncLoad(status) {
-            val occasions by component.occasions.subscribeAsState()
-            val current: Occasion? by remember { mutableStateOf(component.occasion) }
+    AsyncLoad(status) {
+        val occasions by component.occasions.subscribeAsState()
+        val current: Occasion? by remember { mutableStateOf(component.occasion) }
 
-            ComboBox(
-                label = "Current Occasion",
-                selected = current,
-                onChange = { newValue ->
-                    component.onOccasionChange(newValue!!)
-                },
-                items = occasions,
-                itemLabel = { item -> item?.name ?: "--" }
-            )
+        ComboBox(
+            label = "Current Occasion",
+            selected = current,
+            onChange = { newValue ->
+                component.onOccasionChange(newValue!!)
+            },
+            items = occasions,
+            itemLabel = { item -> item?.name ?: "--" }
+        )
 
-            LazyColumn(
-                modifier = Modifier.testTag("recipientList")
-            ) {
-                items(occasionProgress) {
-                    ElevatedCard(
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 6.dp
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp)
+        LazyColumn(
+            modifier = Modifier.testTag("recipientList")
+        ) {
+            items(occasionProgress) {
+                ElevatedCard(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 6.dp
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(15.dp)
+                            .clickable {
+                                nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
+                            }
                     ) {
-                        Column(
-                            modifier = Modifier.padding(15.dp)
-                                .clickable {
-                                    nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
-                                }
-                        ) {
-                            Text(it.recipient.name, fontSize = 18.sp)
-                            OccasionProgressRow("Number", it.targetCount, it.actualCount)
-                            OccasionProgressRow("Cost", it.targetCost, it.actualCost)
-                        }
+                        Text(it.recipient.name, fontSize = 18.sp)
+                        OccasionProgressRow("Number", it.targetCount, it.actualCount)
+                        OccasionProgressRow("Cost", it.targetCost, it.actualCost)
                     }
                 }
             }
-
-            ActionButton(
-                onClick = {
-                    component.addRecipient()
-                }
-            )
         }
+
+        ActionButton(
+            onClick = {
+                component.addRecipient()
+            }
+        )
     }
 }
 

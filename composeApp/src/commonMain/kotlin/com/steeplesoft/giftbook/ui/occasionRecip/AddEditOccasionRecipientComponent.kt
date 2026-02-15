@@ -58,21 +58,24 @@ class AddEditOccasionRecipientComponent(
 
     fun save() {
         CoroutineScope(Dispatchers.Main).launch {
-            if (recipient != null) {
-                val or = OccasionRecipient(
-                    occasionId = occasion.id,
-                    recipientId = recipient!!.id,
-                    targetCost = form.cost.state.value ?: 0,
-                    targetCount = form.count.state.value ?: 0
-                )
+            form.validate()
+            if (form.isValid) {
+                if (recipient != null) {
+                    val or = OccasionRecipient(
+                        occasionId = occasion.id,
+                        recipientId = recipient!!.id,
+                        targetCost = form.cost.state.value ?: 0,
+                        targetCount = form.count.state.value ?: 0
+                    )
 
-                if (occasionRecipient != null) {
-                    occasionDao.updateOccasionRecip(or)
-                } else {
-                    occasionDao.insertOccasionRecip(or)
+                    if (occasionRecipient != null) {
+                        occasionDao.updateOccasionRecip(or)
+                    } else {
+                        occasionDao.insertOccasionRecip(or)
+                    }
+
+                    nav.pop()
                 }
-
-                nav.pop()
             }
         }
     }
