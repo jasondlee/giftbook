@@ -41,37 +41,39 @@ fun Home(
         val occasions by component.occasions.subscribeAsState()
         val current: Occasion? by remember { mutableStateOf(component.occasion) }
 
-        ComboBox(
-            label = "Current Occasion",
-            selected = current,
-            onChange = { newValue ->
-                component.onOccasionChange(newValue!!)
-            },
-            items = occasions,
-            itemLabel = { item -> item?.name ?: "--" }
-        )
+        Column {
+            ComboBox(
+                label = "Current Occasion",
+                selected = current,
+                onChange = { newValue ->
+                    component.onOccasionChange(newValue!!)
+                },
+                items = occasions,
+                itemLabel = { item -> item?.name ?: "--" }
+            )
 
-        LazyColumn(
-            modifier = Modifier.testTag("recipientList")
-        ) {
-            items(occasionProgress) {
-                ElevatedCard(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 10.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(15.dp)
-                            .clickable {
-                                nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
-                            }
+            LazyColumn(
+                modifier = Modifier.testTag("recipientList")
+            ) {
+                items(occasionProgress) {
+                    ElevatedCard(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 6.dp
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp)
                     ) {
-                        Text(it.recipient.name, fontSize = 18.sp)
-                        OccasionProgressRow("Number", it.targetCount, it.actualCount)
-                        OccasionProgressRow("Cost", it.targetCost, it.actualCost)
+                        Column(
+                            modifier = Modifier.padding(15.dp)
+                                .clickable {
+                                    nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
+                                }
+                        ) {
+                            Text(it.recipient.name, fontSize = 18.sp)
+                            OccasionProgressRow("Number", it.targetCount, it.actualCount)
+                            OccasionProgressRow("Cost", it.targetCost, it.actualCost)
+                        }
                     }
                 }
             }

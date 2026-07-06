@@ -72,7 +72,7 @@ private suspend fun loadOccasions(database: AppDatabase) {
             OccasionRecipient(2, 2, 5, 150),
             OccasionRecipient(6, 1, 3, 35),
         )
-        (1L..8).map { recip ->
+        (1L..8 step 2).map { recip ->
             dao.addRecipients(
                 OccasionRecipient(1, recip, 3, 35),
                 OccasionRecipient(3, recip, 3, 35),

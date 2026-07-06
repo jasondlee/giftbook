@@ -8,11 +8,7 @@ import com.steeplesoft.camper.validators.NotBlankValidator
 import com.steeplesoft.giftbook.model.GiftIdea
 
 class IdeaForm(val idea : GiftIdea? = null) : Form() {
-    override fun self(): Form {
-        return this
-    }
-
-    override fun getFormFields() = listOf(title)
+    override fun getFormFields() = listOf(title, notes, estimatedCost)
 
     val title : FieldState<String?> = FieldState(
         state = mutableStateOf(idea?.title),

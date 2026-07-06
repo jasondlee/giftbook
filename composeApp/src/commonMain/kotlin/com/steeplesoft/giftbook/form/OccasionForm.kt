@@ -12,11 +12,7 @@ import kotlinx.datetime.LocalDate
 
 class OccasionForm(val occasion: Occasion?) : Form() {
 
-    override fun self(): Form {
-        return this
-    }
-
-    override fun getFormFields() = listOf(name, eventDate)
+    override fun getFormFields() = listOf(name, eventDate, eventType)
 
     val name: FieldState<String?> = FieldState(
         state = mutableStateOf(occasion?.name),

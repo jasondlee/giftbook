@@ -2,7 +2,7 @@ package com.steeplesoft.giftbook.ui.home
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
@@ -80,7 +80,7 @@ class HomeComponent(
 
     fun addRecipient() {
         occasion?.let {
-            nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it))
+            nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(it))
         }
     }
 }
