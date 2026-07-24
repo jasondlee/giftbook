@@ -41,7 +41,7 @@ class HomeComponent(
                 requestStatus.update { Status.LOADING }
 
                 val list = occasionDao.getFutureOccasions()
-                hasRecipients = !recipientDao.getAll().isEmpty()
+                hasRecipients = recipientDao.getAll().isNotEmpty()
                 occasion =
                     if (occasionId != null)
                         occasionDao.getOccasion(occasionId!!)
@@ -62,15 +62,15 @@ class HomeComponent(
     fun onOccasionChange(newValue: Occasion) {
         CoroutineScope(Dispatchers.IO).launch {
             occasion = newValue
-            val list = recipientDao.getRecipientsForOccasion(newValue.id).map {
-                val ideas = giftIdeaDao.lookupIdeasByRecipAndOccasion(it.recipientId, newValue.id)
+            val list = recipientDao.getRecipientsForOccasion(newValue.id).map { occasionRecipient ->
+                val ideas = giftIdeaDao.lookupIdeasByRecipAndOccasion(occasionRecipient.recipientId, newValue.id)
                 OccasionProgress(
-                    recipientDao.getRecipient(it.recipientId),
-                    newValue.id,
-                    targetCount = it.targetCount,
-                    actualCount = ideas.filter { idea -> idea.occasionId != null }.size,
-                    actualCost = ideas.sumOf { idea -> idea.actualCost ?: 0 },
-                    targetCost = it.targetCost
+                    recipient = recipientDao.getRecipient(occasionRecipient.recipientId),
+                    occasionId = newValue.id,
+                    targetCount = occasionRecipient.targetCount,
+                    actualCount = ideas.count { it.occasionId != null },
+                    actualCost = ideas.sumOf { it.actualCost ?: 0 },
+                    targetCost = occasionRecipient.targetCost
                 )
             }
 

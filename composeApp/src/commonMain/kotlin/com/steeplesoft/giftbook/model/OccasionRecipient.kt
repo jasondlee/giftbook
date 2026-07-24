@@ -12,16 +12,26 @@ import kotlinx.serialization.Serializable
 @Entity(
     primaryKeys = ["occasionId", "recipientId"],
     foreignKeys = [
-        ForeignKey(entity = Occasion::class, parentColumns = ["id"], childColumns = ["occasionId"], onDelete = ForeignKey.CASCADE),
-        ForeignKey(entity = Recipient::class, parentColumns = ["id"], childColumns = ["recipientId"], onDelete = ForeignKey.CASCADE)
+        ForeignKey(
+            entity = Occasion::class,
+            parentColumns = ["id"],
+            childColumns = ["occasionId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Recipient::class,
+            parentColumns = ["id"],
+            childColumns = ["recipientId"],
+            onDelete = ForeignKey.CASCADE
+        )
     ],
-    indices =[
+    indices = [
         Index(value = ["recipientId"]),
         Index(value = ["occasionId"]),
     ]
 )
 @Serializable
-data class OccasionRecipient (
+data class OccasionRecipient(
     val occasionId: Long,
     val recipientId: Long,
     val targetCount: Int,

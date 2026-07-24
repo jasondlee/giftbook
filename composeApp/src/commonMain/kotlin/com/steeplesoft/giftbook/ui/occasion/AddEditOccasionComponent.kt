@@ -25,9 +25,9 @@ class AddEditOccasionComponent(
     fun save() {
         CoroutineScope(Dispatchers.Main).launch {
             val newOccasion = Occasion(
-                occasion?.id ?: 0,
-                form.name.state.value!!,
-                form.eventDate.state.value!!,
+                id = occasion?.id ?: 0,
+                name = form.name.state.value!!,
+                eventDate = form.eventDate.state.value!!,
                 eventType = form.eventType.state.value!!.eventType
             )
 
@@ -38,7 +38,6 @@ class AddEditOccasionComponent(
             }
 
             nav.pop()
-//            nav.bringToFront(NavigationConfig.ViewOccasion(newOccasion.id))
         }
     }
 

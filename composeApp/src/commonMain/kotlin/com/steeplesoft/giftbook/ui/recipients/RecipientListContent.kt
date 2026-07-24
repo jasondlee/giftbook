@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
@@ -34,7 +34,7 @@ fun RecipientList(
             val recipients by component.recipients.subscribeAsState()
             LazyColumn {
                 item {
-                    Text("Recipients", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+                    Text("Recipients", fontWeight = FontWeight.Bold, fontSize = Typography.headerSize)
                 }
                 items(recipients) { recipient ->
                     Row(
@@ -43,7 +43,7 @@ fun RecipientList(
                                 nav.bringToFront(NavigationConfig.ViewRecipient(recipient.id))
                             }) {
                         Text(
-                            fontSize = 24.sp,
+                            fontSize = Typography.primaryTextSize,
                             text = recipient.name
                         )
                     }

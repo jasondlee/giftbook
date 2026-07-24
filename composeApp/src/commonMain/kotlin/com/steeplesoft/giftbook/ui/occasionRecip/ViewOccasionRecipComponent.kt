@@ -60,17 +60,13 @@ class ViewOccasionRecipient(
 
     fun delete() {
         CoroutineScope(Dispatchers.Main).launch {
-//            db.occasionDao().delete(occasion)
             occasionDao.deleteOccasionRecip(occasionRecip)
-
             nav.pop()
-//            nav.bringToFront(NavigationConfig.Home(occasionId))
         }
     }
 
     fun giftGiven(giftId: Long, cost: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-
             val orig = gifts.value
             val gift = orig.first { it.id == giftId }
 
@@ -91,7 +87,6 @@ class ViewOccasionRecipient(
 
     fun resetGiftGiven(giftId: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-
             val orig = gifts.value
             val gift = orig.first { it.id == giftId }
 
@@ -108,7 +103,6 @@ class ViewOccasionRecipient(
             gifts.update { emptyList() }
             gifts.update { orig }
         }
-
     }
 
     fun addIdea() {

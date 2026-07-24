@@ -12,5 +12,5 @@ data class Recipient(
     var id: Long = 0,
 
     @ColumnInfo(name = "name")
-    var name: String
+    val name: String
 )

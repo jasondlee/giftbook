@@ -22,17 +22,8 @@ enum class EventType(
     OTHER(999, "Other", Res.drawable.gift);
 
     companion object {
-        fun of(code: Int): EventType {
-
-            return when (code) {
-                0 -> BIRTHDAY
-                1 -> CHRISTMAS
-                2 -> ANNIVERSARY
-                3 -> GRADUATION
-                4 -> VALENTINES
-                999 -> OTHER
-                else -> throw RuntimeException("Unknown event type")
-            }
-        }
+        fun of(code: Int): EventType =
+            entries.find { it.code == code }
+                ?: throw IllegalArgumentException("Unknown event type code: $code")
     }
 }

@@ -27,13 +27,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.theme.Typography
 import com.steeplesoft.camper.components.AsyncLoad
-import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.model.Recipient
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
+import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.DividingLine
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -49,30 +50,17 @@ fun ViewOccasion(
     val deleteRecipientDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
 
-    if (deleteOccasionDialog.value) {
-        ConfirmationDialog(
-            onDismissRequest = { deleteOccasionDialog.value = false },
-            onConfirmation = {
-                deleteOccasionDialog.value = false
-                component.delete()
-            },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to delete ${occasion.name}?",
-            icon = Icons.Filled.QuestionMark
-        )
-    }
-    if (deleteRecipientDialog.value) {
-        ConfirmationDialog(
-            onDismissRequest = { deleteRecipientDialog.value = false },
-            onConfirmation = {
-                deleteRecipientDialog.value = false
-                component.deleteRecip(recip.value!!)
-            },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to remove ${recip.value?.name} from  ${occasion.name}?",
-            icon = Icons.Filled.QuestionMark
-        )
-    }
+    DeleteConfirmationDialog(
+        showDialog = deleteOccasionDialog,
+        itemName = occasion.name,
+        onConfirm = { component.delete() }
+    )
+    
+    DeleteConfirmationDialog(
+        showDialog = deleteRecipientDialog,
+        itemName = "${recip.value?.name} from ${occasion.name}",
+        onConfirm = { component.deleteRecip(recip.value!!) }
+    )
     AsyncLoad(status) {
         ActionButton(
             onClick = {
@@ -81,8 +69,6 @@ fun ViewOccasion(
         )
         LazyColumn(modifier = modifier) {
             item {
-                val fontSize = 24.sp
-
                 AddEditHeader(
                     label = "Occasion Details",
                     editClick = { component.edit() },
@@ -95,7 +81,7 @@ fun ViewOccasion(
                         }
                         append(occasion.name)
                     },
-                    fontSize = fontSize,
+                    fontSize = Typography.primaryTextSize,
                 )
                 Text(
                     buildAnnotatedString {
@@ -104,7 +90,7 @@ fun ViewOccasion(
                         }
                         append(occasion.eventDate.format(LocalDate.Formats.ISO))
                     },
-                    fontSize = fontSize,
+                    fontSize = Typography.primaryTextSize,
                 )
                 Text(
                     buildAnnotatedString {
@@ -113,13 +99,13 @@ fun ViewOccasion(
                         }
                         append(occasion.eventType.label)
                     },
-                    fontSize = fontSize,
+                    fontSize = Typography.primaryTextSize,
                 )
                 Text(
                     "Recipients:",
-                    modifier = Modifier.padding(top = 5.dp),
+                    modifier = Modifier.padding(top = Spacing.internalPadding),
                     fontWeight = FontWeight.Bold,
-                    fontSize = fontSize
+                    fontSize = Typography.primaryTextSize
                 )
             }
             items(component.recips) { curr ->
@@ -131,7 +117,7 @@ fun ViewOccasion(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = curr.name,
-                            fontSize = 24.sp
+                            fontSize = Typography.primaryTextSize
                         )
                     }
                     Column {

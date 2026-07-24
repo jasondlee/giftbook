@@ -50,7 +50,6 @@ class ViewOccasionComponent(
     fun delete() {
         CoroutineScope(Dispatchers.Main).launch {
             occasionDao.delete(occasion)
-
             nav.pop()
         }
     }
@@ -61,7 +60,6 @@ class ViewOccasionComponent(
             occasionDao.deleteOccasionRecip(recipientDao.getRecipientForOccasion(occasion.id, recip.id))
             recips.remove(recip)
             requestStatus.update { Status.SUCCESS }
-
         }
     }
 

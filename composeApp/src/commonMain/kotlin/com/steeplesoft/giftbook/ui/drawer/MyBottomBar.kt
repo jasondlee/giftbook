@@ -11,8 +11,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.steeplesoft.giftbook.theme.IconSize
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.NavigationConfig
@@ -31,9 +32,9 @@ fun BottomNavBar(
         NavigationItem.Recipients
     )
     NavigationBar/*(containerColor = mainColor)*/ {
-        val labelSize = 10.sp
+        val labelSize = Typography.smallTextSize
         //getting the list of bottom navigation items for our data class
-        val iconSize = 36.dp
+        val iconSize = IconSize.navigationIcon
         NavigationBarItem(
             icon = {
                 Icon(

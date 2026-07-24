@@ -19,15 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.steeplesoft.camper.components.AsyncLoad
-import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
+import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.DividingLine
 import org.koin.compose.koinInject
 
@@ -43,30 +43,17 @@ fun ViewRecipient(
     val deleteIdeaDialog = remember { mutableStateOf(false) }
     var toDelete: MutableState<GiftIdea?> = remember { mutableStateOf(null) }
 
-    if (deleteRecipientDialog.value) {
-        ConfirmationDialog(
-            onDismissRequest = { deleteRecipientDialog.value = false },
-            onConfirmation = {
-                deleteRecipientDialog.value = false
-                component.deleteRecipient()
-            },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to delete ${component.recipient.name}?",
-            icon = Icons.Filled.QuestionMark
-        )
-    }
-    if (deleteIdeaDialog.value) {
-        ConfirmationDialog(
-            onDismissRequest = { deleteIdeaDialog.value = false },
-            onConfirmation = {
-                deleteIdeaDialog.value = false
-                component.deleteIdea(toDelete.value!!)
-            },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to delete ${toDelete.value?.title}?",
-            icon = Icons.Filled.QuestionMark
-        )
-    }
+    DeleteConfirmationDialog(
+        showDialog = deleteRecipientDialog,
+        itemName = component.recipient.name,
+        onConfirm = { component.deleteRecipient() }
+    )
+    
+    DeleteConfirmationDialog(
+        showDialog = deleteIdeaDialog,
+        itemName = toDelete.value?.title ?: "",
+        onConfirm = { component.deleteIdea(toDelete.value!!) }
+    )
 
     AsyncLoad(status) {
         ActionButton(
@@ -91,7 +78,7 @@ fun ViewRecipient(
                             Row {
                                 Text(
                                     text = item.title,
-                                    fontSize = 24.sp
+                                    fontSize = Typography.primaryTextSize
                                 )
                             }
                             Row {

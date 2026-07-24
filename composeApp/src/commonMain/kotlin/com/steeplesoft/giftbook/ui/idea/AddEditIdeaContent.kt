@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.steeplesoft.camper.fields.TextField
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.ui.general.SaveCancelButtons
+import com.steeplesoft.giftbook.ui.general.StandardHeader
 
 @Composable
 fun AddEditIdea(
@@ -20,12 +22,11 @@ fun AddEditIdea(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = modifier.padding(Spacing.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(Spacing.fieldSpacing)
     ) {
         val form = component.form
-        Text(text = "Gift Idea for ${component.recipient.name}",
-            fontWeight = FontWeight.Companion.Bold, fontSize = 30.sp)
+        StandardHeader(text = "Gift Idea for ${component.recipient.name}")
         TextField(
             label = "Gift Idea",
             form = form,
@@ -42,23 +43,9 @@ fun AddEditIdea(
             fieldState = form.estimatedCost,
         ).Field()
 
-
-
-        Row(modifier = Modifier.padding(top = 5.dp).fillMaxWidth()) {
-            Button(
-                onClick = { component.save() },
-                modifier = Modifier.padding(end = 3.dp)
-                    .fillMaxWidth(0.5f)
-            ) {
-                Text("Save")
-            }
-            Button(
-                onClick = { component.cancel() },
-                modifier = Modifier.padding(start = 3.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Cancel")
-            }
-        }
+        SaveCancelButtons(
+            onSave = { component.save() },
+            onCancel = { component.cancel() }
+        )
     }
 }

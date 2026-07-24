@@ -13,18 +13,19 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDate
 
-val mutex = Mutex()
+private val mutex = Mutex()
+
 fun loadDemoData(database: AppDatabase) {
     CoroutineScope(Dispatchers.IO).launch {
         mutex.withLock {
             loadRecipients(database)
             loadOccasions(database)
-            loadGiftIdes(database)
+            loadGiftIdeas(database)
         }
     }
 }
 
-private suspend fun loadGiftIdes(database: AppDatabase) {
+private suspend fun loadGiftIdeas(database: AppDatabase) {
     val dao = database.giftIdeaDao()
     if (dao.getAll().isEmpty()) {
         listOf(

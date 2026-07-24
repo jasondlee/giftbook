@@ -32,16 +32,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
-import com.steeplesoft.camper.components.ConfirmationDialog
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
+import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.GiftCostDialog
 import org.koin.compose.koinInject
 
@@ -56,18 +57,11 @@ fun ViewOccasionRecip(
     val gifts by component.gifts.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
-    if (showDialog.value) {
-        ConfirmationDialog(
-            onDismissRequest = { showDialog.value = false },
-            onConfirmation = {
-                showDialog.value = false
-                component.delete()
-            },
-            dialogTitle = "Confirmation",
-            dialogText = "Are you sure you want to remove ${component.recip.name} from ${component.occasion.name}?",
-            icon = Icons.Filled.QuestionMark
-        )
-    }
+    DeleteConfirmationDialog(
+        showDialog = showDialog,
+        itemName = "${component.recip.name} from ${component.occasion.name}",
+        onConfirm = { component.delete() }
+    )
     AsyncLoad(status) {
         ActionButton(
             onClick = {
@@ -81,13 +75,10 @@ fun ViewOccasionRecip(
                 deleteClick = { showDialog.value = true }
             )
             Text(buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp)) {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, fontSize = Typography.primaryTextSize)) {
                     append(component.recip.name)
                 }
-
-            }
-                /*, modifier = modifier.bottomBorder(1.dp, color = Color.Red)*/
-            )
+            })
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Target Gift Count: ")
@@ -118,7 +109,7 @@ fun ViewOccasionRecip(
                 )
             }
 
-            LazyColumn(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)) {
+            LazyColumn(modifier = Modifier.padding(top = Spacing.screenPadding, bottom = Spacing.screenPadding)) {
                 items(gifts) { gift ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column {
@@ -134,10 +125,11 @@ fun ViewOccasionRecip(
                                 }
                             )
                         }
-                        Column(modifier = Modifier.padding(start = 10.dp)) {
+                        Column(modifier = Modifier.padding(start = Spacing.screenPadding)) {
                             val noPad = Modifier.padding(0.dp)
                             Text(
-                                text = "${gift.title}${gift.actualCost?.let { " - \$$it" } ?: " - (up to \$${gift.estimatedCost})"}", fontSize = 18.sp,
+                                text = "${gift.title}${gift.actualCost?.let { " - \$$it" } ?: " - (up to \$${gift.estimatedCost})"}", 
+                                fontSize = Typography.secondaryTextSize,
                                 modifier = noPad.wrapContentHeight(align = Alignment.Bottom)
                             )
                             gift.notes?.let {

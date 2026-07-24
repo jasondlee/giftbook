@@ -33,17 +33,13 @@ fun initKoin(config: KoinAppDeclaration? = null) {
 val appModule = module {
     single<StackNavigation<NavigationConfig>> { StackNavigation() }
     single<AppDatabase>(createdAtStart = true) {
-        val builder : RoomDatabase.Builder<AppDatabase> by inject()
-        val database = builder
+        get<RoomDatabase.Builder<AppDatabase>>()
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
-
-        loadDemoData(database)
-
-        database
+            .also { loadDemoData(it) }
     }
-    single<GiftIdeaDao> { val db : AppDatabase by inject(); db.giftIdeaDao() }
-    single<OccasionDao> { val db : AppDatabase by inject(); db.occasionDao() }
-    single<RecipientDao> { val db : AppDatabase by inject(); db.recipientDao() }
+    single<GiftIdeaDao> { get<AppDatabase>().giftIdeaDao() }
+    single<OccasionDao> { get<AppDatabase>().occasionDao() }
+    single<RecipientDao> { get<AppDatabase>().recipientDao() }
 }

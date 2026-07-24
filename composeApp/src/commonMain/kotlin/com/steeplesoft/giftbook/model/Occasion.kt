@@ -11,16 +11,18 @@ import kotlinx.serialization.Serializable
 
 @Entity
 @Serializable
-data class Occasion (
+data class Occasion(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
 
     @ColumnInfo(name = "name")
-    var name: String,
+    val name: String,
+    
     @field:TypeConverters(LocalDateConverter::class)
-    @ColumnInfo(name="eventDate", typeAffinity = ColumnInfo.TEXT)
-    var eventDate: LocalDate,
+    @ColumnInfo(name = "eventDate", typeAffinity = ColumnInfo.TEXT)
+    val eventDate: LocalDate,
+    
     @field:TypeConverters(EventTypeConverter::class)
-    @ColumnInfo(name="eventType", typeAffinity = ColumnInfo.INTEGER)
-    var eventType: EventType = EventType.OTHER
+    @ColumnInfo(name = "eventType", typeAffinity = ColumnInfo.INTEGER)
+    val eventType: EventType = EventType.OTHER
 )

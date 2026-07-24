@@ -15,8 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
@@ -40,7 +41,7 @@ fun OccasionList(
         AsyncLoad(status) {
             LazyColumn {
                 item {
-                    Text("Gift Giving Occasions", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+                    Text("Gift Giving Occasions", fontWeight = FontWeight.Bold, fontSize = Typography.headerSize)
                 }
                 items(occasions) { occasion ->
                     Row(
@@ -50,17 +51,17 @@ fun OccasionList(
                             }) {
                         Image(
                             modifier = Modifier.size(48.dp)
-                                .padding(end = 10.dp),
+                                .padding(end = Spacing.screenPadding),
                             painter = painterResource(occasion.eventType.image),
                             contentDescription = ""
                         )
                         Column {
                             Text(
-                                fontSize = 24.sp,
+                                fontSize = Typography.primaryTextSize,
                                 text = occasion.name
                             )
                             Text(
-                                fontSize = 18.sp,
+                                fontSize = Typography.secondaryTextSize,
                                 text = "${occasion.eventDate}"
                             )
                         }

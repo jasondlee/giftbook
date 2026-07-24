@@ -42,8 +42,8 @@ class ViewRecipientComponent(
     }
 
     private suspend fun loadIdeasForRecipient() {
-            ideas = ideaDao.getCurrentGiftIdeasForRecip(recipient.id)
-            requestStatus.update { Status.SUCCESS }
+        ideas = ideaDao.getCurrentGiftIdeasForRecip(recipient.id)
+        requestStatus.update { Status.SUCCESS }
     }
 
     fun addIdea() {

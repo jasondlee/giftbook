@@ -29,8 +29,8 @@ class AddEditIdeaComponent(
             form.validate()
             if (form.isValid) {
                 val newIdea = GiftIdea(
-                    idea?.id ?: 0,
-                    form.title.state.value!!,
+                    id = idea?.id ?: 0,
+                    title = form.title.state.value!!,
                     notes = form.notes.state.value ?: "",
                     recipientId = recipient.id,
                     estimatedCost = form.estimatedCost.state.value?.toInt() ?: 0,

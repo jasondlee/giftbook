@@ -16,8 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
@@ -62,15 +63,15 @@ fun Home(
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 10.dp)
+                            .padding(bottom = Spacing.listItemBottomPadding)
                     ) {
                         Column(
-                            modifier = Modifier.padding(15.dp)
+                            modifier = Modifier.padding(Spacing.cardPadding)
                                 .clickable {
                                     nav.bringToFront(NavigationConfig.ViewOccasionRecipient(it.recipient.id, it.occasionId))
                                 }
                         ) {
-                            Text(it.recipient.name, fontSize = 18.sp)
+                            Text(it.recipient.name, fontSize = Typography.secondaryTextSize)
                             OccasionProgressRow("Number", it.targetCount, it.actualCount)
                             OccasionProgressRow("Cost", it.targetCost, it.actualCost)
                         }

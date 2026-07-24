@@ -29,13 +29,15 @@ data class GiftIdea(
     var id: Long,
 
     @ColumnInfo(name = "title")
-    var title: String,
+    val title: String,
 
     @ColumnInfo(name = "notes")
-    var notes: String? = null,
-    var recipientId: Long,
+    val notes: String? = null,
+    
+    val recipientId: Long,
     var occasionId: Long? = null,
-    var estimatedCost: Int,
+    val estimatedCost: Int,
+    
     @ColumnInfo
     var actualCost: Int? = null,
 )

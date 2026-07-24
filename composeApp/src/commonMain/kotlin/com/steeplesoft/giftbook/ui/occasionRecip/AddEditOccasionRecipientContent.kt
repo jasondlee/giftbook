@@ -16,13 +16,15 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.theme.Typography
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.camper.components.ComboBox
 import com.steeplesoft.camper.fields.IntegerField
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.general.SaveCancelButtons
+import com.steeplesoft.giftbook.ui.general.StandardHeader
 
 @Composable
 fun AddEditOccasionRecipient(
@@ -31,7 +33,7 @@ fun AddEditOccasionRecipient(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(Spacing.fieldSpacing)
     ) {
         val status by component.requestStatus.subscribeAsState()
 
@@ -45,7 +47,7 @@ fun AddEditOccasionRecipient(
                     }
                     append(component.occasion.name)
                 },
-                fontSize = 20.sp,
+                fontSize = Typography.primaryTextSize,
             )
 
             if (component.recipient != null) {
@@ -56,7 +58,7 @@ fun AddEditOccasionRecipient(
                         }
                         append(component.recipient!!.name)
                     },
-                    fontSize = 20.sp,
+                    fontSize = Typography.primaryTextSize,
                 )
             } else {
                 val recipients by component.recipients.subscribeAsState()
@@ -85,23 +87,10 @@ fun AddEditOccasionRecipient(
                 fieldState = form.cost,
             ).Field()
 
-            Row(modifier = Modifier.padding(top = 5.dp).fillMaxWidth()) {
-                Button(
-                    onClick = { component.save() },
-                    modifier = Modifier.padding(end = 3.dp)
-                        .fillMaxWidth(0.5f)
-                ) {
-                    Text("Save")
-                }
-
-                Button(
-                    onClick = { component.cancel() },
-                    modifier = Modifier.padding(start = 3.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text("Cancel")
-                }
-            }
+            SaveCancelButtons(
+                onSave = { component.save() },
+                onCancel = { component.cancel() }
+            )
         }
     }
 }

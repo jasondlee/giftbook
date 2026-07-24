@@ -60,10 +60,10 @@ class AddEditOccasionRecipientComponent(
         CoroutineScope(Dispatchers.Main).launch {
             form.validate()
             if (form.isValid) {
-                if (recipient != null) {
+                recipient?.let { recip ->
                     val or = OccasionRecipient(
                         occasionId = occasion.id,
-                        recipientId = recipient!!.id,
+                        recipientId = recip.id,
                         targetCost = form.cost.state.value ?: 0,
                         targetCount = form.count.state.value ?: 0
                     )

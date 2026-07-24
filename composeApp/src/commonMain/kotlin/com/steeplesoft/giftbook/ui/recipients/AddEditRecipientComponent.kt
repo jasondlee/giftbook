@@ -21,14 +21,6 @@ class AddEditRecipientComponent(
     private val recipientDao: RecipientDao by inject()
     var form = RecipientForm(recipient)
 
-    init {
-//        componentContext.doOnResume {
-//            CoroutineScope(Dispatchers.IO).launch {
-//
-//            }
-//        }
-    }
-
     fun save() {
         CoroutineScope(Dispatchers.Main).launch {
             val recip = Recipient(

@@ -9,8 +9,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.steeplesoft.camper.fields.TextField
+import com.steeplesoft.giftbook.theme.Spacing
+import com.steeplesoft.giftbook.ui.general.SaveCancelButtons
+import com.steeplesoft.giftbook.ui.general.StandardHeader
 
 @Composable
 fun AddEditRecipientContent(
@@ -21,29 +23,19 @@ fun AddEditRecipientContent(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(Spacing.fieldSpacing)
     ) {
+        StandardHeader(text = component.recipient?.let { "Edit Recipient" } ?: "Add New Recipient")
+        
         TextField(
             label = "Recipient Name",
             form = form,
             fieldState = form.name,
         ).Field()
 
-        Row(modifier = Modifier.padding(top = 5.dp).fillMaxWidth()) {
-            Button(
-                onClick = { component.save() },
-                modifier = Modifier.padding(end = 3.dp)
-                    .fillMaxWidth(0.5f)
-            ) {
-                Text("Save")
-            }
-            Button(
-                onClick = { component.cancel() },
-                modifier = Modifier.padding(start = 3.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Cancel")
-            }
-        }
+        SaveCancelButtons(
+            onSave = { component.save() },
+            onCancel = { component.cancel() }
+        )
     }
 }
