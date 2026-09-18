@@ -70,3 +70,13 @@ composeApp/
 - **Data Persistence**: Reliable local storage using Room database
 - **User Experience**: Intuitive navigation and data entry flows
 - **App Store Readiness**: Code quality and polish suitable for public release
+
+## Development Workflow
+
+- Use the checked-in Gradle wrapper (`./gradlew`) for consistent builds.
+- `./gradlew build` runs the full project build.
+- `./gradlew :composeApp:assembleDebug` creates the Android debug artifact.
+- `./gradlew :composeApp:allTests` runs the available multiplatform tests. A dedicated test source tree and coverage threshold are not currently established.
+- Build and run the iOS target from `iosApp/iosApp.xcodeproj` in Xcode.
+
+Shared code belongs in `composeApp/src/commonMain`; Android- and iOS-specific implementations belong in their corresponding source sets. Room schemas are kept under `composeApp/schemas` and should remain version controlled when database changes are made.
