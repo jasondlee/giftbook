@@ -7,6 +7,7 @@ import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.form.RecipientForm
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,10 +20,11 @@ class AddEditRecipientComponent(
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav: StackNavigation<NavigationConfig> by inject()
     private val recipientDao: RecipientDao by inject()
+    private val scope = componentContext.componentScope()
     var form = RecipientForm(recipient)
 
     fun save() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             form.validate()
             val name = form.name.state.value?.trim().orEmpty()
             if (!form.isValid || name.isEmpty()) return@launch
@@ -43,7 +45,7 @@ class AddEditRecipientComponent(
     }
 
     fun cancel() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             nav.pop()
         }
     }

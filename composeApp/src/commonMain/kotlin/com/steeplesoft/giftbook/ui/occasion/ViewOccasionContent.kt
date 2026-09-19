@@ -48,9 +48,10 @@ fun ViewOccasion(
     val deleteOccasionDialog = remember { mutableStateOf(false) }
     val deleteRecipientDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
+    val recips by component.recips.subscribeAsState()
 
     AsyncLoad(status) {
-        val occasion = component.occasion
+        val occasion = component.occasion.value ?: return@AsyncLoad
 
         DeleteConfirmationDialog(
             showDialog = deleteOccasionDialog,
@@ -110,7 +111,7 @@ fun ViewOccasion(
                     fontSize = Typography.primaryTextSize
                 )
             }
-            items(component.recips) { curr ->
+            items(recips, key = { it.id }) { curr ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .clickable {

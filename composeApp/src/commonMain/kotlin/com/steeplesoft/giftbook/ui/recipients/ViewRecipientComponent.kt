@@ -13,6 +13,7 @@ import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -28,46 +29,48 @@ class ViewRecipientComponent(
     private val recipientDao : RecipientDao by inject()
     private val nav : StackNavigation<NavigationConfig> by inject()
 
-    var requestStatus = MutableValue(Status.LOADING)
-    var ideas : List<GiftIdea> = emptyList()
-    lateinit var recipient: Recipient
+    val requestStatus = MutableValue(Status.LOADING)
+    val ideas = MutableValue<List<GiftIdea>>(emptyList())
+    val recipient = MutableValue<Recipient?>(null)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
-                recipient = recipientDao.getRecipient(recipientId)
-                loadIdeasForRecipient()
+            scope.launch(Dispatchers.IO) {
+                val loadedRecipient = recipientDao.getRecipient(recipientId)
+                recipient.update { loadedRecipient }
+                loadIdeasForRecipient(loadedRecipient)
             }
         }
     }
 
-    private suspend fun loadIdeasForRecipient() {
-        ideas = ideaDao.getCurrentGiftIdeasForRecip(recipient.id)
+    private suspend fun loadIdeasForRecipient(loadedRecipient: Recipient = requireNotNull(recipient.value)) {
+        ideas.update { ideaDao.getCurrentGiftIdeasForRecip(loadedRecipient.id) }
         requestStatus.update { Status.SUCCESS }
     }
 
     fun addIdea() {
-        nav.pushToFront(NavigationConfig.AddEditIdea(recipient))
+        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
     }
 
     fun editIdea(idea: GiftIdea) {
-        nav.pushToFront(NavigationConfig.AddEditIdea(recipient, idea))
+        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it, idea)) }
     }
 
     fun deleteIdea(idea: GiftIdea) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch(Dispatchers.IO) {
             ideaDao.delete(idea)
-            loadIdeasForRecipient()
+            recipient.value?.let(::loadIdeasForRecipient)
         }
     }
 
     fun editRecipient() {
-        nav.pushToFront(NavigationConfig.AddEditRecipient(recipient))
+        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditRecipient(it)) }
     }
 
     fun deleteRecipient() {
-        CoroutineScope(Dispatchers.Main).launch {
-            recipientDao.delete(recipient)
+        scope.launch {
+            recipient.value?.let { recipientDao.delete(it) }
             nav.pop()
         }
     }

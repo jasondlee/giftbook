@@ -55,12 +55,19 @@ fun ViewOccasionRecip(
     val showDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
     val gifts by component.gifts.subscribeAsState()
+    val recip by component.recip.subscribeAsState()
+    val occasion by component.occasion.subscribeAsState()
+    val occasionRecip by component.occasionRecip.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     AsyncLoad(status) {
+        val currentRecip = recip ?: return@AsyncLoad
+        val currentOccasion = occasion ?: return@AsyncLoad
+        val currentOccasionRecip = occasionRecip ?: return@AsyncLoad
+
         DeleteConfirmationDialog(
             showDialog = showDialog,
-            itemName = "${component.recip.name} from ${component.occasion.name}",
+            itemName = "${currentRecip.name} from ${currentOccasion.name}",
             onConfirm = { component.delete() }
         )
 
@@ -71,26 +78,26 @@ fun ViewOccasionRecip(
         )
         Column(modifier = modifier) {
             AddEditHeader(
-                label = component.occasion.name,
+                label = currentOccasion.name,
                 editClick = { component.edit() },
                 deleteClick = { showDialog.value = true }
             )
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, fontSize = Typography.primaryTextSize)) {
-                    append(component.recip.name)
+                    append(currentRecip.name)
                 }
             })
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Target Gift Count: ")
                 }
-                append(component.occasionRecip.targetCount.toString())
+                append(currentOccasionRecip.targetCount.toString())
             })
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Target Gift Cost: $")
                 }
-                append(component.occasionRecip.targetCost.toString())
+                append(currentOccasionRecip.targetCost.toString())
             })
 
             var showCostDialog by remember { mutableStateOf(false) }
@@ -143,7 +150,7 @@ fun ViewOccasionRecip(
                     Button(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            nav.bringToFront(NavigationConfig.Home(component.occasion.id))
+                            nav.bringToFront(NavigationConfig.Home(currentOccasion.id))
                         }) {
                         Text("Done")
                     }

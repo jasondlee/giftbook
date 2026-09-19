@@ -14,6 +14,7 @@ import com.steeplesoft.giftbook.form.OccasionRecipForm
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionRecipient
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -24,32 +25,35 @@ import org.koin.core.component.inject
 class AddEditOccasionRecipientComponent(
     val componentContext: ComponentContext,
     val occasion: Occasion,
-    var recipient: Recipient? = null,
-    var occasionRecipient: OccasionRecipient? = null
+    recipient: Recipient? = null,
+    occasionRecipient: OccasionRecipient? = null
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav: StackNavigation<NavigationConfig> by inject()
     private val occasionDao: OccasionDao by inject()
     private val recipientDao: RecipientDao by inject()
 
-    var form = OccasionRecipForm(occasionRecipient)
-    var requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
-    var recipients: MutableValue<List<Recipient>> = MutableValue(emptyList())
+    val recipient = MutableValue(recipient)
+    val occasionRecipient = MutableValue(occasionRecipient)
+    var form = OccasionRecipForm(occasionRecipient.value)
+    val requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
+    val recipients: MutableValue<List<Recipient>> = MutableValue(emptyList())
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
-                if (recipient == null) {
+            scope.launch(Dispatchers.IO) {
+                if (recipient.value == null) {
                     val allRecips = recipientDao.getAll()
                     val recipsForOccasion = recipientDao.getRecipientListForOccasion(occasion.id).map { it.id }
                     val available = allRecips.filter { !recipsForOccasion.contains(it.id) }
                     recipients.update { available }
                 }
 
-                if (recipient != null && occasionRecipient == null) {
-                    occasionRecipient = recipientDao.getRecipientForOccasion(occasion.id, recipient!!.id)
+                if (recipient.value != null && occasionRecipient.value == null) {
+                    occasionRecipient.update { recipientDao.getRecipientForOccasion(occasion.id, recipient.value!!.id) }
                 }
 
-                form = OccasionRecipForm(occasionRecipient)
+                form = OccasionRecipForm(occasionRecipient.value)
 
                 requestStatus.update { Status.SUCCESS }
             }
@@ -57,10 +61,10 @@ class AddEditOccasionRecipientComponent(
     }
 
     fun save() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             form.validate()
             if (form.isValid) {
-                recipient?.let { recip ->
+                recipient.value?.let { recip ->
                     val or = OccasionRecipient(
                         occasionId = occasion.id,
                         recipientId = recip.id,
@@ -68,7 +72,7 @@ class AddEditOccasionRecipientComponent(
                         targetCount = form.count.state.value ?: 0
                     )
 
-                    if (occasionRecipient != null) {
+                    if (occasionRecipient.value != null) {
                         occasionDao.updateOccasionRecip(or)
                     } else {
                         occasionDao.insertOccasionRecip(or)
@@ -81,7 +85,7 @@ class AddEditOccasionRecipientComponent(
     }
 
     fun cancel() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             nav.pop()
         }
     }

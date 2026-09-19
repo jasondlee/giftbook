@@ -9,8 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import com.arkivanov.decompose.value.update
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -39,6 +38,7 @@ fun AddEditOccasionRecipient(
 
         AsyncLoad(status) {
             val form = component.form
+            val selectedRecipient by component.recipient.subscribeAsState()
 
             Text(
                 buildAnnotatedString {
@@ -50,25 +50,23 @@ fun AddEditOccasionRecipient(
                 fontSize = Typography.primaryTextSize,
             )
 
-            if (component.recipient != null) {
+            if (selectedRecipient != null) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append("Recipient: ")
                         }
-                        append(component.recipient!!.name)
+                            append(selectedRecipient.name)
                     },
                     fontSize = Typography.primaryTextSize,
                 )
             } else {
                 val recipients by component.recipients.subscribeAsState()
 
-                val current: Recipient? by remember { mutableStateOf(component.recipient) }
-
                 ComboBox(label = "Recipient",
-                    selected = current,
+                    selected = selectedRecipient,
                     onChange = { newValue ->
-                        component.recipient = newValue
+                        component.recipient.update { newValue }
                     },
                     items = recipients,
                     itemLabel = { recip -> recip?.name ?: "--" }

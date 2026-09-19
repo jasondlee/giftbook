@@ -13,6 +13,7 @@ import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionProgress
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -29,28 +30,28 @@ class HomeComponent(
     private val recipientDao: RecipientDao by inject()
     private val nav: StackNavigation<NavigationConfig> by inject()
 
-    var occasions = MutableValue(listOf<Occasion>())
-    var requestStatus = MutableValue(Status.LOADING)
-    var occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(mutableListOf())
-    var occasion: Occasion? = null
-    var hasRecipients = false
+    val occasions = MutableValue(listOf<Occasion>())
+    val requestStatus = MutableValue(Status.LOADING)
+    val occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(emptyList())
+    val occasion = MutableValue<Occasion?>(null)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch(Dispatchers.IO) {
                 requestStatus.update { Status.LOADING }
 
                 val list = occasionDao.getFutureOccasions()
-                hasRecipients = recipientDao.getAll().isNotEmpty()
-                occasion =
+                val selectedOccasion =
                     if (occasionId != null)
                         occasionDao.getOccasion(occasionId!!)
                     else
                         list.firstOrNull()
 
                 occasions.update { list }
+                occasion.update { selectedOccasion }
 
-                occasion?.let {
+                selectedOccasion?.let {
                     onOccasionChange(it)
                 }
 
@@ -60,8 +61,8 @@ class HomeComponent(
     }
 
     fun onOccasionChange(newValue: Occasion) {
-        CoroutineScope(Dispatchers.IO).launch {
-            occasion = newValue
+        scope.launch(Dispatchers.IO) {
+            occasion.update { newValue }
             val list = recipientDao.getRecipientsForOccasion(newValue.id).map { occasionRecipient ->
                 val ideas = giftIdeaDao.lookupIdeasByRecipAndOccasion(occasionRecipient.recipientId, newValue.id)
                 OccasionProgress(
@@ -84,4 +85,3 @@ class HomeComponent(
         }
     }
 }
-

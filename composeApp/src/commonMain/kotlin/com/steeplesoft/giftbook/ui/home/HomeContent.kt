@@ -11,8 +11,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -36,11 +34,11 @@ fun Home(
 ) {
     val status by component.requestStatus.subscribeAsState()
     val occasionProgress by component.occasionProgress.subscribeAsState()
+    val current by component.occasion.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     AsyncLoad(status) {
         val occasions by component.occasions.subscribeAsState()
-        val current: Occasion? by remember { mutableStateOf(component.occasion) }
 
         Column {
             ComboBox(
@@ -87,4 +85,3 @@ fun Home(
         )
     }
 }
-

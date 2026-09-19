@@ -7,6 +7,7 @@ import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.camper.components.Status
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -16,12 +17,13 @@ import org.koin.core.component.inject
 
 class RecipientListComponent(componentContext: ComponentContext): ComponentContext by componentContext, KoinComponent {
     private val recipientDao : RecipientDao by inject()
-    var recipients = MutableValue(listOf<Recipient>())
-    var requestStatus  = MutableValue(Status.LOADING)
+    val recipients = MutableValue(listOf<Recipient>())
+    val requestStatus = MutableValue(Status.LOADING)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch(Dispatchers.IO) {
                 requestStatus.update { Status.LOADING }
 
                 val list = recipientDao.getAll()

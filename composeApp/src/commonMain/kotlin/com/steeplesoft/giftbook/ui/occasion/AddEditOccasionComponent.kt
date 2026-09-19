@@ -7,6 +7,7 @@ import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.form.OccasionForm
 import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,11 +20,12 @@ class AddEditOccasionComponent(
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
+    private val scope = componentContext.componentScope()
 
     val form = OccasionForm(occasion)
 
     fun save() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             form.validate()
             val name = form.name.state.value?.trim().orEmpty()
             val eventDate = form.eventDate.state.value
@@ -48,7 +50,7 @@ class AddEditOccasionComponent(
     }
 
     fun cancel() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             nav.pop()
         }
     }

@@ -20,6 +20,7 @@ import com.steeplesoft.giftbook.ui.occasionRecip.ViewOccasionRecipient
 import com.steeplesoft.giftbook.ui.recipients.AddEditRecipientComponent
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
 import com.steeplesoft.giftbook.ui.recipients.ViewRecipientComponent
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ class RootComponent(componentContext: ComponentContext) :
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
+    private val scope = componentContext.componentScope()
 
     val stack: Value<ChildStack<*, ComponentContext>> = childStack(
         source = nav,
@@ -42,7 +44,7 @@ class RootComponent(componentContext: ComponentContext) :
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.Main).launch {
+            scope.launch {
                 val occasions = occasionDao.getFutureOccasions()
                 if (occasions.isEmpty()) {
                     nav.bringToFront(NavigationConfig.AddEditOccasion())

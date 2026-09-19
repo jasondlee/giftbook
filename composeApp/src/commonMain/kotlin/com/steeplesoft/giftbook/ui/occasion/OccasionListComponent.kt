@@ -7,6 +7,7 @@ import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.camper.components.Status
 import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.model.Occasion
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -19,13 +20,14 @@ class OccasionListComponent(
 ) : ComponentContext by componentContext, KoinComponent {
     private val occasionDao : OccasionDao by inject()
 
-    var occasions: MutableValue<List<Occasion>> = MutableValue(mutableListOf())
+    val occasions: MutableValue<List<Occasion>> = MutableValue(emptyList())
 
-    var requestStatus  = MutableValue(Status.LOADING)
+    val requestStatus = MutableValue(Status.LOADING)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch(Dispatchers.IO) {
                 val list = occasionDao.getFutureOccasions()
                 occasions.update { list }
                 requestStatus.update { Status.SUCCESS }

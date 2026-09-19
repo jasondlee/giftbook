@@ -42,11 +42,12 @@ fun ViewRecipient(
     val deleteRecipientDialog = remember { mutableStateOf(false) }
     val deleteIdeaDialog = remember { mutableStateOf(false) }
     var toDelete: MutableState<GiftIdea?> = remember { mutableStateOf(null) }
+    val ideas by component.ideas.subscribeAsState()
 
     AsyncLoad(status) {
         DeleteConfirmationDialog(
             showDialog = deleteRecipientDialog,
-            itemName = component.recipient.name,
+            itemName = component.recipient.value?.name.orEmpty(),
             onConfirm = { component.deleteRecipient() }
         )
 
@@ -63,12 +64,12 @@ fun ViewRecipient(
         )
         Column(modifier = modifier) {
             AddEditHeader(
-                label = component.recipient.name,
+                label = component.recipient.value?.name.orEmpty(),
                 editClick = { component.editRecipient() },
                 deleteClick = { deleteRecipientDialog.value = true }
             )
             LazyColumn {
-                items(component.ideas) { item ->
+                items(ideas, key = { it.id }) { item ->
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {

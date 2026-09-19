@@ -16,6 +16,7 @@ import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionRecipient
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -33,19 +34,20 @@ class ViewOccasionRecipient(
     private val recipientDao : RecipientDao by inject()
     private val giftIdeaDao : GiftIdeaDao by inject()
 
-    lateinit var occasionRecip: OccasionRecipient
-    lateinit var recip: Recipient
-    lateinit var occasion: Occasion
+    val occasionRecip = MutableValue<OccasionRecipient?>(null)
+    val recip = MutableValue<Recipient?>(null)
+    val occasion = MutableValue<Occasion?>(null)
 
-    var gifts: MutableValue<List<GiftIdea>> = MutableValue(emptyList())
-    var requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
+    val gifts: MutableValue<List<GiftIdea>> = MutableValue(emptyList())
+    val requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
-                occasionRecip = recipientDao.getRecipientForOccasion(occasionId, recipId)
-                recip = recipientDao.getRecipient(recipId)
-                occasion = occasionDao.getOccasion(occasionId)
+            scope.launch(Dispatchers.IO) {
+                occasionRecip.update { recipientDao.getRecipientForOccasion(occasionId, recipId) }
+                recip.update { recipientDao.getRecipient(recipId) }
+                occasion.update { occasionDao.getOccasion(occasionId) }
                 val list = giftIdeaDao.lookupIdeasByRecipAndOccasion(recipId, occasionId)
                 gifts.update { list }
                 requestStatus.update { Status.SUCCESS }
@@ -55,57 +57,42 @@ class ViewOccasionRecipient(
 
 
     fun edit() {
-        nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(occasion, recip, occasionRecip))
+        val currentOccasion = occasion.value ?: return
+        val currentRecipient = recip.value ?: return
+        val currentOccasionRecip = occasionRecip.value ?: return
+        nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(currentOccasion, currentRecipient, currentOccasionRecip))
     }
 
     fun delete() {
-        CoroutineScope(Dispatchers.Main).launch {
-            occasionDao.deleteOccasionRecip(occasionRecip)
+        scope.launch {
+            occasionRecip.value?.let { occasionDao.deleteOccasionRecip(it) }
             nav.pop()
         }
     }
 
     fun giftGiven(giftId: Long, cost: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch(Dispatchers.IO) {
             val orig = gifts.value
-            val gift = orig.first { it.id == giftId }
+            val gift = orig.firstOrNull { it.id == giftId } ?: return@launch
+            val updatedGift = gift.copy(occasionId = occasionId, actualCost = cost)
 
-            gift.occasionId = occasionId
-            gift.actualCost = cost
-
-            giftIdeaDao.update(gift)
-
-            /*
-             * This seems really odd, but if I get gifts.value, change the list, then call gifts.update, nothing happens. The only
-             * way I've found to get the UI to update is to set gifts to an empty list, then back to the real list. Surely I'm just
-             * missing something, but this works for now, so I'll revisit this later when I have more time. -- jdl 2025/03/16
-             */
-            gifts.update { emptyList() }
-            gifts.update { orig }
+            giftIdeaDao.update(updatedGift)
+            gifts.update { it.map { current -> if (current.id == giftId) updatedGift else current } }
         }
     }
 
     fun resetGiftGiven(giftId: Long) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch(Dispatchers.IO) {
             val orig = gifts.value
-            val gift = orig.first { it.id == giftId }
+            val gift = orig.firstOrNull { it.id == giftId } ?: return@launch
+            val updatedGift = gift.copy(occasionId = null, actualCost = null)
 
-            gift.occasionId = null
-            gift.actualCost = null
-
-            giftIdeaDao.update(gift)
-
-            /*
-             * This seems really odd, but if I get gifts.value, change the list, then call gifts.update, nothing happens. The only
-             * way I've found to get the UI to update is to set gifts to an empty list, then back to the real list. Surely I'm just
-             * missing something, but this works for now, so I'll revisit this later when I have more time. -- jdl 2025/03/16
-             */
-            gifts.update { emptyList() }
-            gifts.update { orig }
+            giftIdeaDao.update(updatedGift)
+            gifts.update { it.map { current -> if (current.id == giftId) updatedGift else current } }
         }
     }
 
     fun addIdea() {
-        nav.pushToFront(NavigationConfig.AddEditIdea(recip))
+        recip.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
     }
 }

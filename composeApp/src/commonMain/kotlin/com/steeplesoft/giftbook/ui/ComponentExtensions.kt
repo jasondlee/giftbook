@@ -4,15 +4,25 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import kotlin.coroutines.CoroutineContext
 import com.steeplesoft.camper.components.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 /**
  * Common extension functions for Decompose components to reduce boilerplate.
  */
+
+fun ComponentContext.componentScope(context: CoroutineContext = Dispatchers.Main): CoroutineScope {
+    val scope = CoroutineScope(SupervisorJob() + context)
+    lifecycle.doOnDestroy(scope::cancel)
+    return scope
+}
 
 /**
  * Standard pattern for loading data on component resume.
@@ -32,8 +42,9 @@ fun ComponentContext.loadOnResume(
     statusValue: MutableValue<Status>,
     loadBlock: suspend () -> Unit
 ) {
+    val scope = componentScope()
     doOnResume {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch(Dispatchers.IO) {
             statusValue.update { Status.LOADING }
             try {
                 loadBlock()
@@ -43,43 +54,5 @@ fun ComponentContext.loadOnResume(
                 // Log error appropriately
             }
         }
-    }
-}
-
-/**
- * Execute a block on the Main dispatcher (for navigation and UI updates).
- * 
- * Usage:
- * ```
- * fun save() {
- *     onMain {
- *         dao.save(entity)
- *         nav.pop()
- *     }
- * }
- * ```
- */
-fun onMain(block: suspend () -> Unit) {
-    CoroutineScope(Dispatchers.Main).launch {
-        block()
-    }
-}
-
-/**
- * Execute a block on the IO dispatcher (for database operations).
- * 
- * Usage:
- * ```
- * fun loadData() {
- *     onIO {
- *         val data = dao.getData()
- *         items.update { data }
- *     }
- * }
- * ```
- */
-fun onIO(block: suspend () -> Unit) {
-    CoroutineScope(Dispatchers.IO).launch {
-        block()
     }
 }

@@ -14,6 +14,7 @@ import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.Recipient
+import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -28,46 +29,48 @@ class ViewOccasionComponent(
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
-    lateinit var occasion: Occasion
-
-    var recips : MutableList<Recipient> = mutableListOf()
-    var requestStatus = MutableValue(Status.LOADING)
+    val occasion = MutableValue<Occasion?>(null)
+    val recips = MutableValue<List<Recipient>>(emptyList())
+    val requestStatus = MutableValue(Status.LOADING)
+    private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
-            CoroutineScope(Dispatchers.IO).launch {
-                occasion = occasionDao.getOccasion(occasionId)
-                recips = recipientDao.getRecipientListForOccasion(occasion.id).toMutableList()
+            scope.launch(Dispatchers.IO) {
+                val loadedOccasion = occasionDao.getOccasion(occasionId)
+                occasion.update { loadedOccasion }
+                recips.update { recipientDao.getRecipientListForOccasion(loadedOccasion.id) }
                 requestStatus.update { Status.SUCCESS }
             }
         }
     }
 
     fun edit() {
-        nav.pushToFront(NavigationConfig.AddEditOccasion(occasion))
+        occasion.value?.let { nav.pushToFront(NavigationConfig.AddEditOccasion(it)) }
     }
 
     fun delete() {
-        CoroutineScope(Dispatchers.Main).launch {
-            occasionDao.delete(occasion)
+        scope.launch {
+            occasion.value?.let { occasionDao.delete(it) }
             nav.pop()
         }
     }
 
     fun deleteRecip(recip: Recipient) {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             requestStatus.update { Status.LOADING }
-            occasionDao.deleteOccasionRecip(recipientDao.getRecipientForOccasion(occasion.id, recip.id))
-            recips.remove(recip)
+            val loadedOccasion = occasion.value ?: return@launch
+            occasionDao.deleteOccasionRecip(recipientDao.getRecipientForOccasion(loadedOccasion.id, recip.id))
+            recips.update { it.filterNot { current -> current.id == recip.id } }
             requestStatus.update { Status.SUCCESS }
         }
     }
 
     fun addRecipient() {
-        nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(occasion))
+        occasion.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it)) }
     }
 
     fun editOccasionRecipient(recipient: Recipient) {
-        nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(occasion, recipient))
+        occasion.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it, recipient)) }
     }
 }
