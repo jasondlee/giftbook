@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.form.IdeaForm
+import com.steeplesoft.giftbook.form.parseNonNegativeInt
 import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.model.Recipient
 import kotlinx.coroutines.CoroutineScope
@@ -28,12 +29,16 @@ class AddEditIdeaComponent(
         CoroutineScope(Dispatchers.Main).launch {
             form.validate()
             if (form.isValid) {
+                val title = form.title.state.value?.trim().orEmpty()
+                val estimatedCost = parseNonNegativeInt(form.estimatedCost.state.value.orEmpty())
+                if (title.isEmpty() || estimatedCost == null) return@launch
+
                 val newIdea = GiftIdea(
                     id = idea?.id ?: 0,
-                    title = form.title.state.value!!,
+                    title = title,
                     notes = form.notes.state.value ?: "",
                     recipientId = recipient.id,
-                    estimatedCost = form.estimatedCost.state.value?.toInt() ?: 0,
+                    estimatedCost = estimatedCost,
                 )
                 if (idea == null) {
                     newIdea.id = ideaDao.insert(newIdea)

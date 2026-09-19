@@ -43,19 +43,19 @@ fun ViewRecipient(
     val deleteIdeaDialog = remember { mutableStateOf(false) }
     var toDelete: MutableState<GiftIdea?> = remember { mutableStateOf(null) }
 
-    DeleteConfirmationDialog(
-        showDialog = deleteRecipientDialog,
-        itemName = component.recipient.name,
-        onConfirm = { component.deleteRecipient() }
-    )
-    
-    DeleteConfirmationDialog(
-        showDialog = deleteIdeaDialog,
-        itemName = toDelete.value?.title ?: "",
-        onConfirm = { component.deleteIdea(toDelete.value!!) }
-    )
-
     AsyncLoad(status) {
+        DeleteConfirmationDialog(
+            showDialog = deleteRecipientDialog,
+            itemName = component.recipient.name,
+            onConfirm = { component.deleteRecipient() }
+        )
+
+        DeleteConfirmationDialog(
+            showDialog = deleteIdeaDialog,
+            itemName = toDelete.value?.title.orEmpty(),
+            onConfirm = { toDelete.value?.let(component::deleteIdea) }
+        )
+
         ActionButton(
             onClick = {
                 component.addIdea()
@@ -84,7 +84,7 @@ fun ViewRecipient(
                             Row {
                                 if (!item.notes.isNullOrBlank()) {
                                     Text(
-                                        text = item.notes!!,
+                                    text = item.notes.orEmpty(),
                                         fontStyle = FontStyle.Italic,
                                     )
                                 }

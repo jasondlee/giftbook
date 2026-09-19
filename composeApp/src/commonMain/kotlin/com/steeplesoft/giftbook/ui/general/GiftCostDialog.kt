@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.Dialog
+import com.steeplesoft.giftbook.form.parseNonNegativeInt
 
 @ExperimentalMaterial3Api
 @Composable
@@ -50,7 +51,7 @@ fun GiftCostDialog(
                             // the DropDown the same width
                             textFieldSize = coordinates.size.toSize()
                         },
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     trailingIcon = {
                         Icon(
                             Icons.Filled.Clear, "contentDescription",
@@ -64,7 +65,7 @@ fun GiftCostDialog(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     TextButton(modifier = Modifier.weight(0.45f),
                         onClick = {
-                            onSaveRequest(if (cost.isNotBlank()) cost.toInt() else 0)
+                            parseNonNegativeInt(cost)?.let(onSaveRequest)
                         }
                     ) {
                         Text("OK")

@@ -23,9 +23,13 @@ class AddEditRecipientComponent(
 
     fun save() {
         CoroutineScope(Dispatchers.Main).launch {
+            form.validate()
+            val name = form.name.state.value?.trim().orEmpty()
+            if (!form.isValid || name.isEmpty()) return@launch
+
             val recip = Recipient(
                 id = recipient?.id ?: 0,
-                name = form.name.state.value!!
+                name = name
             )
 
             if (recipient == null) {

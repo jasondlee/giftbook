@@ -44,24 +44,26 @@ fun ViewOccasion(
     component: ViewOccasionComponent,
     modifier: Modifier = Modifier
 ) {
-    val occasion = component.occasion
     var recip: MutableState<Recipient?> = remember { mutableStateOf(null) }
     val deleteOccasionDialog = remember { mutableStateOf(false) }
     val deleteRecipientDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
 
-    DeleteConfirmationDialog(
-        showDialog = deleteOccasionDialog,
-        itemName = occasion.name,
-        onConfirm = { component.delete() }
-    )
-    
-    DeleteConfirmationDialog(
-        showDialog = deleteRecipientDialog,
-        itemName = "${recip.value?.name} from ${occasion.name}",
-        onConfirm = { component.deleteRecip(recip.value!!) }
-    )
     AsyncLoad(status) {
+        val occasion = component.occasion
+
+        DeleteConfirmationDialog(
+            showDialog = deleteOccasionDialog,
+            itemName = occasion.name,
+            onConfirm = { component.delete() }
+        )
+
+        DeleteConfirmationDialog(
+            showDialog = deleteRecipientDialog,
+            itemName = "${recip.value?.name.orEmpty()} from ${occasion.name}",
+            onConfirm = { recip.value?.let(component::deleteRecip) }
+        )
+
         ActionButton(
             onClick = {
                 component.addRecipient()

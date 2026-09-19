@@ -21,9 +21,9 @@ class IdeaForm(val idea : GiftIdea? = null) : Form() {
     )
 }
 
-class IntegerValidator<T>(errorText: String? = null) : Validator<T>(
+class IntegerValidator(errorText: String? = null) : Validator<String?>(
     validate = {
-        it != null && it is Int
+        parseNonNegativeInt(it.orEmpty()) != null
     },
-    errorText = errorText ?: "This field should not be empty"
+    errorText = errorText ?: "Enter a non-negative whole number"
 )

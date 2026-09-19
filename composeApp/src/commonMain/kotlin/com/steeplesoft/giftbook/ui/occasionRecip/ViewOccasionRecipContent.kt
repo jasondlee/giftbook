@@ -57,12 +57,13 @@ fun ViewOccasionRecip(
     val gifts by component.gifts.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
-    DeleteConfirmationDialog(
-        showDialog = showDialog,
-        itemName = "${component.recip.name} from ${component.occasion.name}",
-        onConfirm = { component.delete() }
-    )
     AsyncLoad(status) {
+        DeleteConfirmationDialog(
+            showDialog = showDialog,
+            itemName = "${component.recip.name} from ${component.occasion.name}",
+            onConfirm = { component.delete() }
+        )
+
         ActionButton(
             onClick = {
                 component.addIdea()

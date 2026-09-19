@@ -24,11 +24,17 @@ class AddEditOccasionComponent(
 
     fun save() {
         CoroutineScope(Dispatchers.Main).launch {
+            form.validate()
+            val name = form.name.state.value?.trim().orEmpty()
+            val eventDate = form.eventDate.state.value
+            val eventType = form.eventType.state.value?.eventType
+            if (!form.isValid || name.isEmpty() || eventDate == null || eventType == null) return@launch
+
             val newOccasion = Occasion(
                 id = occasion?.id ?: 0,
-                name = form.name.state.value!!,
-                eventDate = form.eventDate.state.value!!,
-                eventType = form.eventType.state.value!!.eventType
+                name = name,
+                eventDate = eventDate,
+                eventType = eventType
             )
 
             if (occasion == null) {
