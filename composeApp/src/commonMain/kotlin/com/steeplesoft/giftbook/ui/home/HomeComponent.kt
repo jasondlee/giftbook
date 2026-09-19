@@ -30,7 +30,7 @@ class HomeComponent(
     val occasions = MutableValue(listOf<Occasion>())
     val requestStatus = MutableValue(Status.LOADING)
     val occasionProgress: MutableValue<List<OccasionProgress>> = MutableValue(emptyList())
-    val occasion = MutableValue<Occasion?>(null)
+    val selectedOccasion = MutableValue(SelectedOccasion())
     private val scope = componentContext.componentScope()
 
     init {
@@ -46,7 +46,7 @@ class HomeComponent(
                         list.firstOrNull()
 
                 occasions.update { list }
-                occasion.update { selectedOccasion }
+                this@HomeComponent.selectedOccasion.update { SelectedOccasion(selectedOccasion) }
 
                 selectedOccasion?.let {
                     onOccasionChange(it)
@@ -59,7 +59,7 @@ class HomeComponent(
 
     fun onOccasionChange(newValue: Occasion) {
         scope.launch(Dispatchers.IO) {
-            occasion.update { newValue }
+            selectedOccasion.update { SelectedOccasion(newValue) }
                 val list = occasionDao.getProgress(newValue.id).map { it.toOccasionProgress() }
 
             occasionProgress.update { list }
@@ -67,8 +67,10 @@ class HomeComponent(
     }
 
     fun addRecipient() {
-        occasion?.let {
+        selectedOccasion.value.value?.let {
             nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(it))
         }
     }
 }
+
+data class SelectedOccasion(val value: Occasion? = null)

@@ -29,7 +29,7 @@ class ViewOccasionComponent(
     private val nav : StackNavigation<NavigationConfig> by inject()
     private val occasionDao : OccasionDao by inject()
     private val recipientDao : RecipientDao by inject()
-    val occasion = MutableValue<Occasion?>(null)
+    val occasion = MutableValue(OccasionState())
     val recips = MutableValue<List<Recipient>>(emptyList())
     val requestStatus = MutableValue(Status.LOADING)
     private val scope = componentContext.componentScope()
@@ -38,20 +38,21 @@ class ViewOccasionComponent(
         componentContext.doOnResume {
             scope.launch(Dispatchers.IO) {
                 val loadedOccasion = occasionDao.getOccasion(occasionId)
-                occasion.update { loadedOccasion }
-                recips.update { recipientDao.getRecipientListForOccasion(loadedOccasion.id) }
+                occasion.update { OccasionState(loadedOccasion) }
+                val loadedRecipients = recipientDao.getRecipientListForOccasion(loadedOccasion.id)
+                recips.update { loadedRecipients }
                 requestStatus.update { Status.SUCCESS }
             }
         }
     }
 
     fun edit() {
-        occasion.value?.let { nav.pushToFront(NavigationConfig.AddEditOccasion(it)) }
+        occasion.value.value?.let { nav.pushToFront(NavigationConfig.AddEditOccasion(it)) }
     }
 
     fun delete() {
         scope.launch {
-            occasion.value?.let { occasionDao.delete(it) }
+            occasion.value.value?.let { occasionDao.delete(it) }
             nav.pop()
         }
     }
@@ -59,7 +60,7 @@ class ViewOccasionComponent(
     fun deleteRecip(recip: Recipient) {
         scope.launch {
             requestStatus.update { Status.LOADING }
-            val loadedOccasion = occasion.value ?: return@launch
+            val loadedOccasion = occasion.value.value ?: return@launch
             occasionDao.deleteOccasionRecip(recipientDao.getRecipientForOccasion(loadedOccasion.id, recip.id))
             recips.update { it.filterNot { current -> current.id == recip.id } }
             requestStatus.update { Status.SUCCESS }
@@ -67,10 +68,12 @@ class ViewOccasionComponent(
     }
 
     fun addRecipient() {
-        occasion.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it)) }
+        occasion.value.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it)) }
     }
 
     fun editOccasionRecipient(recipient: Recipient) {
-        occasion.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it, recipient)) }
+        occasion.value.value?.let { nav.bringToFront(NavigationConfig.AddEditOccasionRecipient(it, recipient)) }
     }
 }
+
+data class OccasionState(val value: Occasion? = null)

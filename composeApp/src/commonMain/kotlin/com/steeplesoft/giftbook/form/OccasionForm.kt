@@ -12,6 +12,8 @@ import kotlinx.datetime.LocalDate
 
 class OccasionForm(val occasion: Occasion?) : Form() {
 
+    override fun self(): Form = this
+
     override fun getFormFields() = listOf(name, eventDate, eventType)
 
     val name: FieldState<String?> = FieldState(

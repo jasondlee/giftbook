@@ -9,6 +9,7 @@ import com.steeplesoft.giftbook.database.dao.OccasionDao
 import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.database.loadDemoData
 import com.steeplesoft.giftbook.database.MIGRATION_1_2
+import com.steeplesoft.giftbook.database.loadDemoDataOnStartup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.runBlocking

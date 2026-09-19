@@ -34,7 +34,7 @@ class RootComponent(componentContext: ComponentContext) :
     private val recipientDao : RecipientDao by inject()
     private val scope = componentContext.componentScope()
 
-    val stack: Value<ChildStack<*, ComponentContext>> = childStack(
+    val stack: Value<ChildStack<NavigationConfig, ComponentContext>> = childStack(
         source = nav,
         serializer = NavigationConfig.serializer(),
         initialConfiguration = NavigationConfig.Home(),

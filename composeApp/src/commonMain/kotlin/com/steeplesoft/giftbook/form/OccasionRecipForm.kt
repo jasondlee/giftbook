@@ -8,6 +8,8 @@ import com.steeplesoft.giftbook.model.OccasionRecipient
 
 class OccasionRecipForm(val occasionRecip: OccasionRecipient?) : Form() {
 
+    override fun self(): Form = this
+
     override fun getFormFields() = listOf(count, cost)
 
     val count : FieldState<Int?> = FieldState(
@@ -27,4 +29,3 @@ class GreaterThanZeroValidator(errorText: String = "This field must be greater t
     },
     errorText = errorText
 )
-

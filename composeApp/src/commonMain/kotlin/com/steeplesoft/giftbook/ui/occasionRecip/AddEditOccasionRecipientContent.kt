@@ -38,7 +38,8 @@ fun AddEditOccasionRecipient(
 
         AsyncLoad(status) {
             val form = component.form
-            val selectedRecipient by component.recipient.subscribeAsState()
+            val recipientSelection by component.recipient.subscribeAsState()
+            val selectedRecipient = recipientSelection.value
 
             Text(
                 buildAnnotatedString {
@@ -66,7 +67,7 @@ fun AddEditOccasionRecipient(
                 ComboBox(label = "Recipient",
                     selected = selectedRecipient,
                     onChange = { newValue ->
-                        component.recipient.update { newValue }
+                        component.recipient.update { RecipientSelection(newValue) }
                     },
                     items = recipients,
                     itemLabel = { recip -> recip?.name ?: "--" }

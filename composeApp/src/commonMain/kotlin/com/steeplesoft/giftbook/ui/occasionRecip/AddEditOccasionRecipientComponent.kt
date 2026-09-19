@@ -25,16 +25,16 @@ import org.koin.core.component.inject
 class AddEditOccasionRecipientComponent(
     val componentContext: ComponentContext,
     val occasion: Occasion,
-    recipient: Recipient? = null,
-    occasionRecipient: OccasionRecipient? = null
+    initialRecipient: Recipient? = null,
+    initialOccasionRecipient: OccasionRecipient? = null
 ) : ComponentContext by componentContext, KoinComponent {
     private val nav: StackNavigation<NavigationConfig> by inject()
     private val occasionDao: OccasionDao by inject()
     private val recipientDao: RecipientDao by inject()
 
-    val recipient = MutableValue(recipient)
-    val occasionRecipient = MutableValue(occasionRecipient)
-    var form = OccasionRecipForm(occasionRecipient.value)
+    val recipient = MutableValue<RecipientSelection>(RecipientSelection(initialRecipient))
+    val occasionRecipient = MutableValue<OccasionRecipientState>(OccasionRecipientState(initialOccasionRecipient))
+    var form = OccasionRecipForm(occasionRecipient.value.value)
     val requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
     val recipients: MutableValue<List<Recipient>> = MutableValue(emptyList())
     private val scope = componentContext.componentScope()
@@ -42,18 +42,19 @@ class AddEditOccasionRecipientComponent(
     init {
         componentContext.doOnResume {
             scope.launch(Dispatchers.IO) {
-                if (recipient.value == null) {
+                if (recipient.value.value == null) {
                     val allRecips = recipientDao.getAll()
                     val recipsForOccasion = recipientDao.getRecipientListForOccasion(occasion.id).map { it.id }
                     val available = allRecips.filter { !recipsForOccasion.contains(it.id) }
                     recipients.update { available }
                 }
 
-                if (recipient.value != null && occasionRecipient.value == null) {
-                    occasionRecipient.update { recipientDao.getRecipientForOccasion(occasion.id, recipient.value!!.id) }
+                if (recipient.value.value != null && occasionRecipient.value.value == null) {
+                    val loadedOccasionRecipient = recipientDao.getRecipientForOccasion(occasion.id, recipient.value.value!!.id)
+                    occasionRecipient.update { OccasionRecipientState(loadedOccasionRecipient) }
                 }
 
-                form = OccasionRecipForm(occasionRecipient.value)
+                form = OccasionRecipForm(occasionRecipient.value.value)
 
                 requestStatus.update { Status.SUCCESS }
             }
@@ -64,7 +65,7 @@ class AddEditOccasionRecipientComponent(
         scope.launch {
             form.validate()
             if (form.isValid) {
-                recipient.value?.let { recip ->
+                recipient.value.value?.let { recip ->
                     val or = OccasionRecipient(
                         occasionId = occasion.id,
                         recipientId = recip.id,
@@ -72,7 +73,7 @@ class AddEditOccasionRecipientComponent(
                         targetCount = form.count.state.value ?: 0
                     )
 
-                    if (occasionRecipient.value != null) {
+                    if (occasionRecipient.value.value != null) {
                         occasionDao.updateOccasionRecip(or)
                     } else {
                         occasionDao.insertOccasionRecip(or)
@@ -90,3 +91,7 @@ class AddEditOccasionRecipientComponent(
         }
     }
 }
+
+data class RecipientSelection(val value: Recipient? = null)
+
+data class OccasionRecipientState(val value: OccasionRecipient? = null)

@@ -47,7 +47,7 @@ fun ViewRecipient(
     AsyncLoad(status) {
         DeleteConfirmationDialog(
             showDialog = deleteRecipientDialog,
-            itemName = component.recipient.value?.name.orEmpty(),
+            itemName = component.recipient.value.value?.name.orEmpty(),
             onConfirm = { component.deleteRecipient() }
         )
 
@@ -59,7 +59,7 @@ fun ViewRecipient(
 
         Column(modifier = modifier) {
             AddEditHeader(
-                label = component.recipient.value?.name.orEmpty(),
+                label = component.recipient.value.value?.name.orEmpty(),
                 editClick = { component.editRecipient() },
                 deleteClick = { deleteRecipientDialog.value = true }
             )

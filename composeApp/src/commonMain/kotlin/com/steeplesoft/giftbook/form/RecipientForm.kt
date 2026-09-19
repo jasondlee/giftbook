@@ -7,6 +7,7 @@ import com.steeplesoft.camper.validators.NotBlankValidator
 import com.steeplesoft.giftbook.model.Recipient
 
 class RecipientForm(val recipient: Recipient?) : Form() {
+    override fun self(): Form = this
     override fun getFormFields() = listOf(name)
 
     val name : FieldState<String?> = FieldState(

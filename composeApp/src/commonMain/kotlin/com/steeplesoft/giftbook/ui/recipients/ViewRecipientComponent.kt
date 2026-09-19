@@ -31,47 +31,51 @@ class ViewRecipientComponent(
 
     val requestStatus = MutableValue(Status.LOADING)
     val ideas = MutableValue<List<GiftIdea>>(emptyList())
-    val recipient = MutableValue<Recipient?>(null)
+    val recipient = MutableValue(RecipientState())
     private val scope = componentContext.componentScope()
 
     init {
         componentContext.doOnResume {
             scope.launch(Dispatchers.IO) {
                 val loadedRecipient = recipientDao.getRecipient(recipientId)
-                recipient.update { loadedRecipient }
+                recipient.update { RecipientState(loadedRecipient) }
                 loadIdeasForRecipient(loadedRecipient)
             }
         }
     }
 
-    private suspend fun loadIdeasForRecipient(loadedRecipient: Recipient = requireNotNull(recipient.value)) {
-        ideas.update { ideaDao.getCurrentGiftIdeasForRecip(loadedRecipient.id) }
+    private suspend fun loadIdeasForRecipient(loadedRecipient: Recipient = requireNotNull(recipient.value.value)) {
+        val loadedIdeas = ideaDao.getCurrentGiftIdeasForRecip(loadedRecipient.id)
+        ideas.update { loadedIdeas }
         requestStatus.update { Status.SUCCESS }
     }
 
     fun addIdea() {
-        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
+        recipient.value.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
     }
 
     fun editIdea(idea: GiftIdea) {
-        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it, idea)) }
+        recipient.value.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it, idea)) }
     }
 
     fun deleteIdea(idea: GiftIdea) {
         scope.launch(Dispatchers.IO) {
             ideaDao.delete(idea)
-            recipient.value?.let(::loadIdeasForRecipient)
+            val loadedRecipient = recipient.value.value ?: return@launch
+            loadIdeasForRecipient(loadedRecipient)
         }
     }
 
     fun editRecipient() {
-        recipient.value?.let { nav.pushToFront(NavigationConfig.AddEditRecipient(it)) }
+        recipient.value.value?.let { nav.pushToFront(NavigationConfig.AddEditRecipient(it)) }
     }
 
     fun deleteRecipient() {
         scope.launch {
-            recipient.value?.let { recipientDao.delete(it) }
+            recipient.value.value?.let { recipientDao.delete(it) }
             nav.pop()
         }
     }
 }
+
+data class RecipientState(val value: Recipient? = null)

@@ -33,7 +33,8 @@ fun Home(
 ) {
     val status by component.requestStatus.subscribeAsState()
     val occasionProgress by component.occasionProgress.subscribeAsState()
-    val current by component.occasion.subscribeAsState()
+    val selectedOccasion by component.selectedOccasion.subscribeAsState()
+    val current = selectedOccasion.value
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     AsyncLoad(status) {

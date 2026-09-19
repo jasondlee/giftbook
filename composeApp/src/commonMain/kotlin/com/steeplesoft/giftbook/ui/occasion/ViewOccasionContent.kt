@@ -51,7 +51,7 @@ fun ViewOccasion(
     val recips by component.recips.subscribeAsState()
 
     AsyncLoad(status) {
-        val occasion = component.occasion.value ?: return@AsyncLoad
+        val occasion = component.occasion.value.value ?: return@AsyncLoad
 
         DeleteConfirmationDialog(
             showDialog = deleteOccasionDialog,

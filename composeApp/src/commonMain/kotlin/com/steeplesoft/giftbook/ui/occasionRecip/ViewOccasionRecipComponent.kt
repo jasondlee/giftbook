@@ -34,9 +34,9 @@ class ViewOccasionRecipient(
     private val recipientDao : RecipientDao by inject()
     private val giftIdeaDao : GiftIdeaDao by inject()
 
-    val occasionRecip = MutableValue<OccasionRecipient?>(null)
-    val recip = MutableValue<Recipient?>(null)
-    val occasion = MutableValue<Occasion?>(null)
+    val occasionRecip = MutableValue(LoadedOccasionRecipient())
+    val recip = MutableValue(LoadedRecipient())
+    val occasion = MutableValue(LoadedOccasion())
 
     val gifts: MutableValue<List<GiftIdea>> = MutableValue(emptyList())
     val requestStatus: MutableValue<Status> = MutableValue(Status.LOADING)
@@ -45,9 +45,12 @@ class ViewOccasionRecipient(
     init {
         componentContext.doOnResume {
             scope.launch(Dispatchers.IO) {
-                occasionRecip.update { recipientDao.getRecipientForOccasion(occasionId, recipId) }
-                recip.update { recipientDao.getRecipient(recipId) }
-                occasion.update { occasionDao.getOccasion(occasionId) }
+                val loadedOccasionRecip = recipientDao.getRecipientForOccasion(occasionId, recipId)
+                val loadedRecipient = recipientDao.getRecipient(recipId)
+                val loadedOccasion = occasionDao.getOccasion(occasionId)
+                occasionRecip.update { LoadedOccasionRecipient(loadedOccasionRecip) }
+                recip.update { LoadedRecipient(loadedRecipient) }
+                occasion.update { LoadedOccasion(loadedOccasion) }
                 val list = giftIdeaDao.lookupIdeasByRecipAndOccasion(recipId, occasionId)
                 gifts.update { list }
                 requestStatus.update { Status.SUCCESS }
@@ -57,15 +60,15 @@ class ViewOccasionRecipient(
 
 
     fun edit() {
-        val currentOccasion = occasion.value ?: return
-        val currentRecipient = recip.value ?: return
-        val currentOccasionRecip = occasionRecip.value ?: return
+        val currentOccasion = occasion.value.value ?: return
+        val currentRecipient = recip.value.value ?: return
+        val currentOccasionRecip = occasionRecip.value.value ?: return
         nav.pushToFront(NavigationConfig.AddEditOccasionRecipient(currentOccasion, currentRecipient, currentOccasionRecip))
     }
 
     fun delete() {
         scope.launch {
-            occasionRecip.value?.let { occasionDao.deleteOccasionRecip(it) }
+            occasionRecip.value.value?.let { occasionDao.deleteOccasionRecip(it) }
             nav.pop()
         }
     }
@@ -93,6 +96,12 @@ class ViewOccasionRecipient(
     }
 
     fun addIdea() {
-        recip.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
+        recip.value.value?.let { nav.pushToFront(NavigationConfig.AddEditIdea(it)) }
     }
 }
+
+data class LoadedOccasionRecipient(val value: OccasionRecipient? = null)
+
+data class LoadedRecipient(val value: Recipient? = null)
+
+data class LoadedOccasion(val value: Occasion? = null)

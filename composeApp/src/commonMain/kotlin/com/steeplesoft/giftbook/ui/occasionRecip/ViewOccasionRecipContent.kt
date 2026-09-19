@@ -54,15 +54,15 @@ fun ViewOccasionRecip(
     val showDialog = remember { mutableStateOf(false) }
     val status by component.requestStatus.subscribeAsState()
     val gifts by component.gifts.subscribeAsState()
-    val recip by component.recip.subscribeAsState()
-    val occasion by component.occasion.subscribeAsState()
-    val occasionRecip by component.occasionRecip.subscribeAsState()
+    val loadedRecip by component.recip.subscribeAsState()
+    val loadedOccasion by component.occasion.subscribeAsState()
+    val loadedOccasionRecip by component.occasionRecip.subscribeAsState()
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
 
     AsyncLoad(status) {
-        val currentRecip = recip ?: return@AsyncLoad
-        val currentOccasion = occasion ?: return@AsyncLoad
-        val currentOccasionRecip = occasionRecip ?: return@AsyncLoad
+        val currentRecip = loadedRecip.value ?: return@AsyncLoad
+        val currentOccasion = loadedOccasion.value ?: return@AsyncLoad
+        val currentOccasionRecip = loadedOccasionRecip.value ?: return@AsyncLoad
 
         DeleteConfirmationDialog(
             showDialog = showDialog,
