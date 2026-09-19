@@ -5,23 +5,22 @@ import com.steeplesoft.giftbook.model.GiftIdea
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionRecipient
 import com.steeplesoft.giftbook.model.Recipient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDate
 
 private val mutex = Mutex()
 
-fun loadDemoData(database: AppDatabase) {
-    CoroutineScope(Dispatchers.IO).launch {
-        mutex.withLock {
-            loadRecipients(database)
-            loadOccasions(database)
-            loadGiftIdeas(database)
-        }
+ suspend fun loadDemoData(database: AppDatabase) {
+    mutex.withLock {
+        val hasUserData = database.recipientDao().getAll().isNotEmpty() ||
+            database.occasionDao().getAll().isNotEmpty() ||
+            database.giftIdeaDao().getAll().isNotEmpty()
+        if (hasUserData) return
+
+        loadRecipients(database)
+        loadOccasions(database)
+        loadGiftIdeas(database)
     }
 }
 

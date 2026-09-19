@@ -11,6 +11,7 @@ import com.steeplesoft.giftbook.database.loadDemoData
 import com.steeplesoft.giftbook.database.MIGRATION_1_2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.runBlocking
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -39,7 +40,11 @@ val appModule = module {
             .setQueryCoroutineContext(Dispatchers.IO)
             .addMigrations(MIGRATION_1_2)
             .build()
-            .also { loadDemoData(it) }
+            .also { database ->
+                if (loadDemoDataOnStartup) {
+                    runBlocking(Dispatchers.IO) { loadDemoData(database) }
+                }
+            }
     }
     single<GiftIdeaDao> { get<AppDatabase>().giftIdeaDao() }
     single<OccasionDao> { get<AppDatabase>().occasionDao() }
