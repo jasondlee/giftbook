@@ -1,6 +1,5 @@
 package com.steeplesoft.giftbook.ui.general
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -53,9 +53,9 @@ fun GiftCostDialog(
                         },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     trailingIcon = {
-                        Icon(
-                            Icons.Filled.Clear, "contentDescription",
-                            Modifier.clickable { cost = "" })
+                        IconButton(onClick = { cost = "" }) {
+                            Icon(Icons.Filled.Clear, contentDescription = "Clear cost")
+                        }
                     },
                     label = { Text("Item Cost") },
                     onValueChange = {

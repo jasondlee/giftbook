@@ -15,13 +15,13 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.steeplesoft.giftbook.theme.IconSize
 import com.steeplesoft.giftbook.theme.Typography
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.pushToFront
 import com.steeplesoft.giftbook.NavigationConfig
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavBar(
+    selectedRoute: NavigationConfig,
     onNavigate: (NavigationItem) -> Unit
 ) {
     val nav: StackNavigation<NavigationConfig> = koinInject<StackNavigation<NavigationConfig>>()
@@ -32,8 +32,6 @@ fun BottomNavBar(
         NavigationItem.Recipients
     )
     NavigationBar/*(containerColor = mainColor)*/ {
-        val labelSize = Typography.smallTextSize
-        //getting the list of bottom navigation items for our data class
         val iconSize = IconSize.navigationIcon
         NavigationBarItem(
             icon = {
@@ -44,7 +42,7 @@ fun BottomNavBar(
                     tint = MaterialTheme.colorScheme.primary)
             },
             alwaysShowLabel = false,
-            selected = false,
+                    selected = false,
             onClick = { nav.pop() }
         )
         items.forEach { item ->
@@ -57,9 +55,28 @@ fun BottomNavBar(
                         tint = MaterialTheme.colorScheme.primary)
                 },
                 alwaysShowLabel = false,
-                selected = false,
-                onClick = { nav.pushToFront(item.route) }
+                selected = when (item) {
+                    NavigationItem.Home -> selectedRoute.isHomeSection()
+                    NavigationItem.Occasions -> selectedRoute.isOccasionSection()
+                    NavigationItem.Recipients -> selectedRoute.isRecipientSection()
+                },
+                onClick = { onNavigate(item) }
             )
         }
     }
 }
+
+private fun NavigationConfig.isHomeSection(): Boolean =
+    this is NavigationConfig.Home || this is NavigationConfig.ViewOccasionRecipient
+
+private fun NavigationConfig.isOccasionSection(): Boolean =
+    this is NavigationConfig.Occasions ||
+        this is NavigationConfig.ViewOccasion ||
+        this is NavigationConfig.AddEditOccasion ||
+        this is NavigationConfig.AddEditOccasionRecipient
+
+private fun NavigationConfig.isRecipientSection(): Boolean =
+    this is NavigationConfig.Recipients ||
+        this is NavigationConfig.ViewRecipient ||
+        this is NavigationConfig.AddEditRecipient ||
+        this is NavigationConfig.AddEditIdea

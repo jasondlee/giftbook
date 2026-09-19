@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -39,6 +41,7 @@ import com.steeplesoft.giftbook.ui.recipients.RecipientList
 import com.steeplesoft.giftbook.ui.recipients.RecipientListComponent
 import com.steeplesoft.giftbook.ui.recipients.ViewRecipient
 import com.steeplesoft.giftbook.ui.recipients.ViewRecipientComponent
+import com.steeplesoft.giftbook.ui.general.ActionButton
 import giftbook.composeapp.generated.resources.Res
 import giftbook.composeapp.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
@@ -51,9 +54,10 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     val nav: StackNavigation<NavigationConfig> = koinInject()
+    val stack by component.stack.subscribeAsState()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -68,11 +72,25 @@ fun RootContent(
             )
         },
         bottomBar = {
-            BottomNavBar(onNavigate = { navItem ->
-                {
-                    nav.pushToFront(navItem.route)
+            BottomNavBar(
+                selectedRoute = stack.active.configuration,
+                onNavigate = { navItem -> nav.pushToFront(navItem.route) }
+            )
+        },
+        floatingActionButton = {
+            when (val active = stack.active.instance) {
+                is HomeComponent -> ActionButton(onClick = active::addRecipient)
+                is OccasionListComponent -> ActionButton {
+                    nav.pushToFront(NavigationConfig.AddEditOccasion())
                 }
-            })
+                is ViewOccasionComponent -> ActionButton(onClick = active::addRecipient)
+                is RecipientListComponent -> ActionButton {
+                    nav.pushToFront(NavigationConfig.AddEditRecipient())
+                }
+                is ViewRecipientComponent -> ActionButton(onClick = active::addIdea)
+                is ViewOccasionRecipient -> ActionButton(onClick = active::addIdea)
+                else -> Unit
+            }
         },
     ) { innerPadding ->
         Children(

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -25,7 +26,6 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.DividingLine
@@ -57,11 +57,6 @@ fun ViewRecipient(
             onConfirm = { toDelete.value?.let(component::deleteIdea) }
         )
 
-        ActionButton(
-            onClick = {
-                component.addIdea()
-            }
-        )
         Column(modifier = modifier) {
             AddEditHeader(
                 label = component.recipient.value?.name.orEmpty(),
@@ -92,14 +87,18 @@ fun ViewRecipient(
                             }
                         }
                         Column {
-                            Icon(
-                                Icons.Filled.Delete,
-                                contentDescription = "Edit",
-                                tint = Color.Red,
-                                modifier = Modifier.clickable {
+                            IconButton(
+                                onClick = {
                                     toDelete.value = item
                                     deleteIdeaDialog.value = true
-                                })
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Filled.Delete,
+                                    contentDescription = "Delete gift idea",
+                                    tint = Color.Red,
+                                )
+                            }
 
                         }
                     }

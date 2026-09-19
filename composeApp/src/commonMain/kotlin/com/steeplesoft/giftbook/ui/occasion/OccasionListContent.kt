@@ -22,7 +22,6 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.NavigationConfig
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.DividingLine
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
@@ -43,7 +42,7 @@ fun OccasionList(
                 item {
                     Text("Gift Giving Occasions", fontWeight = FontWeight.Bold, fontSize = Typography.headerSize)
                 }
-                items(occasions) { occasion ->
+                items(occasions, key = { it.id }) { occasion ->
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
@@ -53,7 +52,7 @@ fun OccasionList(
                             modifier = Modifier.size(48.dp)
                                 .padding(end = Spacing.screenPadding),
                             painter = painterResource(occasion.eventType.image),
-                            contentDescription = ""
+                            contentDescription = occasion.eventType.label
                         )
                         Column {
                             Text(
@@ -69,9 +68,6 @@ fun OccasionList(
                     DividingLine()
                 }
             }
-            ActionButton(
-                onClick = { nav.bringToFront(NavigationConfig.AddEditOccasion()) }
-            )
         }
     }
 }

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -32,7 +33,6 @@ import com.steeplesoft.giftbook.theme.Spacing
 import com.steeplesoft.giftbook.theme.Typography
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.model.Recipient
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.DividingLine
@@ -65,11 +65,6 @@ fun ViewOccasion(
             onConfirm = { recip.value?.let(component::deleteRecip) }
         )
 
-        ActionButton(
-            onClick = {
-                component.addRecipient()
-            }
-        )
         LazyColumn(modifier = modifier) {
             item {
                 AddEditHeader(
@@ -124,14 +119,18 @@ fun ViewOccasion(
                         )
                     }
                     Column {
-                        Icon(
-                            Icons.Filled.Delete,
-                            contentDescription = "Edit",
-                            tint = Color.Red,
-                            modifier = Modifier.clickable {
-                                recip.value = curr
-                                deleteRecipientDialog.value = true
-                            })
+                            IconButton(
+                                onClick = {
+                                    recip.value = curr
+                                    deleteRecipientDialog.value = true
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Filled.Delete,
+                                    contentDescription = "Delete recipient",
+                                    tint = Color.Red,
+                                )
+                            }
 
                     }
                 }

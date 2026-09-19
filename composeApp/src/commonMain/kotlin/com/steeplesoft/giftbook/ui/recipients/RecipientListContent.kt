@@ -17,7 +17,6 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.NavigationConfig
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.DividingLine
 import org.koin.compose.koinInject
 
@@ -36,7 +35,7 @@ fun RecipientList(
                 item {
                     Text("Recipients", fontWeight = FontWeight.Bold, fontSize = Typography.headerSize)
                 }
-                items(recipients) { recipient ->
+                    items(recipients, key = { it.id }) { recipient ->
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .clickable {
@@ -50,12 +49,6 @@ fun RecipientList(
                     DividingLine()
                 }
             }
-            ActionButton(
-                onClick = {
-                    nav.bringToFront(NavigationConfig.AddEditRecipient())
-                }
-            )
-
         }
     }
 }

@@ -40,7 +40,6 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.GiftIdea
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.AddEditHeader
 import com.steeplesoft.giftbook.ui.general.DeleteConfirmationDialog
 import com.steeplesoft.giftbook.ui.general.GiftCostDialog
@@ -71,11 +70,6 @@ fun ViewOccasionRecip(
             onConfirm = { component.delete() }
         )
 
-        ActionButton(
-            onClick = {
-                component.addIdea()
-            }
-        )
         Column(modifier = modifier) {
             AddEditHeader(
                 label = currentOccasion.name,
@@ -118,7 +112,7 @@ fun ViewOccasionRecip(
             }
 
             LazyColumn(modifier = Modifier.padding(top = Spacing.screenPadding, bottom = Spacing.screenPadding)) {
-                items(gifts) { gift ->
+                items(gifts, key = { it.id }) { gift ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column {
                             Switch(

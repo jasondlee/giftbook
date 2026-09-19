@@ -23,7 +23,6 @@ import com.steeplesoft.camper.components.AsyncLoad
 import com.steeplesoft.camper.components.ComboBox
 import com.steeplesoft.giftbook.NavigationConfig
 import com.steeplesoft.giftbook.model.Occasion
-import com.steeplesoft.giftbook.ui.general.ActionButton
 import com.steeplesoft.giftbook.ui.general.OccasionProgressRow
 import org.koin.compose.koinInject
 
@@ -54,7 +53,7 @@ fun Home(
             LazyColumn(
                 modifier = Modifier.testTag("recipientList")
             ) {
-                items(occasionProgress) {
+                items(occasionProgress, key = { "${it.occasionId}:${it.recipient.id}" }) {
                     ElevatedCard(
                         elevation = CardDefaults.cardElevation(
                             defaultElevation = 6.dp
@@ -78,10 +77,5 @@ fun Home(
             }
         }
 
-        ActionButton(
-            onClick = {
-                component.addRecipient()
-            }
-        )
     }
 }
