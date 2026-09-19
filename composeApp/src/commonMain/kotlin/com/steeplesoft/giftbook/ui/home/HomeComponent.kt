@@ -8,11 +8,10 @@ import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.steeplesoft.camper.components.Status
 import com.steeplesoft.giftbook.NavigationConfig
-import com.steeplesoft.giftbook.database.dao.GiftIdeaDao
 import com.steeplesoft.giftbook.database.dao.OccasionDao
-import com.steeplesoft.giftbook.database.dao.RecipientDao
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionProgress
+import com.steeplesoft.giftbook.model.toOccasionProgress
 import com.steeplesoft.giftbook.ui.componentScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +24,7 @@ class HomeComponent(
     componentContext: ComponentContext,
     var occasionId: Long? = null
 ) : ComponentContext by componentContext, KoinComponent {
-    private val giftIdeaDao: GiftIdeaDao by inject()
     private val occasionDao: OccasionDao by inject()
-    private val recipientDao: RecipientDao by inject()
     private val nav: StackNavigation<NavigationConfig> by inject()
 
     val occasions = MutableValue(listOf<Occasion>())
@@ -63,17 +60,7 @@ class HomeComponent(
     fun onOccasionChange(newValue: Occasion) {
         scope.launch(Dispatchers.IO) {
             occasion.update { newValue }
-            val list = recipientDao.getRecipientsForOccasion(newValue.id).map { occasionRecipient ->
-                val ideas = giftIdeaDao.lookupIdeasByRecipAndOccasion(occasionRecipient.recipientId, newValue.id)
-                OccasionProgress(
-                    recipient = recipientDao.getRecipient(occasionRecipient.recipientId),
-                    occasionId = newValue.id,
-                    targetCount = occasionRecipient.targetCount,
-                    actualCount = ideas.count { it.occasionId != null },
-                    actualCost = ideas.sumOf { it.actualCost ?: 0 },
-                    targetCost = occasionRecipient.targetCost
-                )
-            }
+                val list = occasionDao.getProgress(newValue.id).map { it.toOccasionProgress() }
 
             occasionProgress.update { list }
         }

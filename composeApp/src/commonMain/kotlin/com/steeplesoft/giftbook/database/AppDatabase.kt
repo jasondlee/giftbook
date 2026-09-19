@@ -16,7 +16,7 @@ import com.steeplesoft.giftbook.model.Recipient
 // https://developer.android.com/kotlin/multiplatform/room
 
 @Database(
-    entities = [Occasion::class, GiftIdea::class, Recipient::class, OccasionRecipient::class], version = 1
+    entities = [Occasion::class, GiftIdea::class, Recipient::class, OccasionRecipient::class], version = 2
 )
 @TypeConverters(LocalDateConverter::class)
 @ConstructedBy(AppDatabaseConstructor::class)

@@ -20,6 +20,12 @@ import kotlinx.serialization.Serializable
             parentColumns = ["id"],
             childColumns = ["recipientId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Occasion::class,
+            parentColumns = ["id"],
+            childColumns = ["occasionId"],
+            onDelete = ForeignKey.SET_NULL
         )
     ]
 )

@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.steeplesoft.giftbook.model.Occasion
 import com.steeplesoft.giftbook.model.OccasionRecipient
+import com.steeplesoft.giftbook.model.OccasionProgressRow
 import com.steeplesoft.giftbook.now
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -28,6 +29,27 @@ interface OccasionDao {
     @Transaction
     @Query("SELECT * from Occasion where eventDate >= :limit order by eventDate")
     suspend fun getFutureOccasions(limit: String = LocalDate.now().format(LocalDate.Formats.ISO)): List<Occasion>
+
+    @Query(
+        """
+        SELECT r.id AS recipientId,
+               r.name AS recipientName,
+               j.occasionId AS occasionId,
+               j.targetCount AS targetCount,
+               j.targetCost AS targetCost,
+               SUM(CASE WHEN g.occasionId = :occasionId THEN 1 ELSE 0 END) AS actualCount,
+               COALESCE(SUM(CASE WHEN g.occasionId = :occasionId THEN COALESCE(g.actualCost, 0) ELSE 0 END), 0) AS actualCost
+        FROM OccasionRecipient AS j
+        INNER JOIN Recipient AS r ON r.id = j.recipientId
+        LEFT JOIN GiftIdea AS g
+          ON g.recipientId = j.recipientId
+         AND (g.occasionId IS NULL OR g.occasionId = :occasionId)
+        WHERE j.occasionId = :occasionId
+        GROUP BY r.id, r.name, j.occasionId, j.targetCount, j.targetCost
+        ORDER BY r.name
+        """
+    )
+    suspend fun getProgress(occasionId: Long): List<OccasionProgressRow>
 
     @Insert
     @Transaction
