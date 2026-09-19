@@ -42,6 +42,10 @@ data class GiftIdea(
     var actualCost: Int? = null,
 )
 
+fun actualGiftCount(ideas: List<GiftIdea>): Int = ideas.count { it.occasionId != null }
+
+fun actualGiftCost(ideas: List<GiftIdea>): Int = ideas.sumOf { it.actualCost ?: 0 }
+
 data class RecipientsWithIdeas(
     @Embedded
     val recipient: Recipient,
